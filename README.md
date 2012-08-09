@@ -1,3 +1,4 @@
+[![Build Status](https://secure.travis-ci.org/cwhite21/ESAPI-PHP.png?branch=master)](http://travis-ci.org/cwhite21/ESAPI-PHP)
 ### What is ESAPI?
 ESAPI (The OWASP Enterprise Security API - catchy, eh?) is a free, open source, web application security control library that makes it easier for programmers to write lower-risk applications. The ESAPI libraries are designed to make it easier for programmers to retrofit security into existing applications. The ESAPI libraries also serve as a solid foundation for new development.
 
