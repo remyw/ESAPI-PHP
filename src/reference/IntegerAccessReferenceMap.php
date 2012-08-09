@@ -108,7 +108,6 @@ class IntegerAccessReferenceMap implements AccessReferenceMap
 
         throw new AccessControlException("Access denied",
             "Request for invalid indirect reference: " + $indirectReference);
-        return null;
     }
 
     /**

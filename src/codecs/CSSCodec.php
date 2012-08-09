@@ -194,11 +194,6 @@ class CSSCodec extends Codec
                 'encodedString' => mb_substr($input, 0, 1, "UTF-32")
             );
         }
-
-        return array(
-            'decodedCharacter' => null,
-            'encodedString' => null
-        );
     }
 
     /**
