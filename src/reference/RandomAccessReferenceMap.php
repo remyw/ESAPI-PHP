@@ -110,8 +110,10 @@ class RandomAccessReferenceMap implements AccessReferenceMap
             return $this->itod->offsetGet($indirectReference);
         }
 
-        throw new AccessControlException("Access denied",
-            "Request for invalid indirect reference: " + $indirectReference);
+        throw new AccessControlException(
+            "Access denied",
+            "Request for invalid indirect reference: " . $indirectReference
+        );
     }
 
     /**
