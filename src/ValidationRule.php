@@ -8,7 +8,7 @@
  * LICENSE: This source file is subject to the New BSD license.  You should read
  * and accept the LICENSE before you use, modify, and/or redistribute this
  * software.
- * 
+ *
  * PHP version 5.2
  *
  * @category  OWASP
@@ -29,12 +29,12 @@ require_once dirname(__FILE__) . '/errors/IntrusionException.php';
 require_once dirname(__FILE__) . '/errors/ValidationException.php';
 
 /**
- * Use this ESAPI security control to wrap your data type-specific 
+ * Use this ESAPI security control to wrap your data type-specific
  * validation rules.
- * 
+ *
  * The idea behind this interface is to encapsulate data type-specific
- * validation logic. 
- * 
+ * validation logic.
+ *
  * @category  OWASP
  * @package   ESAPI
  * @author    Johannes B. Ullrich <jullrich@sans.edu>
@@ -53,7 +53,7 @@ interface ValidationRule
      * inputs to validate as true.
      *
      * @param bool $flag TRUE, if empty inputs should validate as true.
-     * 
+     *
      * @return does not return a value.
      */
     public function setAllowNull($flag);
@@ -63,7 +63,7 @@ interface ValidationRule
      * Sets a descriptive name for the validator e.g. CreditCardNumber.
      *
      * @param string $typeName name describing the validator.
-     * 
+     *
      * @return does not return a value.
      */
     public function setTypeName($typeName);
@@ -82,7 +82,7 @@ interface ValidationRule
      * canonicalize method.
      *
      * @param Encoder $encoder Encoder which provides a canonicalize method.
-     * 
+     *
      * @return does not return a value.
      */
     public function setEncoder($encoder);
@@ -94,11 +94,11 @@ interface ValidationRule
      * that are obviously an attack will cause an IntrusionException.
      *
      * @param string $context A descriptive name of the parameter that you are
-     *                        validating (e.g., LoginPage_UsernameField). This 
-     *                        value is used by any logging or error handling that 
+     *                        validating (e.g., LoginPage_UsernameField). This
+     *                        value is used by any logging or error handling that
      *                        is done with respect to the value passed in.
      * @param string $input   The actual user input data to validate.
-     * 
+     *
      * @return does not return a value.
      */
     public function assertValid($context, $input);
@@ -110,8 +110,8 @@ interface ValidationRule
      * IntrusionException if the input is an obvious attack.
      *
      * @param string $context A descriptive name of the parameter that you are
-     *                        validating (e.g., LoginPage_UsernameField). This 
-     *                        value is used by any logging or error handling that 
+     *                        validating (e.g., LoginPage_UsernameField). This
+     *                        value is used by any logging or error handling that
      *                        is done with respect to the value passed in.
      * @param string $input   The actual string user input data to validate.
      *
@@ -126,12 +126,12 @@ interface ValidationRule
      * have any similarity to the original input.
      *
      * @param string $context A descriptive name of the parameter that you are
-     *                        validating (e.g., LoginPage_UsernameField). This 
-     *                        value is used by any logging or error handling that 
+     *                        validating (e.g., LoginPage_UsernameField). This
+     *                        value is used by any logging or error handling that
      *                        is done with respect to the value passed in.
      * @param string $input   The actual user input data to validate.
      *
-     * @return string valid, canonicalized input or sanitized input or a default 
+     * @return string valid, canonicalized input or sanitized input or a default
      *                value.
      * @throws IntrusionException if intrusion detected
      */
@@ -142,8 +142,8 @@ interface ValidationRule
      * Returns boolean true if the input is valid, false otherwise.
      *
      * @param string $context A descriptive name of the parameter that you are
-     *                        validating (e.g., LoginPage_UsernameField). This 
-     *                        value is used by any logging or error handling that 
+     *                        validating (e.g., LoginPage_UsernameField). This
+     *                        value is used by any logging or error handling that
      *                        is done with respect to the value passed in.
      * @param string $input   The actual user input data to validate.
      *
@@ -160,8 +160,8 @@ interface ValidationRule
      * value.
      *
      * @param string $context A descriptive name of the parameter that you are
-     *                        validating (e.g., LoginPage_UsernameField). This 
-     *                        value is used by any logging or error handling that 
+     *                        validating (e.g., LoginPage_UsernameField). This
+     *                        value is used by any logging or error handling that
      *                        is done with respect to the value passed in.
      * @param string $input   The actual user input data to validate.
      *

@@ -48,7 +48,7 @@ class SafeRequestTest extends PHPUnit_Framework_TestCase
 {
     /**
      * Ensures ESAPI is initialised.
-     * 
+     *
      * @return null
      */
     function __construct()
@@ -62,7 +62,7 @@ class SafeRequestTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test of SafeRequest::getAuthType() with null input.
-     * 
+     *
      * @return bool true True on Pass.
      */
     function testGetAuthTypeInputNull()
@@ -81,7 +81,7 @@ class SafeRequestTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test of SafeRequest::getAuthType() with invalid input.
-     * 
+     *
      * @return bool true True on Pass.
      */
     function testGetAuthTypeInputInvalid()
@@ -101,7 +101,7 @@ class SafeRequestTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test of SafeRequest::getAuthType() with valid input.
-     * 
+     *
      * @return bool true True on Pass.
      */
     function testGetAuthTypeInputValid()
@@ -121,7 +121,7 @@ class SafeRequestTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test of SafeRequest::getContentLength() with null input.
-     * 
+     *
      * @return bool true True on Pass.
      */
     function testGetContentLengthInputNull()
@@ -140,7 +140,7 @@ class SafeRequestTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test of SafeRequest::getContentLength() with invalid input.
-     * 
+     *
      * @return bool true True on Pass.
      */
     function testGetContentLengthInputInvalid()
@@ -160,7 +160,7 @@ class SafeRequestTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test of SafeRequest::getContentLength() with valid input.
-     * 
+     *
      * @return bool true True on Pass.
      */
     function testGetContentLengthInputValid()
@@ -180,7 +180,7 @@ class SafeRequestTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test of SafeRequest::getContentType() with null input.
-     * 
+     *
      * @return bool true True on Pass.
      */
     function testGetContentTypeInputNull()
@@ -199,7 +199,7 @@ class SafeRequestTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test of SafeRequest::getContentType() with invalid input.
-     * 
+     *
      * @return bool true True on Pass.
      */
     function testGetContentTypeInputInvalid()
@@ -219,7 +219,7 @@ class SafeRequestTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test of SafeRequest::getContentType() with valid input.
-     * 
+     *
      * @return bool true True on Pass.
      */
     function testGetContentTypeInputValid()
@@ -239,7 +239,7 @@ class SafeRequestTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test of SafeRequest::getPathInfo() with null input.
-     * 
+     *
      * @return bool true True on Pass.
      */
     function testGetPathInfoInputNull()
@@ -258,7 +258,7 @@ class SafeRequestTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test of SafeRequest::getPathInfo() with invalid input.
-     * 
+     *
      * @return bool true True on Pass.
      */
     function testGetPathInfoInputInvalid()
@@ -278,7 +278,7 @@ class SafeRequestTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test of SafeRequest::getPathInfo() with valid input.
-     * 
+     *
      * @return bool true True on Pass.
      */
     function testGetPathInfoInputValid()
@@ -298,7 +298,7 @@ class SafeRequestTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test of SafeRequest::getPathTranslated() with null input.
-     * 
+     *
      * @return bool true True on Pass.
      */
     function testGetPathTranslatedInputNull()
@@ -317,7 +317,7 @@ class SafeRequestTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test of SafeRequest::getPathTranslated() with invalid input.
-     * 
+     *
      * @return bool true True on Pass.
      */
     function testGetPathTranslatedInputInvalid()
@@ -337,7 +337,7 @@ class SafeRequestTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test of SafeRequest::getPathTranslated() with valid input.
-     * 
+     *
      * @return bool true True on Pass.
      */
     function testGetPathTranslatedInputValid()
@@ -357,7 +357,7 @@ class SafeRequestTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test of SafeRequest::getQueryString() with null input.
-     * 
+     *
      * @return bool true True on Pass.
      */
     function testGetQueryStringInputNull()
@@ -376,7 +376,7 @@ class SafeRequestTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test of SafeRequest::getQueryString() with invalid input.
-     * 
+     *
      * @return bool true True on Pass.
      */
     function testGetQueryStringInputInvalid()
@@ -396,7 +396,7 @@ class SafeRequestTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test of SafeRequest::getQueryString() with valid input.
-     * 
+     *
      * @return bool true True on Pass.
      */
     function testGetQueryStringInputValid()
@@ -416,7 +416,7 @@ class SafeRequestTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test of SafeRequest::getRemoteAddr() with null input.
-     * 
+     *
      * @return bool true True on Pass.
      */
     function testGetRemoteAddrInputNull()
@@ -435,7 +435,7 @@ class SafeRequestTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test of SafeRequest::getRemoteAddr() with invalid input.
-     * 
+     *
      * @return bool true True on Pass.
      */
     function testGetRemoteAddrInputInvalid()
@@ -455,7 +455,7 @@ class SafeRequestTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test of SafeRequest::getRemoteAddr() with valid input.
-     * 
+     *
      * @return bool true True on Pass.
      */
     function testGetRemoteAddrInputValid()
@@ -475,7 +475,7 @@ class SafeRequestTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test of SafeRequest::getRemoteHost() with null input.
-     * 
+     *
      * @return bool true True on Pass.
      */
     function testGetRemoteHostInputNull()
@@ -494,7 +494,7 @@ class SafeRequestTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test of SafeRequest::getRemoteHost() with invalid input.
-     * 
+     *
      * @return bool true True on Pass.
      */
     function testGetRemoteHostInputInvalid()
@@ -536,7 +536,7 @@ class SafeRequestTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test of SafeRequest::getRemoteHost() with valid input.
-     * 
+     *
      * @return bool true True on Pass.
      */
     function testGetRemoteHostInputValid()
@@ -578,7 +578,7 @@ class SafeRequestTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test of SafeRequest::getRemoteHost() with null input.
-     * 
+     *
      * @return bool true True on Pass.
      */
     function testGetRemoteUserInputNull()
@@ -597,7 +597,7 @@ class SafeRequestTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test of SafeRequest::getRemoteUser() with invalid input.
-     * 
+     *
      * @return bool true True on Pass.
      */
     function testGetRemoteUserInputInvalid()
@@ -617,7 +617,7 @@ class SafeRequestTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test of SafeRequest::getRemoteUser() with valid input.
-     * 
+     *
      * @return bool true True on Pass.
      */
     function testGetRemoteUserInputValid()
@@ -637,7 +637,7 @@ class SafeRequestTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test of SafeRequest::getMethod() with null input.
-     * 
+     *
      * @return bool true True on Pass.
      */
     function testGetMethodInputNull()
@@ -656,7 +656,7 @@ class SafeRequestTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test of SafeRequest::getMethod() with invalid input.
-     * 
+     *
      * @return bool true True on Pass.
      */
     function testGetMethodInputInvalid()
@@ -676,7 +676,7 @@ class SafeRequestTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test of SafeRequest::getMethod() with valid input.
-     * 
+     *
      * @return bool true True on Pass.
      */
     function testGetMethodInputValid()
@@ -696,7 +696,7 @@ class SafeRequestTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test of SafeRequest::getRequestURI() with null input.
-     * 
+     *
      * @return bool true True on Pass.
      */
     function testGetRequestURIInputNull()
@@ -715,7 +715,7 @@ class SafeRequestTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test of SafeRequest::getRequestURI() with invalid input.
-     * 
+     *
      * @return bool true True on Pass.
      */
     function testGetRequestURIInputInvalid()
@@ -735,7 +735,7 @@ class SafeRequestTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test of SafeRequest::getRequestURI() with valid input.
-     * 
+     *
      * @return bool true True on Pass.
      */
     function testGetRequestURIInputValid()
@@ -755,7 +755,7 @@ class SafeRequestTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test of SafeRequest::getServerName() with null input.
-     * 
+     *
      * @return bool true True on Pass.
      */
     function testGetServerNameInputNull()
@@ -774,7 +774,7 @@ class SafeRequestTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test of SafeRequest::getServerName() with invalid input.
-     * 
+     *
      * @return bool true True on Pass.
      */
     function testGetServerNameInputInvalid()
@@ -816,7 +816,7 @@ class SafeRequestTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test of SafeRequest::getServerName() with valid input.
-     * 
+     *
      * @return bool true True on Pass.
      */
     function testGetServerNameInputValid()
@@ -847,7 +847,7 @@ class SafeRequestTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test of SafeRequest::getServerPort() with null input.
-     * 
+     *
      * @return bool true True on Pass.
      */
     function testGetServerPortInputNull()
@@ -866,7 +866,7 @@ class SafeRequestTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test of SafeRequest::getServerPort() with invalid input.
-     * 
+     *
      * @return bool true True on Pass.
      */
     function testGetServerPortInputInvalid()
@@ -886,7 +886,7 @@ class SafeRequestTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test of SafeRequest::getServerPort() with valid input.
-     * 
+     *
      * @return bool true True on Pass.
      */
     function testGetServerPortInputValid()
@@ -906,7 +906,7 @@ class SafeRequestTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test of SafeRequest::getHeader() with null input.
-     * 
+     *
      * @return bool true True on Pass.
      */
     function testGetHeaderInputNull()
@@ -924,7 +924,7 @@ class SafeRequestTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test of SafeRequest::getHeader() with invalid input.
-     * 
+     *
      * @return bool true True on Pass.
      */
     function testGetHeaderInputInvalid()
@@ -943,7 +943,7 @@ class SafeRequestTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test of SafeRequest::getHeader() with valid input.
-     * 
+     *
      * @return bool true True on Pass.
      */
     function testGetHeaderInputValid()
@@ -966,7 +966,7 @@ class SafeRequestTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test of SafeRequest::getCookie() with null input.
-     * 
+     *
      * @return bool true True on Pass.
      */
     function testGetCookieInputNull()
@@ -984,7 +984,7 @@ class SafeRequestTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test of SafeRequest::getCookie() with invalid input.
-     * 
+     *
      * @return bool true True on Pass.
      */
     function testGetCookieInputInvalid()
@@ -1003,7 +1003,7 @@ class SafeRequestTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test of SafeRequest::getCookie() with valid input.
-     * 
+     *
      * @return bool true True on Pass.
      */
     function testGetCookieInputValid()
@@ -1023,7 +1023,7 @@ class SafeRequestTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test of SafeRequest::getServerGlobal() with null input.
-     * 
+     *
      * @return bool true True on Pass.
      */
     function testGetServerGlobalInputNull()
@@ -1041,7 +1041,7 @@ class SafeRequestTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test of SafeRequest::getServerGlobal() with double encoding.
-     * 
+     *
      * @return bool true True on Pass.
      */
     function testGetServerGlobalInputDoubleEncoded()
@@ -1060,7 +1060,7 @@ class SafeRequestTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test of SafeRequest::getServerGlobal() with valid input.
-     * 
+     *
      * @return bool true True on Pass.
      */
     function testGetServerGlobalInputValid()

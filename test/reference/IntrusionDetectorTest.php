@@ -44,7 +44,7 @@ require_once dirname(__FILE__) . '/../../src/SecurityConfiguration.php';
 class IntrusionDetectorTest extends PHPUnit_Framework_TestCase
 {
 
-    private $_logFileLoc    = null;
+    private $_logFileLoc = null;
     private $_logDateFormat = null;
     private $_restoreSecCon = null;
 
@@ -58,7 +58,7 @@ class IntrusionDetectorTest extends PHPUnit_Framework_TestCase
     function __construct()
     {
         global $ESAPI;
-        if (! isset($ESAPI)) {
+        if (!isset($ESAPI)) {
             $ESAPI = new ESAPI(
                 dirname(__FILE__) . '/../testresources/ESAPI.xml'
             );

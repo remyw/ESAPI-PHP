@@ -22,7 +22,7 @@
 
 
 /**
- * 
+ *
  * @var string Define the name of the Auditor instance for CodecDebug.
  */
 define('CD_LOG', 'CodecDebug');
@@ -56,11 +56,11 @@ class CodecDebug
     private $_enabled = false;
 
     private static $_instance;
-    
-    
+
+
     /**
      * Prevents public cloning of this singleton class.
-     * 
+     *
      * @return null
      */
     private function __clone()
@@ -72,7 +72,7 @@ class CodecDebug
      * Private constructor ensures CodecDebug can only be instantiated privately.
      * Stores boolean true in $_enabled if SepcialDebugging is enabled.  This object
      * will only produce output if $_enabled is true.
-     * 
+     *
      * @return null
      */
     private function __construct()
@@ -84,7 +84,7 @@ class CodecDebug
 
     /**
      * Retrieves the singleton instance of CodecDebug.
-     * 
+     *
      * @return CodecDebug Singleton Instance of CodecDebug.
      */
     public static function getInstance()
@@ -101,14 +101,14 @@ class CodecDebug
      * Should be called, for example, from Codec->decode().
      *
      * @param string $stringNormalizedEncoding is a UTF-32 encoded string.
-     * 
+     *
      * @return null
      */
     public function addEncodedString($stringNormalizedEncoding)
     {
-        if (   $this->_enabled == false
-            || ! ESAPI::getAuditor(CD_LOG)->isDebugEnabled()
-            || ! $this->_allowRecurse
+        if ($this->_enabled == false
+            || !ESAPI::getAuditor(CD_LOG)->isDebugEnabled()
+            || !$this->_allowRecurse
         ) {
             return;
         }
@@ -122,14 +122,14 @@ class CodecDebug
      * Should be called, for example, from Codec->encode().
      *
      * @param string $stringNormalizedEncoding is a UTF-32 encoded string.
-     * 
+     *
      * @return null
      */
     public function addUnencodedString($stringNormalizedEncoding)
     {
-        if (   $this->_enabled == false
-            || ! ESAPI::getAuditor(CD_LOG)->isDebugEnabled()
-            || ! $this->_allowRecurse
+        if ($this->_enabled == false
+            || !ESAPI::getAuditor(CD_LOG)->isDebugEnabled()
+            || !$this->_allowRecurse
         ) {
             return;
         }
@@ -145,14 +145,14 @@ class CodecDebug
      * reuse.
      *
      * @param string $codecOutput is the final output being returned from Codec.
-     * 
+     *
      * @return null
      */
     public function output($codecOutput)
     {
-        if (   $this->_enabled == false
-            || ! ESAPI::getAuditor(CD_LOG)->isDebugEnabled()
-            || ! $this->_allowRecurse
+        if ($this->_enabled == false
+            || !ESAPI::getAuditor(CD_LOG)->isDebugEnabled()
+            || !$this->_allowRecurse
         ) {
             return;
         }
@@ -160,7 +160,7 @@ class CodecDebug
             return; // the codec being tested has not added any normalised inputs.
         }
         $output = '';
-    
+
         $this->_allowRecurse = false;
         $htmlCodecOutput = ESAPI::getEncoder()->encodeForHTML($codecOutput);
         if ($htmlCodecOutput == '') {
@@ -172,7 +172,7 @@ class CodecDebug
         ESAPI::getAuditor(CD_LOG)->debug(Auditor::SECURITY, true, $output);
         $this->_allowRecurse = true;
 
-        $this->_buf  = null;
+        $this->_buf = null;
         $this->_verb = null;
     }
 
@@ -183,14 +183,14 @@ class CodecDebug
      * backtrace information to the buffer before adding any characters.
      *
      * @param string $string is a UTF-32 encoded string.
-     * 
+     *
      * @return null
      */
     private function _addString($string)
     {
-        if (   $this->_enabled == false
-            || ! ESAPI::getAuditor(CD_LOG)->isDebugEnabled()
-            || ! $this->_allowRecurse
+        if ($this->_enabled == false
+            || !ESAPI::getAuditor(CD_LOG)->isDebugEnabled()
+            || !$this->_allowRecurse
         ) {
             return;
         }
@@ -210,7 +210,7 @@ class CodecDebug
             $this->_addNormalized('');
             return;
         }
-        for ($i=0; $i<$len; $i++) {
+        for ($i = 0; $i < $len; $i++) {
             $char = mb_substr($string, $i, 1, 'UTF-32');
             $this->_addNormalized($char);
         }
@@ -222,7 +222,7 @@ class CodecDebug
      * accompanying debug info) to the buffer.
      *
      * @param string $charNormalizedEncoding a single character.
-     * 
+     *
      * @return null
      */
     private function _addNormalized($charNormalizedEncoding)
@@ -230,15 +230,15 @@ class CodecDebug
         ob_start();
         var_dump($charNormalizedEncoding);
         $dumpedVar = ob_get_clean();
-        $matches=array();
-        if (! preg_match('/\(length=([0-9]+)\)/', $dumpedVar, $matches)) {
+        $matches = array();
+        if (!preg_match('/\(length=([0-9]+)\)/', $dumpedVar, $matches)) {
             $matches[1] = strtok(stristr($dumpedVar, '('), '"');
         }
         $this->_buf .= 'Normalized codec input: ' .
-        $matches[1] .
-                      ' bytes [' .
-        substr(var_export($charNormalizedEncoding, true), 0) .
-                      "]\n";
+            $matches[1] .
+            ' bytes [' .
+            substr(var_export($charNormalizedEncoding, true), 0) .
+            "]\n";
     }
 
 
@@ -246,7 +246,7 @@ class CodecDebug
      * Convenience method which returns a shortened backtrace.  it's not very
      * robust and assumes that one of the add*String methods was called from
      * either Codec or a method in one of the codecs.
-     * 
+     *
      * @return string shortened backtrace.
      */
     private function _shortTrace()
@@ -256,14 +256,14 @@ class CodecDebug
         $pos = 0;
         $trace = '';
         $objName = '';
-        for ($i=2; $i<8; $i++) {
-            if (   array_key_exists($i, $dt)
+        for ($i = 2; $i < 8; $i++) {
+            if (array_key_exists($i, $dt)
                 && array_key_exists('class', $dt[$i])
                 && $dt[$i]['class'] == 'Codec'
             ) {
                 if ($i == 4) { // this is a bit tenuous, but it should suffice...
                     $pos = 6;
-                    $trace .= $dt[$pos]['class'] . '-&gt;' .  
+                    $trace .= $dt[$pos]['class'] . '-&gt;' .
                         $dt[$pos--]['function'] . ', ';
                 } else {
                     $pos = ($dt[5]['class'] == 'SimpleInvoker') ? 4 : 5;
@@ -275,10 +275,10 @@ class CodecDebug
         if ($pos == 0) {
             throw new Exception('backtrace is odd!'); // abort!
         }
-        $trace .= $dt[$pos]['class'] . '.' .  $dt[$pos--]['function'] . ', ';
-        $trace .= $dt[$pos]['class'] . '.' .  $dt[$pos--]['function'] . ', ';
-        $trace .= $dt[$pos]['class'] . '.' .  $dt[$pos]['function']   . $objName;
-    
+        $trace .= $dt[$pos]['class'] . '.' . $dt[$pos--]['function'] . ', ';
+        $trace .= $dt[$pos]['class'] . '.' . $dt[$pos--]['function'] . ', ';
+        $trace .= $dt[$pos]['class'] . '.' . $dt[$pos]['function'] . $objName;
+
         return $trace;
     }
 }

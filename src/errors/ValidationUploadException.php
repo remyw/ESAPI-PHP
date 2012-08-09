@@ -8,7 +8,7 @@
  * LICENSE: This source file is subject to the New BSD license.  You should read
  * and accept the LICENSE before you use, modify, and/or redistribute this
  * software.
- * 
+ *
  * PHP version 5.2
  *
  * @category  OWASP
@@ -21,7 +21,7 @@
  * @link      http://www.owasp.org/index.php/ESAPI
  */
 
-require_once  dirname(__FILE__).'/ValidationException.php';
+require_once  dirname(__FILE__) . '/ValidationException.php';
 
 /**
  * A ValidationUploadException should be thrown when uploaded content validation
@@ -40,10 +40,10 @@ class ValidationUploadException extends ValidationException
 {
     /**
      * Create a new ValidationException
-     * 
+     *
      * @param string $userMessage the message displayed to the user
      * @param string $logMessage  the message logged
-     * 
+     *
      * @return does not return a value.
      */
     function __construct($userMessage = '', $logMessage = '')
@@ -51,4 +51,5 @@ class ValidationUploadException extends ValidationException
         parent::__construct($userMessage, $logMessage);
     }
 }
+
 ?>

@@ -24,8 +24,8 @@
 /**
  * Require ESAPI and XMLEntityCodec.
  */
-require_once dirname(__FILE__).'/../../src/ESAPI.php';
-require_once dirname(__FILE__).'/../../src/codecs/XMLEntityCodec.php';
+require_once dirname(__FILE__) . '/../../src/ESAPI.php';
+require_once dirname(__FILE__) . '/../../src/codecs/XMLEntityCodec.php';
 
 
 /**
@@ -46,20 +46,20 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
     private $_xmlEntityCodec = null;
 
     // these immune characters are the ones defined in DefaultEncoder.
-    private $_immune_xml     = array( ',', '.', '-', '_', ' ' );
-    private $_immune_xmlattr = array( ',', '.', '-', '_' );
-    
-    
+    private $_immune_xml = array(',', '.', '-', '_', ' ');
+    private $_immune_xmlattr = array(',', '.', '-', '_');
+
+
     /**
      * Use a new Codec for each test.
-     * 
+     *
      * @return null
      */
     function setUp()
     {
         global $ESAPI;
 
-        if (! isset($ESAPI)) {
+        if (!isset($ESAPI)) {
             $ESAPI = new ESAPI();
         }
 
@@ -73,8 +73,8 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
     /**
      *  testEncodeForXML - note that xml entities include &apos; which is not
      *  available in HTML.
-     *  
-     *  @return null
+     *
+     * @return null
      */
     function testEncodeForXML()
     {
@@ -90,8 +90,8 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
     /**
      * testEncodeImmuneCharsForXML test that characters normally immune from
      * encoding can be encoded.
-     *  
-     *  @return null
+     *
+     * @return null
      */
     function testEncodeImmuneCharsForXML()
     {
@@ -108,7 +108,7 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
     /**
      * testNoEncodeImmuneCharsForXML characters immune from encoding don't get
      * encoded.
-     * 
+     *
      * @return null
      */
     function testNoEncodeImmuneCharsForXML()
@@ -124,7 +124,7 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
 
     /**
      * testEncodeNullForXML - null stays null
-     * 
+     *
      * @return null
      */
     function testEncodeNullForXML()
@@ -138,7 +138,7 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
     /**
      * testEncodeInvalidCharsReplacedBySpace chars that must not be encoded for xml
      * are replaced with spaces.
-     * 
+     *
      * @return null
      */
     function testEncodeInvalidCharsReplacedBySpace()
@@ -148,14 +148,14 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
             $this->_xmlEntityCodec->encode(
                 $this->_immune_xml,
                 'a' . (chr(0)) . 'b' . (chr(4)) . 'c' . (chr(128)) . 'd' .
-                (chr(150)) . 'e' . (chr(159)) . 'f' . (chr(9)) . 'g'
+                    (chr(150)) . 'e' . (chr(159)) . 'f' . (chr(9)) . 'g'
             )
         );
     }
 
     /**
      * testEncodeInvalidCharsReplacedBySpacePlusISO
-     * 
+     *
      * @return null
      */
     function testEncodeInvalidCharsReplacedBySpacePlusISO()
@@ -164,18 +164,18 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
             'a b c d e f&#x9;g h i j&#xa0;k&#xa1;l&#xa2;m',
             $this->_xmlEntityCodec->encode(
                 $this->_immune_xml,
-                'a' . (chr(0))   . 'b' . (chr(4))   . 'c' . (chr(128)) .
-                'd' . (chr(150)) . 'e' . (chr(159)) . 'f' . (chr(9))   .
-                'g' . (chr(127)) . 'h' . (chr(129)) . 'i' . (chr(159)) .
-                'j' . (chr(160)) . 'k' . (chr(161)) . 'l' . (chr(162)) .
-                'm'
+                'a' . (chr(0)) . 'b' . (chr(4)) . 'c' . (chr(128)) .
+                    'd' . (chr(150)) . 'e' . (chr(159)) . 'f' . (chr(9)) .
+                    'g' . (chr(127)) . 'h' . (chr(129)) . 'i' . (chr(159)) .
+                    'j' . (chr(160)) . 'k' . (chr(161)) . 'l' . (chr(162)) .
+                    'm'
             )
         );
     }
 
     /**
      * testEncodeScriptTag
-     * 
+     *
      * @return null
      */
     function testEncodeScriptTag()
@@ -188,7 +188,7 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
 
     /**
      * testEncodeEncodedScriptTag
-     * 
+     *
      * @return null
      */
     function testEncodeEncodedScriptTag()
@@ -201,7 +201,7 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
 
     /**
      * testEncodeSpecialsForXML
-     * 
+     *
      * @return null
      */
     function testEncodeSpecialsForXML()
@@ -214,7 +214,7 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
 
     /**
      * testEncodeCanonicalisedEncodedSpecials
-     * 
+     *
      * @return null
      */
     function testEncodeCanonicalisedEncodedSpecials()
@@ -233,7 +233,7 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
 
     /**
      * testEncodeAmpForXMLEoS
-     * 
+     *
      * @return null
      */
     function testEncodeAmpForXMLEoS()
@@ -246,7 +246,7 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
 
     /**
      * testEncodeAmpForXMLMidS
-     * 
+     *
      * @return null
      */
     function testEncodeAmpForXMLMidS()
@@ -259,7 +259,7 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
 
     /**
      * testEncodeNullForXMLAttribute
-     * 
+     *
      * @return null
      */
     function testEncodeNullForXMLAttribute()
@@ -272,7 +272,7 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
 
     /**
      * testEncodeImmuneCharsForXMLAttribute
-     * 
+     *
      * @return null
      */
     function testEncodeImmuneCharsForXMLAttribute()
@@ -289,7 +289,7 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
 
     /**
      * testNoEncodeImmuneCharsForXMLAttribute
-     * 
+     *
      * @return null
      */
     function testNoEncodeImmuneCharsForXMLAttribute()
@@ -305,7 +305,7 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
 
     /**
      * testEncodeSpecialsForXMLAttribute
-     * 
+     *
      * @return null
      */
     function testEncodeSpecialsForXMLAttribute()
@@ -322,7 +322,7 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
 
     /**
      * testDecodeFromXML
-     * 
+     *
      * @return null
      */
     function testDecodeFromXML()
@@ -337,7 +337,7 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
 
     /**
      * testDecodeNullFromXML
-     * 
+     *
      * @return null
      */
     function testDecodeNullFromXML()
@@ -347,7 +347,7 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
 
     /**
      * testDecodeDecimalNumericEntitiesFromXML
-     * 
+     *
      * @return null
      */
     function testDecodeDecimalNumericEntitiesFromXML()
@@ -360,7 +360,7 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
 
     /**
      * testDecodeHexNumericEntitiesFromXML
-     * 
+     *
      * @return null
      */
     function testDecodeHexNumericEntitiesFromXML()
@@ -373,7 +373,7 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
 
     /**
      * testDecodeInvalidNamedEntityFromXML
-     * 
+     *
      * @return null
      */
     function testDecodeInvalidNamedEntityFromXML()
@@ -386,7 +386,7 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
      * should not be returned from decode.
      * In this case, ASCII and Latin Supplement characters will exist in the
      * decoded string and should be presented as UTF-8
-     * 
+     *
      * @return null
      */
     function testDecodeDoesNotProduceMixedCharacterEncoding()
@@ -396,13 +396,13 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
         $expected = mb_convert_encoding("a b c d e f\x09g h i j\xa0k\xa1l\xa2m", 'UTF-8', 'ISO-8859-1');
         // check that the encoding conversion went well and the expected string is correct
         $expected_unpacked = array(
-            1 => 0x61,  2 => 0x20,  3 => 0x62,  4 => 0x20,
-            5 => 0x63,  6 => 0x20,  7 => 0x64,  8 => 0x20,
+            1 => 0x61, 2 => 0x20, 3 => 0x62, 4 => 0x20,
+            5 => 0x63, 6 => 0x20, 7 => 0x64, 8 => 0x20,
             9 => 0x65, 10 => 0x20, 11 => 0x66, 12 => 0x09,
-           13 => 0x67, 14 => 0x20, 15 => 0x68, 16 => 0x20,
-           17 => 0x69, 18 => 0x20, 19 => 0x6a, 20 => 0xc2,
-           21 => 0xa0, 22 => 0x6b, 23 => 0xc2, 24 => 0xa1,
-           25 => 0x6c, 26 => 0xc2, 27 => 0xa2, 28 => 0x6d,
+            13 => 0x67, 14 => 0x20, 15 => 0x68, 16 => 0x20,
+            17 => 0x69, 18 => 0x20, 19 => 0x6a, 20 => 0xc2,
+            21 => 0xa0, 22 => 0x6b, 23 => 0xc2, 24 => 0xa1,
+            25 => 0x6c, 26 => 0xc2, 27 => 0xa2, 28 => 0x6d,
         );
         $unpacked = unpack('C*', $expected);
         $this->assertSame(
@@ -421,7 +421,7 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
 
     /**
      * testDecodeScriptTag
-     * 
+     *
      * @return null
      */
     function testDecodeScriptTag()
@@ -434,7 +434,7 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
 
     /**
      * testDecodeOnceDoubleEncodedScriptTag
-     * 
+     *
      * @return null
      */
     function testDecodeOnceDoubleEncodedScriptTag()
@@ -447,7 +447,7 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
 
     /**
      * testDecodeSpecials
-     * 
+     *
      * @return null
      */
     function testDecodeSpecials()
@@ -462,7 +462,7 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
 
     /**
      * testDecodeSpecialsEqualsCanonicalisedEncodedSpecials
-     * 
+     *
      * @return null
      */
     function testDecodeSpecialsEqualsCanonicalisedEncodedSpecials()
@@ -480,7 +480,7 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
 
     /**
      * testDecodeAmpFromXMLEoS
-     * 
+     *
      * @return null
      */
     function testDecodeAmpFromXMLEoS()
@@ -490,7 +490,7 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
 
     /**
      * testDecodeAmpFromXMLMidS
-     * 
+     *
      * @return null
      */
     function testDecodeAmpFromXMLMidS()
@@ -503,7 +503,7 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
 
     /**
      * testDecodeCharacter
-     * 
+     *
      * @return null
      */
     function testDecodeCharacter()

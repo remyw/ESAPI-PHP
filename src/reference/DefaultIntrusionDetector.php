@@ -56,7 +56,7 @@ require_once dirname(__FILE__) . '/../IntrusionDetector.php';
 class DefaultIntrusionDetector implements IntrusionDetector
 {
 
-    private $_auditor     = null;
+    private $_auditor = null;
     private $_userEvents = null;
 
 
@@ -108,12 +108,9 @@ class DefaultIntrusionDetector implements IntrusionDetector
 
         // add the exception, which may trigger a detector
         $eventName = get_class($exception);
-        try
-        {
+        try {
             $this->_addSecurityEvent($eventName);
-        }
-        catch (IntrusionException $intrusionException)
-        {
+        } catch (IntrusionException $intrusionException) {
             $quota = ESAPI::getSecurityConfiguration()->getQuota($eventName);
             $message = 'User exceeded quota of ' . $quota->count . ' per ' .
                 $quota->interval . ' seconds for event ' . $eventName .
@@ -162,12 +159,9 @@ class DefaultIntrusionDetector implements IntrusionDetector
         );
 
         // add the event, which may trigger an IntrusionException
-        try
-        {
+        try {
             $this->_addSecurityEvent($eventName);
-        }
-        catch (IntrusionException $intrusionException)
-        {
+        } catch (IntrusionException $intrusionException) {
             $quota = $secConfig->getQuota($eventName);
             $message = 'User exceeded quota of ' . $quota->count . ' per ' .
                 $quota->interval . ' seconds for event ' . $eventName .
@@ -198,7 +192,7 @@ class DefaultIntrusionDetector implements IntrusionDetector
      */
     private function _takeSecurityAction($action, $message)
     {
-        if ($action == 'log' ) {
+        if ($action == 'log') {
             $this->_auditor->fatal(
                 Auditor::SECURITY,
                 false,
@@ -208,7 +202,7 @@ class DefaultIntrusionDetector implements IntrusionDetector
     }
 
 
-     /**
+    /**
      * Adds a security event.  These events are used to check that the user has
      * not reached the security thresholds set in the properties file.  If a PHP
      * session has been started the events are stored there, otherwise they are
@@ -230,28 +224,30 @@ class DefaultIntrusionDetector implements IntrusionDetector
 
         // determine the storage for events
         if (isset($_SESSION)) {
-            if (! array_key_exists('ESAPI', $_SESSION)) {
+            if (!array_key_exists('ESAPI', $_SESSION)) {
                 $_SESSION['ESAPI'] = array();
             }
-            if (! array_key_exists('IntrusionDetector', $_SESSION['ESAPI'])) {
+            if (!array_key_exists('IntrusionDetector', $_SESSION['ESAPI'])) {
                 $_SESSION['ESAPI']['IntrusionDetector'] = array();
             }
-            if (! array_key_exists('UserEvents', $_SESSION['ESAPI']['IntrusionDetector'])) {
+            if (!array_key_exists('UserEvents', $_SESSION['ESAPI']['IntrusionDetector'])) {
                 $_SESSION['ESAPI']['IntrusionDetector']['UserEvents'] = array();
             }
             // If a session was started after events existed then ensure those
             // events are added to the session store
-            if (   is_array($this->_userEvents)
+            if (is_array($this->_userEvents)
                 && $this->_userEvents !== $_SESSION['ESAPI']['IntrusionDetector']['UserEvents']
             ) {
                 $_SESSION['ESAPI']['IntrusionDetector']['UserEvents']
                     = $this->_userEvents;
             }
             // Assign a reference to the session store
-            $this->_userEvents =&
-                $_SESSION['ESAPI']['IntrusionDetector']['UserEvents'];
-        } else if (! isset($this->_userEvents)) {
-            $this->_userEvents = array();
+            $this->_userEvents
+                =& $_SESSION['ESAPI']['IntrusionDetector']['UserEvents'];
+        } else {
+            if (!isset($this->_userEvents)) {
+                $this->_userEvents = array();
+            }
         }
 
         $event = null;
@@ -267,7 +263,6 @@ class DefaultIntrusionDetector implements IntrusionDetector
         }
     }
 }
-
 
 
 /**
@@ -335,7 +330,7 @@ class Event
         $now = null;
         if (function_exists('microtime')) {
             $now = microtime(true);
-            $interval = (float) $interval;
+            $interval = (float)$interval;
         } else {
             $now = time();
         }

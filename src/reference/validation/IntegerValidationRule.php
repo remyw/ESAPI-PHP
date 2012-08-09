@@ -8,7 +8,7 @@
  * LICENSE: This source file is subject to the New BSD license.  You should read
  * and accept the LICENSE before you use, modify, and/or redistribute this
  * software.
- * 
+ *
  * PHP version 5.2
  *
  * @category  OWASP
@@ -56,25 +56,27 @@ class IntegerValidationRule extends BaseValidationRule
      * @param object $encoder  providing canonicalize method.
      * @param int    $minValue minimum valid number.
      * @param int    $maxValue maximum valid number.
-     * 
+     *
      * @return does not return a value.
      */
-    public function __construct($typeName, $encoder, $minValue = null,
+    public function __construct(
+        $typeName, $encoder, $minValue = null,
         $maxValue = null
-    ) {
+    )
+    {
 
         parent::__construct($typeName, $encoder);
 
-        if ($minValue === null || ! is_numeric($minValue)) {
+        if ($minValue === null || !is_numeric($minValue)) {
             $this->_minValue = 1 - PHP_INT_MAX;
         } else {
-            $this->_minValue = (int) $minValue;
+            $this->_minValue = (int)$minValue;
         }
-        
-        if ($maxValue === null || ! is_numeric($maxValue)) {
+
+        if ($maxValue === null || !is_numeric($maxValue)) {
             $this->_maxValue = PHP_INT_MAX;
         } else {
-            $this->_maxValue = (int) $maxValue;
+            $this->_maxValue = (int)$maxValue;
         }
     }
 
@@ -85,8 +87,8 @@ class IntegerValidationRule extends BaseValidationRule
      * IntrusionException if the input is an obvious attack.
      *
      * @param string $context A descriptive name of the parameter that you are
-     *                        validating (e.g., LoginPage_UsernameField). This 
-     *                        value is used by any logging or error handling that 
+     *                        validating (e.g., LoginPage_UsernameField). This
+     *                        value is used by any logging or error handling that
      *                        is done with respect to the value passed in.
      * @param string $input   The actual string user input data to validate.
      *
@@ -96,10 +98,10 @@ class IntegerValidationRule extends BaseValidationRule
     public function getValid($context, $input)
     {
         // Some sanity checks first
-        if (! is_string($context)) {
+        if (!is_string($context)) {
             $context = 'NoContextSupplied'; // TODO Invalid Arg Exception?
         }
-        if (! is_string($input) && $input !== null) {
+        if (!is_string($input) && $input !== null) {
             throw new ValidationException(
                 "{$context}: Input required",
                 "Input was not a string or NULL: context={$context}",
@@ -108,8 +110,8 @@ class IntegerValidationRule extends BaseValidationRule
         }
         if ($this->_minValue > $this->_maxValue) {
             throw new RuntimeException(
-                'Validation misconfiguration - $_minValue should not be '.
-                'greater than $_maxValue!'
+                'Validation misconfiguration - $_minValue should not be ' .
+                    'greater than $_maxValue!'
             );
         }
         if ($input === null || $input == '') {
@@ -125,27 +127,23 @@ class IntegerValidationRule extends BaseValidationRule
 
         // strict canonicalization
         $canonical = null;
-        try
-        {
+        try {
             $canonical = $this->encoder->canonicalize($input, true);
-        }
-        catch (EncodingException $e)
-        {
+        } catch (EncodingException $e) {
             throw new ValidationException(
                 $context . ': Invalid input. Encoding problem detected.',
-                'An EncodingException was thrown during canonicalization of'.
-                ' the input.',
+                'An EncodingException was thrown during canonicalization of' .
+                    ' the input.',
                 $context
             );
         }
 
         // validate min and max
-        try
-        {
-            if (! preg_match('/^[-+0-9]+$/', $canonical)) {
+        try {
+            if (!preg_match('/^[-+0-9]+$/', $canonical)) {
                 throw new ValidationException(
                     'Invalid integer input: context=' . $context,
-                    'Invalid integer input: Input is not a valid integer: '.$input,
+                    'Invalid integer input: Input is not a valid integer: ' . $input,
                     $context
                 );
             }
@@ -153,36 +151,34 @@ class IntegerValidationRule extends BaseValidationRule
             if ($i != intval($i)) {
                 throw new ValidationException(
                     'Invalid integer input: context=' . $context,
-                    'Invalid integer input: Input is not a valid integer: '.$input,
+                    'Invalid integer input: Input is not a valid integer: ' . $input,
                     $context
                 );
             }
-            $i = (int) $i;
+            $i = (int)$i;
             if ($i < $this->_minValue) {
                 throw new ValidationException(
-                    'Invalid integer input must not be less than '.$this->_minValue,
-                    'Invalid integer input must not be less than '.$this->_minValue.
-                    ': context=' . $context . ', input=' . $input,
+                    'Invalid integer input must not be less than ' . $this->_minValue,
+                    'Invalid integer input must not be less than ' . $this->_minValue .
+                        ': context=' . $context . ', input=' . $input,
                     $context
                 );
             }
             if ($i > $this->_maxValue) {
                 throw new ValidationException(
-                    'Invalid integer input must not be greater than '.
-                    $this->_maxValue,
-                    'Invalid integer input must not be greater than '.
-                    $this->_maxValue . ': context=' . $context . ', input='.$input,
+                    'Invalid integer input must not be greater than ' .
+                        $this->_maxValue,
+                    'Invalid integer input must not be greater than ' .
+                        $this->_maxValue . ': context=' . $context . ', input=' . $input,
                     $context
                 );
             }
             return $i;
-        }
-        catch (NumberFormatException $e)
-        {
+        } catch (NumberFormatException $e) {
             throw new ValidationException(
                 $context . ': Invalid integer input',
-                'Invalid integer input format: Caught NumberFormatException: '.
-                $e->getMessage() . 'context=' . $context . ', input=' . $input,
+                'Invalid integer input format: Caught NumberFormatException: ' .
+                    $e->getMessage() . 'context=' . $context . ', input=' . $input,
                 $context
             );
         }
@@ -194,8 +190,8 @@ class IntegerValidationRule extends BaseValidationRule
      * TODO filter non-numeric chars 0123456789+- ?
      *
      * @param string $context A descriptive name of the parameter that you are
-     *                        validating (e.g., LoginPage_UsernameField). This 
-     *                        value is used by any logging or error handling that 
+     *                        validating (e.g., LoginPage_UsernameField). This
+     *                        value is used by any logging or error handling that
      *                        is done with respect to the value passed in.
      * @param string $input   The actual user input data to validate.
      *

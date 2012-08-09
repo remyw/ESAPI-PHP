@@ -8,7 +8,7 @@
  * LICENSE: This source file is subject to the New BSD license.  You should read
  * and accept the LICENSE before you use, modify, and/or redistribute this
  * software.
- * 
+ *
  * PHP version 5.2
  *
  * @category  OWASP
@@ -47,7 +47,7 @@ class Base64Codec extends Codec
     {
         $logger = ESAPI::getAuditor("Base64");
     }
-    
+
     /**
      * Encodes the input string to Base64.
      *
@@ -57,22 +57,22 @@ class Base64Codec extends Codec
      *
      * @param string $input the input string to be encoded
      * @param bool   $wrap  if should wrap output
-     * 
+     *
      * @return string the encoded string
      */
     public function encode($input, $wrap = true)
     {
         $encoded = base64_encode($input);
-        
+
         if ($wrap === false) {
             return $encoded;
         }
-        
+
         // wrap encoded string into lines of not more than 76 characters
         $detectedCharacterEncoding = Codec::detectEncoding($encoded);
-        $wrapped                   = '';
-        $limit                     = mb_strlen($encoded, $detectedCharacterEncoding);
-        $index                     = 0;
+        $wrapped = '';
+        $limit = mb_strlen($encoded, $detectedCharacterEncoding);
+        $index = 0;
         while ($index < $limit) {
             if ($wrapped != '') {
                 $wrapped .= "\r\n";
@@ -80,28 +80,28 @@ class Base64Codec extends Codec
             $wrapped .= mb_substr($encoded, $index, 76);
             $index += 76;
         }
-        
+
         return $wrapped;
-        
+
     }
-    
+
     /**
      * Decodes the given input string from Base64 to plain text.
      *
      * @param string $input the base64 encoded input string
-     * 
+     *
      * @return string the decoded string
      */
     public function decode($input)
     {
         return base64_decode($input);
     }
-    
+
     /**
      * Decodes a character from Base64 to plain text
      *
      * @param string $input the character to decode
-     * 
+     *
      * @return string the decoded character
      */
     public function decodeCharacter($input)

@@ -65,7 +65,7 @@ class DateValidationRule extends BaseValidationRule
     {
         parent::__construct($typeName, $encoder);
 
-        if (! is_string($newFormat) || $newFormat == '') {
+        if (!is_string($newFormat) || $newFormat == '') {
             $newFormat = 'Y-m-d';
         }
         $this->setDateFormat($newFormat);
@@ -82,10 +82,10 @@ class DateValidationRule extends BaseValidationRule
      */
     public function setDateFormat($newFormat)
     {
-        if (! is_string($newFormat) || $newFormat == '') {
+        if (!is_string($newFormat) || $newFormat == '') {
             throw new RuntimeException(
-                'setDateFormat requires a non-empty string DateFormat as '.
-                'accepted by date().'
+                'setDateFormat requires a non-empty string DateFormat as ' .
+                    'accepted by date().'
             );
         }
         $this->_format = $newFormat;
@@ -110,10 +110,10 @@ class DateValidationRule extends BaseValidationRule
     public function getValid($context, $input)
     {
         // Some sanity checks first
-        if (! is_string($context)) {
+        if (!is_string($context)) {
             $context = 'NoContextSupplied'; // TODO Invalid Arg Exception?
         }
-        if (! is_string($input) && $input !== null) {
+        if (!is_string($input) && $input !== null) {
             throw new ValidationException(
                 "{$context}: Input required",
                 "Input was not a string or NULL: context={$context}",
@@ -134,16 +134,13 @@ class DateValidationRule extends BaseValidationRule
 
         // strict canonicalization
         $canonical = null;
-        try
-        {
+        try {
             $canonical = $this->encoder->canonicalize($input, true);
-        }
-        catch (EncodingException $e)
-        {
+        } catch (EncodingException $e) {
             throw new ValidationException(
                 "{$context} -  Invalid input. Encoding problem detected.",
-                'An EncodingException was thrown during canonicalization of '.
-                'the input.',
+                'An EncodingException was thrown during canonicalization of ' .
+                    'the input.',
                 $context
             );
         }

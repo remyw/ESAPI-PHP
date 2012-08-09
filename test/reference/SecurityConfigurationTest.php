@@ -14,13 +14,13 @@
  * Notes - any changes to the testresources/ESAPI.xml file MUST be reflected in
  * this file or else most (if not all) of these tests will fail.
  *
- * @author Andrew van der Stock (vanderaj @ owasp.org)
+ * @author  Andrew van der Stock (vanderaj @ owasp.org)
  * @created 2009
- * @since 1.6
+ * @since   1.6
  */
 
-require_once dirname(__FILE__).'/../../src/ESAPI.php';
-require_once dirname(__FILE__).'/../../src/reference/DefaultSecurityConfiguration.php';
+require_once dirname(__FILE__) . '/../../src/ESAPI.php';
+require_once dirname(__FILE__) . '/../../src/reference/DefaultSecurityConfiguration.php';
 
 class SecurityConfigurationTest extends PHPUnit_Framework_TestCase
 {
@@ -28,9 +28,8 @@ class SecurityConfigurationTest extends PHPUnit_Framework_TestCase
     {
         global $ESAPI;
 
-        if ( !isset($ESAPI))
-        {
-            $ESAPI = new ESAPI(dirname(__FILE__).'/../testresources/ESAPI.xml');
+        if (!isset($ESAPI)) {
+            $ESAPI = new ESAPI(dirname(__FILE__) . '/../testresources/ESAPI.xml');
         }
     }
 
@@ -41,7 +40,7 @@ class SecurityConfigurationTest extends PHPUnit_Framework_TestCase
 
     function testConfigExists()
     {
-        $this->assertTrue(file_exists(dirname(__FILE__).'/../testresources/ESAPI.xml'));
+        $this->assertTrue(file_exists(dirname(__FILE__) . '/../testresources/ESAPI.xml'));
     }
 //
 //    /**
@@ -547,4 +546,5 @@ class SecurityConfigurationTest extends PHPUnit_Framework_TestCase
 //        }
 //    }
 }
+
 ?>

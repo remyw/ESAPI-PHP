@@ -27,16 +27,16 @@
 /**
  * SafeFile requires ValidationException and EnterpriseSecurityException.
  */
-require_once dirname(__FILE__).'/errors/ValidationException.php';
+require_once dirname(__FILE__) . '/errors/ValidationException.php';
 
 
 /**
- * Use this ESAPI security control to read files from the operating 
+ * Use this ESAPI security control to read files from the operating
  * system.
- * 
- * The idea behind this interface is to extend the PHP SplFileObject 
- * to prevent against null byte injections and other unforeseen problems 
- * resulting from unprintable characters causing problems in path 
+ *
+ * The idea behind this interface is to extend the PHP SplFileObject
+ * to prevent against null byte injections and other unforeseen problems
+ * resulting from unprintable characters causing problems in path
  * lookups. This does NOT prevent against directory traversal attacks.
  *
  * @category  OWASP
@@ -70,10 +70,10 @@ class SafeFile extends SplFileObject
         try {
             @parent::__construct($path);
         } catch (Exception $e) {
-                throw new EnterpriseSecurityException(
-                    'Failed to open stream',
-                    'Failed to open stream ' . $e->getMessage()
-                );
+            throw new EnterpriseSecurityException(
+                'Failed to open stream',
+                'Failed to open stream ' . $e->getMessage()
+            );
         }
 
         $this->_doDirCheck($path);
@@ -92,15 +92,15 @@ class SafeFile extends SplFileObject
     private function _doDirCheck($path)
     {
         $dir = $this->getPath();
-        
-        if ( preg_match($this->_DIR_BLACKLIST_PAT, $dir) ) {
+
+        if (preg_match($this->_DIR_BLACKLIST_PAT, $dir)) {
             throw new ValidationException(
                 'Invalid directory',
                 "Directory path ({$dir}) contains illegal character. "
             );
         }
 
-        if ( preg_match($this->_PERCENTS_PAT, $dir) ) {
+        if (preg_match($this->_PERCENTS_PAT, $dir)) {
             throw new ValidationException(
                 'Invalid directory',
                 "Directory path ({$dir}) contains encoded characters. "
@@ -156,18 +156,18 @@ class SafeFile extends SplFileObject
                 // Assume file name is $filename with $dir+slash knocked off it.
                 $dirLen += 1;
                 $filename
-                    = mb_substr($filename, $dirLen, $fileLen-$dirLen, $charEncF);
+                    = mb_substr($filename, $dirLen, $fileLen - $dirLen, $charEncF);
             }
 
         }
 
-        if ( preg_match($this->_FILE_BLACKLIST_PAT, $filename) ) {
+        if (preg_match($this->_FILE_BLACKLIST_PAT, $filename)) {
             throw new ValidationException(
                 'Invalid file',
                 "File path ({$filename}) contains illegal character.");
         }
 
-        if ( preg_match($this->_PERCENTS_PAT, $filename) ) {
+        if (preg_match($this->_PERCENTS_PAT, $filename)) {
             throw new ValidationException(
                 'Invalid file',
                 "File path ({$filename}) contains encoded characters."

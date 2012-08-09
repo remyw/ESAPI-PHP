@@ -11,14 +11,14 @@
  * The ESAPI is published by OWASP under the BSD license. You should read and accept the
  * LICENSE before you use, modify, and/or redistribute this software.
  *
- * @author Andrew van der Stock
+ * @author  Andrew van der Stock
  * @created 2009
- * @since 1.6
+ * @since   1.6
  * @package ESAPI_Reference
  */
 
-require_once dirname(__FILE__).'/../AccessReferenceMap.php';
-require_once dirname(__FILE__).'/../StringUtilities.php';
+require_once dirname(__FILE__) . '/../AccessReferenceMap.php';
+require_once dirname(__FILE__) . '/../StringUtilities.php';
 
 /**
  * Reference Implementation of the IntegerAccessReferenceMap interface.
@@ -30,7 +30,8 @@ require_once dirname(__FILE__).'/../StringUtilities.php';
  * @version   Release: @package_version@
  * @link      http://www.owasp.org/index.php/ESAPI
  */
-class IntegerAccessReferenceMap implements AccessReferenceMap {
+class IntegerAccessReferenceMap implements AccessReferenceMap
+{
     private $dtoi = null;
     private $itod = null;
     private $count = 1;
@@ -40,8 +41,7 @@ class IntegerAccessReferenceMap implements AccessReferenceMap {
         $this->dtoi = new ArrayObject();
         $this->itod = new ArrayObject();
 
-        if ( !empty($directReferences) )
-        {
+        if (!empty($directReferences)) {
             $this->update($directReferences);
         }
     }
@@ -64,22 +64,20 @@ class IntegerAccessReferenceMap implements AccessReferenceMap {
      * implementation information.
      *
      * @param directReference
-     * 		the direct reference
+     *         the direct reference
      *
      * @return
-     * 		the indirect reference
+     *         the indirect reference
      */
     function getIndirectReference($direct)
     {
-        if ( empty($direct) )
-        {
+        if (empty($direct)) {
             return null;
         }
 
         $hash = $this->getHash($direct);
 
-        if ( !($this->dtoi->offsetExists($hash)) )
-        {
+        if (!($this->dtoi->offsetExists($hash))) {
             return null;
         }
 
@@ -94,22 +92,22 @@ class IntegerAccessReferenceMap implements AccessReferenceMap {
      * thrown.
      *
      * @param indirectReference
-     * 		the indirect reference
+     *         the indirect reference
      *
      * @return
-     * 		the direct reference
+     *         the direct reference
      *
      * @throws AccessControlException
-     * 		if no direct reference exists for the specified indirect reference
+     *         if no direct reference exists for the specified indirect reference
      */
     function getDirectReference($indirectReference)
     {
-        if (!empty($indirectReference) && $this->itod->offsetExists($indirectReference) )
-        {
+        if (!empty($indirectReference) && $this->itod->offsetExists($indirectReference)) {
             return $this->itod->offsetGet($indirectReference);
         }
 
-        throw new AccessControlException("Access denied", "Request for invalid indirect reference: " + $indirectReference);
+        throw new AccessControlException("Access denied",
+            "Request for invalid indirect reference: " + $indirectReference);
         return null;
     }
 
@@ -118,22 +116,20 @@ class IntegerAccessReferenceMap implements AccessReferenceMap {
      * an associated indirect reference.
      *
      * @param direct
-     * 		the direct reference
+     *         the direct reference
      *
      * @return
-     * 		the corresponding indirect reference
+     *         the corresponding indirect reference
      */
     function addDirectReference($direct)
     {
-        if ( empty($direct) )
-        {
+        if (empty($direct)) {
             return null;
         }
 
         $hash = $this->getHash($direct);
 
-        if ( $this->dtoi->offsetExists($hash) )
-        {
+        if ($this->dtoi->offsetExists($hash)) {
             return $this->dtoi->offsetGet($hash);
         }
 
@@ -148,17 +144,17 @@ class IntegerAccessReferenceMap implements AccessReferenceMap {
     /**
      * Create a new random reference that is guaranteed to be unique.
      *
-     *  @return
-     *  	a random reference that is guaranteed to be unique
+     * @return
+     *      a random reference that is guaranteed to be unique
      */
-    function getUniqueReference() {
-        return "".$this->count++;
+    function getUniqueReference()
+    {
+        return "" . $this->count++;
     }
 
     function getHash($direct)
     {
-        if ( empty($direct) )
-        {
+        if (empty($direct)) {
             return null;
         }
 
@@ -171,22 +167,22 @@ class IntegerAccessReferenceMap implements AccessReferenceMap {
      * Removes a direct reference and its associated indirect reference from the AccessReferenceMap.
      *
      * @param direct
-     * 		the direct reference to remove
+     *         the direct reference to remove
      *
      * @return
-     * 		the corresponding indirect reference
+     *         the corresponding indirect reference
      *
      * @throws AccessControlException
      */
     function removeDirectReference($direct)
     {
-        if ( empty($direct) ) {
+        if (empty($direct)) {
             return null;
         }
 
         $hash = $this->getHash($direct);
 
-        if ( $this->dtoi->offsetExists($hash) ) {
+        if ($this->dtoi->offsetExists($hash)) {
             $indirect = $this->dtoi->offsetGet($hash);
             $this->itod->offsetUnset($indirect);
             $this->dtoi->offsetUnset($hash);
@@ -197,7 +193,6 @@ class IntegerAccessReferenceMap implements AccessReferenceMap {
     }
 
 
-
     /**
      * Updates the access reference map with a new set of direct references, maintaining
      * any existing indirect references associated with items that are in the new list.
@@ -206,7 +201,7 @@ class IntegerAccessReferenceMap implements AccessReferenceMap {
      * as a URL parameter.
      *
      * @param directReferences
-     * 		a Set of direct references to add
+     *         a Set of direct references to add
      */
     function update($directReferences)
     {
@@ -221,27 +216,25 @@ class IntegerAccessReferenceMap implements AccessReferenceMap {
         $dir = new ArrayObject($directReferences);
         $directIterator = $dir->getIterator();
 
-        while ($directIterator->valid())
-		{
-			$indirect = null;
-			$direct = $directIterator->current();
-			$hash = $this->getHash($direct);
-			
-			// Try to get the old direct object reference (if it exists)
-			// otherwise, create a new entry
-			if (!empty($direct) && $dtoi_old->offsetExists($hash) )
-			{
-				$indirect = $dtoi_old->offsetGet($hash);
-			}
-			
-			if ( empty($indirect) )
-			{
-				$indirect = $this->getUniqueReference();
-			}
-			$this->itod->offsetSet($indirect, $direct);
-			$this->dtoi->offsetSet($hash, $indirect);
-			$directIterator->next();
-		}
-	}
+        while ($directIterator->valid()) {
+            $indirect = null;
+            $direct = $directIterator->current();
+            $hash = $this->getHash($direct);
+
+            // Try to get the old direct object reference (if it exists)
+            // otherwise, create a new entry
+            if (!empty($direct) && $dtoi_old->offsetExists($hash)) {
+                $indirect = $dtoi_old->offsetGet($hash);
+            }
+
+            if (empty($indirect)) {
+                $indirect = $this->getUniqueReference();
+            }
+            $this->itod->offsetSet($indirect, $direct);
+            $this->dtoi->offsetSet($hash, $indirect);
+            $directIterator->next();
+        }
+    }
 }
+
 ?>

@@ -43,21 +43,21 @@ require_once dirname(__FILE__) . '/../HTTPUtilities.php';
 class DefaultHTTPUtilities implements HTTPUtilities
 {
 
-    private $_auditor        = null;
+    private $_auditor = null;
     private $_currentRequest = null;
-    private $_validator      = null;
+    private $_validator = null;
 
 
     /**
      * The constructor stores an instance of Auditor for the purpose of logging.
-     * 
+     *
      * @return null
      */
     public function __construct()
     {
         Global $ESAPI;
         $this->_auditor = ESAPI::getAuditor('DefaultHTTPUtilities');
-	$this->_validator = ESAPI::getValidator();
+        $this->_validator = ESAPI::getValidator();
 
     }
 
@@ -73,26 +73,26 @@ class DefaultHTTPUtilities implements HTTPUtilities
      */
     public function addCSRFToken($href)
     {
-        if (! is_string($href) || empty($href)) {
+        if (!is_string($href) || empty($href)) {
             throw new InvalidArgumentException(
                 'addCSRFToken expects string $href.'
             );
         }
-        if (! isset($_SESSION)) {
+        if (!isset($_SESSION)) {
             return $href;
         }
-        
+
         $token = $this->getCSRFToken();
         if ($token === null) {
             return $href;
         }
-        
+
         if (strpos($href, '?') === false) {
             $href .= '?' . $token;
         } else {
             $href .= '&' . $token;
         }
-        
+
         return $href;
     }
 
@@ -107,17 +107,17 @@ class DefaultHTTPUtilities implements HTTPUtilities
      */
     public function getCSRFToken()
     {
-        if (! isset($_SESSION)) {
+        if (!isset($_SESSION)) {
             return null;
         }
-        
-        if (   ! array_key_exists('ESAPI', $_SESSION)
-            || ! array_key_exists('HTTPUtilities', $_SESSION['ESAPI'])
-            || ! array_key_exists('CSRFToken', $_SESSION['ESAPI']['HTTPUtilities'])
+
+        if (!array_key_exists('ESAPI', $_SESSION)
+            || !array_key_exists('HTTPUtilities', $_SESSION['ESAPI'])
+            || !array_key_exists('CSRFToken', $_SESSION['ESAPI']['HTTPUtilities'])
         ) {
             $this->setCSRFToken();
         }
-        
+
         return $_SESSION['ESAPI']['HTTPUtilities']['CSRFToken'];
     }
 
@@ -146,7 +146,7 @@ class DefaultHTTPUtilities implements HTTPUtilities
                 'Possibly forged HTTP request without proper CSRF token detected.'
             );
         }
-        
+
     }
 
 
@@ -159,23 +159,25 @@ class DefaultHTTPUtilities implements HTTPUtilities
      */
     public function setCSRFToken()
     {
-        if (! isset($_SESSION)) {
+        if (!isset($_SESSION)) {
             return null;
         }
-        
-        if (! array_key_exists('ESAPI', $_SESSION)) {
+
+        if (!array_key_exists('ESAPI', $_SESSION)) {
             $_SESSION['ESAPI'] = array(
                 'HTTPUtilities' => array(
                     'CSRFToken' => ''
                 )
             );
-        } else if (! array_key_exists('HTTPUtilities', $_SESSION['ESAPI'])) {
-            $_SESSION['ESAPI']['HTTPUtilities'] = array(
-                'CSRFToken' => ''
-            );
-            
+        } else {
+            if (!array_key_exists('HTTPUtilities', $_SESSION['ESAPI'])) {
+                $_SESSION['ESAPI']['HTTPUtilities'] = array(
+                    'CSRFToken' => ''
+                );
+
+            }
         }
-        
+
         $_SESSION['ESAPI']['HTTPUtilities']['CSRFToken']
             = ESAPI::getRandomizer()->getRandomGUID();
     }
@@ -301,15 +303,15 @@ class DefaultHTTPUtilities implements HTTPUtilities
      */
     public function getParameter($request, $name, $default = null)
     {
-      $value = $request->getParameter($name);
-      if($this->_validator->isValidInput("HTTP parameter value: " . $value, $value, "HTTPParameterValue", 2000, true) )
-	{
-	  return $value;
-	}
-      else 
-	{
-	  return $default;
-	}
+        $value = $request->getParameter($name);
+        if ($this->_validator->isValidInput(
+            "HTTP parameter value: " . $value, $value, "HTTPParameterValue", 2000, true
+        )
+        ) {
+            return $value;
+        } else {
+            return $default;
+        }
     }
 
     /**
@@ -353,9 +355,9 @@ class DefaultHTTPUtilities implements HTTPUtilities
                 'killCookie expects an instance of SafeRequest.'
             );
         }
-        $value  = 'deleted';
+        $value = 'deleted';
         $expire = 1;
-        $path   = '';
+        $path = '';
         $domain = '';
 
         setcookie($name, $value, $expire, $path, $domain);
@@ -381,10 +383,10 @@ class DefaultHTTPUtilities implements HTTPUtilities
                 $nvpair = explode('=', $part);
                 $name = ESAPI::getEncoder()->decodeFromURL($nvpair[0]);
                 $value = ESAPI::getEncoder()->decodeFromURL($nvpair[1]);
-                if (! array_key_exists($name, $map)) {
+                if (!array_key_exists($name, $map)) {
                     $map[$name] = $value;
                 }
-            } catch( EncodingException $e ) {
+            } catch (EncodingException $e) {
                 // NoOp - skip this pair - exception was logged already.
             }
         }
@@ -469,13 +471,15 @@ class DefaultHTTPUtilities implements HTTPUtilities
         }
         if ($paramsToObfuscate === null) {
             $paramsToObfuscate = array();
-        } else if (! is_array($paramsToObfuscate)) {
-            throw new InvalidArgumentException(
-                'logHTTPRequestObfuscate expects an array $paramsToObfuscate or null.'
-            );            
+        } else {
+            if (!is_array($paramsToObfuscate)) {
+                throw new InvalidArgumentException(
+                    'logHTTPRequestObfuscate expects an array $paramsToObfuscate or null.'
+                );
+            }
         }
-        
-        $msg  = '';
+
+        $msg = '';
         $msg .= $request->getRemoteAddr();
         if ($msg !== '') {
             $msg .= ' ';
@@ -484,13 +488,15 @@ class DefaultHTTPUtilities implements HTTPUtilities
         if ($msg !== '') {
             $msg .= ' ';
         }
-        $path  = $request->getRequestURI() . $request->getPathInfo();
+        $path = $request->getRequestURI() . $request->getPathInfo();
         $msg .= $path;
         $params = $request->getParameterMap();
         if ($path !== '' && sizeof($params, false) > 0) {
             $msg .= '?';
-        } else if ($msg !== '') {
-            $msg .= ' ';
+        } else {
+            if ($msg !== '') {
+                $msg .= ' ';
+            }
         }
         $paramBuilder = array();
         foreach ($params as $pName => $pValues) {
@@ -510,7 +516,7 @@ class DefaultHTTPUtilities implements HTTPUtilities
             }
         }
         $msg .= implode('&', $paramBuilder);
-        
+
         $cookies = $request->getCookies();
         $sessName = session_name();
         foreach ($cookies as $cName => $cValue) {
@@ -518,9 +524,9 @@ class DefaultHTTPUtilities implements HTTPUtilities
                 $msg .= "+{$cName}={$cValue}";
             }
         }
-        
+
         $auditor->info(Auditor::SECURITY, true, $msg);
-        
+
     }
 
 

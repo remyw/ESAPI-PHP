@@ -11,57 +11,57 @@
  * The ESAPI is published by OWASP under the BSD license. You should read and accept the
  * LICENSE before you use, modify, and/or redistribute this software.
  *
- * @author Andrew van der Stock < van der aj ( at ) owasp. org >
+ * @author  Andrew van der Stock < van der aj ( at ) owasp. org >
  * @created 2009
  */
 
-require_once dirname(__FILE__).'/../../src/ESAPI.php';
+require_once dirname(__FILE__) . '/../../src/ESAPI.php';
 // require_once dirname(__FILE__).'/../../src/codecs/LDAPCodec.php';
 
 
 class LDAPCodecTest extends PHPUnit_Framework_TestCase
 {
-	private $ldapCodec = null;
-	
-	function setUp()
-	{
-		global $ESAPI;
+    private $ldapCodec = null;
 
-		if ( !isset($ESAPI))
-		{
-			$ESAPI = new ESAPI();
-		}
-		
-		// $this->ldapCodec = new LDAPCodec();
-	}
-		
-	function testEncode()
-	{
-		$immune = array("");
-		
-		$this->fail();
-		
-		$this->assertEquals( 'TODO', $this->ldapCodec->encode($immune, "esapi)(|(password=*)") );
-	}
-	
-	function testEncodeCharacter()
-	{
-		$immune = array("");
-		$this->fail();
-		$this->assertEquals( "TODO", $this->ldapCodec->encode($immune, "<") );
-	}	
-	
-	function testDecode()
-	{
-		$this->fail();
-		$this->assertEquals( "esapi)(|(password=*)", $this->ldapCodec->decode('TODO') );
-	}
-		
-	function testDecodeCharacter()
-	{
-		$this->fail();
-		$this->assertEquals( "<", $this->ldapCodec->decode("TODO") );
-	}
-	
+    function setUp()
+    {
+        global $ESAPI;
+
+        if (!isset($ESAPI)) {
+            $ESAPI = new ESAPI();
+        }
+
+        // $this->ldapCodec = new LDAPCodec();
+    }
+
+    function testEncode()
+    {
+        $immune = array("");
+
+        $this->fail();
+
+        $this->assertEquals('TODO', $this->ldapCodec->encode($immune, "esapi)(|(password=*)"));
+    }
+
+    function testEncodeCharacter()
+    {
+        $immune = array("");
+        $this->fail();
+        $this->assertEquals("TODO", $this->ldapCodec->encode($immune, "<"));
+    }
+
+    function testDecode()
+    {
+        $this->fail();
+        $this->assertEquals("esapi)(|(password=*)", $this->ldapCodec->decode('TODO'));
+    }
+
+    function testDecodeCharacter()
+    {
+        $this->fail();
+        $this->assertEquals("<", $this->ldapCodec->decode("TODO"));
+    }
+
 }
+
 ?>

@@ -48,8 +48,7 @@ class ValidationRulesTest extends PHPUnit_Framework_TestCase
     function __construct()
     {
         global $ESAPI;
-        if ( !isset($ESAPI))
-        {
+        if (!isset($ESAPI)) {
             $ESAPI = new ESAPI();
         }
     }
@@ -77,7 +76,7 @@ class ValidationRulesTest extends PHPUnit_Framework_TestCase
         $svr->setAllowNull(true);
         $this->assertTrue($svr->getAllowNull());
 
-        $svr->setAllowNull('not a boolean!');  // will set it false
+        $svr->setAllowNull('not a boolean!'); // will set it false
         $this->assertFalse($svr->getAllowNull());
     }
 
@@ -244,7 +243,9 @@ class ValidationRulesTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals('0000-0000-0000-0000', $ccvr->getValid('testCCVR_getValid_valid', '0000-0000-0000-0000'));
 
-        $this->assertEquals('0000 0000 0000 0000', $ccvr->getValid('testCCVR_getValid_valid', '0000%200000%200000%200000'));
+        $this->assertEquals(
+            '0000 0000 0000 0000', $ccvr->getValid('testCCVR_getValid_valid', '0000%200000%200000%200000')
+        );
     }
 
 
@@ -384,9 +385,9 @@ class ValidationRulesTest extends PHPUnit_Framework_TestCase
 
         $this->assertTrue((int)187 === $ivr->getValid('testIntegerVR_getValid_valid', '187'));
 
-        $this->assertTrue((int) -187 === $ivr->getValid('testIntegerVR_getValid_valid', '-187'));
+        $this->assertTrue((int)-187 === $ivr->getValid('testIntegerVR_getValid_valid', '-187'));
 
-        $this->assertTrue((int) PHP_INT_MAX === $ivr->getValid('testIntegerVR_getValid_valid', '' . PHP_INT_MAX));
+        $this->assertTrue((int)PHP_INT_MAX === $ivr->getValid('testIntegerVR_getValid_valid', '' . PHP_INT_MAX));
     }
 
 
@@ -417,11 +418,11 @@ class ValidationRulesTest extends PHPUnit_Framework_TestCase
      */
     function testIntegerVR_getSafe_valid()
     {
-        $ivr = new IntegerValidationRule('An_Integer', null, 1-PHP_INT_MAX, PHP_INT_MAX);
+        $ivr = new IntegerValidationRule('An_Integer', null, 1 - PHP_INT_MAX, PHP_INT_MAX);
 
-        $this->assertTrue((int) -1 === $ivr->getSafe('testIntegerVR_getSafe_valid', '-1'));
+        $this->assertTrue((int)-1 === $ivr->getSafe('testIntegerVR_getSafe_valid', '-1'));
 
-        $this->assertTrue((int) 2 === $ivr->getSafe('testIntegerVR_getSafe_valid', '%32'));
+        $this->assertTrue((int)2 === $ivr->getSafe('testIntegerVR_getSafe_valid', '%32'));
     }
 
 
@@ -432,7 +433,7 @@ class ValidationRulesTest extends PHPUnit_Framework_TestCase
     {
         $ivr = new IntegerValidationRule('An_Integer', null, 0, PHP_INT_MAX);
 
-        $this->assertTrue((int) 0 === $ivr->getSafe('testIntegerVR_getSafe_invalid', '00%00'));
+        $this->assertTrue((int)0 === $ivr->getSafe('testIntegerVR_getSafe_invalid', '00%00'));
     }
 
 
@@ -453,7 +454,7 @@ class ValidationRulesTest extends PHPUnit_Framework_TestCase
      */
     function testIntegerVR_isValid()
     {
-        $ivr = new IntegerValidationRule('An_Integer', null, 1-PHP_INT_MAX, PHP_INT_MAX);
+        $ivr = new IntegerValidationRule('An_Integer', null, 1 - PHP_INT_MAX, PHP_INT_MAX);
 
         $this->assertTrue($ivr->isValid('testIntegerVR_isValid', '12345678'));
 
@@ -465,7 +466,7 @@ class ValidationRulesTest extends PHPUnit_Framework_TestCase
 
         $this->assertFalse($ivr->isValid('testIntegerVR_isValid', '1e6'));
 
-        $i = PHP_INT_MAX+1;
+        $i = PHP_INT_MAX + 1;
         $this->assertFalse($ivr->isValid('testIntegerVR_isValid', "{$i}"));
     }
 
@@ -475,7 +476,7 @@ class ValidationRulesTest extends PHPUnit_Framework_TestCase
      */
     function testIntegerVR_MinMax()
     {
-        $ivr = new IntegerValidationRule('An_Integer', null, PHP_INT_MAX, 1-PHP_INT_MAX);
+        $ivr = new IntegerValidationRule('An_Integer', null, PHP_INT_MAX, 1 - PHP_INT_MAX);
 
         $this->setExpectedException('RuntimeException');
         $ivr->getValid('testIntegerVR_MinMax', '0');
@@ -489,7 +490,7 @@ class ValidationRulesTest extends PHPUnit_Framework_TestCase
     {
         $ivr = new IntegerValidationRule('An_Integer', null, 0, PHP_INT_MAX);
 
-        $this->assertTrue((int) 0 === $ivr->sanitize('testIntegerVR_sanitize', 'abc%00'));
+        $this->assertTrue((int)0 === $ivr->sanitize('testIntegerVR_sanitize', 'abc%00'));
     }
 
 
@@ -500,11 +501,10 @@ class ValidationRulesTest extends PHPUnit_Framework_TestCase
     {
         $ivr = new IntegerValidationRule('An_Integer', null, 0, PHP_INT_MAX);
 
-        $this->assertTrue((int) 0 === $ivr->sanitize('testIntegerVR_sanitize_empty', null));
+        $this->assertTrue((int)0 === $ivr->sanitize('testIntegerVR_sanitize_empty', null));
 
-        $this->assertTrue((int) 0 === $ivr->sanitize('testIntegerVR_sanitize_empty', ''));
+        $this->assertTrue((int)0 === $ivr->sanitize('testIntegerVR_sanitize_empty', ''));
     }
-
 
 
     /**************************************************************************
@@ -525,7 +525,7 @@ class ValidationRulesTest extends PHPUnit_Framework_TestCase
 
         $this->assertTrue(187.211 === $nvr->getValid('testNumberVR_getValid_valid', '187.211'));
 
-        $this->assertTrue((double) PHP_INT_MAX === $nvr->getValid('testNumberVR_getValid_valid', '' . PHP_INT_MAX));
+        $this->assertTrue((double)PHP_INT_MAX === $nvr->getValid('testNumberVR_getValid_valid', '' . PHP_INT_MAX));
     }
 
 
@@ -556,11 +556,11 @@ class ValidationRulesTest extends PHPUnit_Framework_TestCase
      */
     function testNumberVR_getSafe_valid()
     {
-        $nvr = new NumberValidationRule('A_Number', null, 1-PHP_INT_MAX, PHP_INT_MAX);
+        $nvr = new NumberValidationRule('A_Number', null, 1 - PHP_INT_MAX, PHP_INT_MAX);
 
-        $this->assertTrue((double) -1 === $nvr->getSafe('testNumberVR_getSafe_valid', '-1'));
+        $this->assertTrue((double)-1 === $nvr->getSafe('testNumberVR_getSafe_valid', '-1'));
 
-        $this->assertTrue((double) 2 === $nvr->getSafe('testNumberVR_getSafe_valid', '%32'));
+        $this->assertTrue((double)2 === $nvr->getSafe('testNumberVR_getSafe_valid', '%32'));
     }
 
 
@@ -571,7 +571,7 @@ class ValidationRulesTest extends PHPUnit_Framework_TestCase
     {
         $nvr = new NumberValidationRule('A_Number', null, 0, PHP_INT_MAX);
 
-        $this->assertTrue((double) 0 === $nvr->getSafe('testNumberVR_getSafe_invalid', '00%00'));
+        $this->assertTrue((double)0 === $nvr->getSafe('testNumberVR_getSafe_invalid', '00%00'));
     }
 
 
@@ -592,7 +592,7 @@ class ValidationRulesTest extends PHPUnit_Framework_TestCase
      */
     function testNumberVR_isValid()
     {
-        $nvr = new NumberValidationRule('A_Number', null, 1-PHP_INT_MAX, PHP_INT_MAX);
+        $nvr = new NumberValidationRule('A_Number', null, 1 - PHP_INT_MAX, PHP_INT_MAX);
 
         $this->assertTrue($nvr->isValid('testNumberVR_isValid', '0.00'));
 
@@ -604,7 +604,7 @@ class ValidationRulesTest extends PHPUnit_Framework_TestCase
 
         $this->assertFalse($nvr->isValid('testNumberVR_isValid', '0.00.00'));
 
-        $i = PHP_INT_MAX+1;
+        $i = PHP_INT_MAX + 1;
         $this->assertFalse($nvr->isValid('testNumberVR_isValid', "{$i}"));
     }
 
@@ -643,7 +643,7 @@ class ValidationRulesTest extends PHPUnit_Framework_TestCase
     {
         $nvr = new NumberValidationRule('A_Number', null, 0, PHP_INT_MAX);
 
-        $this->assertTrue((double) 0 === $nvr->sanitize('testNumberVR_sanitize', 'abc%00'));
+        $this->assertTrue((double)0 === $nvr->sanitize('testNumberVR_sanitize', 'abc%00'));
     }
 
 
@@ -654,9 +654,9 @@ class ValidationRulesTest extends PHPUnit_Framework_TestCase
     {
         $nvr = new NumberValidationRule('A_Number', null, 0, PHP_INT_MAX);
 
-        $this->assertTrue((double) 0 === $nvr->sanitize('testNumberVR_sanitize_empty', null));
+        $this->assertTrue((double)0 === $nvr->sanitize('testNumberVR_sanitize_empty', null));
 
-        $this->assertTrue((double) 0 === $nvr->sanitize('testNumberVR_sanitize_empty', ''));
+        $this->assertTrue((double)0 === $nvr->sanitize('testNumberVR_sanitize_empty', ''));
     }
 
 
@@ -679,7 +679,7 @@ class ValidationRulesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($svr->isValid('testStringVR_addWhitelistPattern', 'aabbcc'));
         $this->assertFalse($svr->isValid('testStringVR_addWhitelistPattern', 'dddddd'));
 
-        $svr->addWhitelistPattern('^[ab]+$');  // input must pass both patterns!
+        $svr->addWhitelistPattern('^[ab]+$'); // input must pass both patterns!
         $this->assertTrue($svr->isValid('testStringVR_addWhitelistPattern', 'aabb'));
         $this->assertFalse($svr->isValid('testStringVR_addWhitelistPattern', 'aabbcc'));
     }
@@ -696,7 +696,7 @@ class ValidationRulesTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($svr->isValid('testStringVR_addBlacklistPattern', 'dddddd'));
         $this->assertFalse($svr->isValid('testStringVR_addBlacklistPattern', 'aabbcc'));
 
-        $svr->addBlacklistPattern('^[abcd]+$');  // input must pass both patterns!
+        $svr->addBlacklistPattern('^[abcd]+$'); // input must pass both patterns!
         $this->assertTrue($svr->isValid('testStringVR_addBlacklistPattern', 'eeeeee'));
         $this->assertFalse($svr->isValid('testStringVR_addBlacklistPattern', 'dddddd'));
     }

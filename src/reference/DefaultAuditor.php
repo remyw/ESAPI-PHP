@@ -29,7 +29,7 @@
  */
 require_once dirname(__FILE__) .
     '/../../lib/apache-log4php/trunk/src/main/php/Logger.php';
-require_once dirname(__FILE__).'/../Auditor.php';
+require_once dirname(__FILE__) . '/../Auditor.php';
 
 
 /**
@@ -86,19 +86,16 @@ class DefaultAuditor implements Auditor
      */
     public function setLevel($level)
     {
-        try
-        {
+        try {
             $this->_log4php->setLevel(
-            $this->_convertESAPILeveltoLoggerLevel($level)
+                $this->_convertESAPILeveltoLoggerLevel($level)
             );
-        }
-        catch (Exception $e)
-        {
+        } catch (Exception $e) {
             $this->error(
-            Logger::SECURITY,
-            false,
+                Logger::SECURITY,
+                false,
                 'IllegalArgumentException',
-            $e
+                $e
             );
         }
     }
@@ -243,11 +240,11 @@ class DefaultAuditor implements Auditor
     {
         // If this log level is below the threshold we can quit now.
         $logLevel = self::_convertESAPILeveltoLoggerLevel($level);
-        if (! $this->_log4php->isEnabledFor($logLevel)) {
+        if (!$this->_log4php->isEnabledFor($logLevel)) {
             return;
         }
 
-        $encoder   = ESAPI::getEncoder();
+        $encoder = ESAPI::getEncoder();
         $secConfig = ESAPI::getSecurityConfiguration();
 
         // Add some context to log the message.
@@ -259,8 +256,10 @@ class DefaultAuditor implements Auditor
         $levelStr = $logLevel->toString();
         if ($levelStr == 'ALL') {
             $levelStr = 'TRACE';
-        } else if ($levelStr == 'WARN') {
-            $levelStr = 'WARNING';
+        } else {
+            if ($levelStr == 'WARN') {
+                $levelStr = 'WARNING';
+            }
         }
         $context .= $levelStr;
 
@@ -274,7 +273,7 @@ class DefaultAuditor implements Auditor
         $context .= ' ' . $this->_log4phpName;
 
         // Event Type
-        if (! is_string($type)) {
+        if (!is_string($type)) {
             $type = 'EVENT_UNKNOWN';
         }
         $context .= ' ' . $type;
@@ -314,20 +313,19 @@ class DefaultAuditor implements Auditor
         $userSessionIDforLogging = 'SessionUnknown';
         if (isset($_SESSION)) {
             if (isset($_SESSION['DefaultAuditor'])
-            && isset($_SESSION['DefaultAuditor']['SessionIDForLogging'])
+                && isset($_SESSION['DefaultAuditor']['SessionIDForLogging'])
             ) {
                 $userSessionIDforLogging
-                = $_SESSION['DefaultAuditor']['SessionIDForLogging'];
+                    = $_SESSION['DefaultAuditor']['SessionIDForLogging'];
             } else {
-                try
-                {
+                try {
                     $userSessionIDforLogging
-                    = (string) ESAPI::getRandomizer()->getRandomInteger(
-                    0, 1000000
+                        = (string)ESAPI::getRandomizer()->getRandomInteger(
+                        0, 1000000
                     );
                     $_SESSION['DefaultAuditor']['SessionIDForLogging']
-                    = $userSessionIDforLogging;
-                } catch( Exception $e ) {
+                        = $userSessionIDforLogging;
+                } catch (Exception $e) {
                     // continue
                 }
             }
@@ -336,7 +334,7 @@ class DefaultAuditor implements Auditor
 
 
         // Now comes the message.
-        if (! is_string($message)) {
+        if (!is_string($message)) {
             $message = '';
         }
 
@@ -350,18 +348,15 @@ class DefaultAuditor implements Auditor
 
         // Encode for HTML if ESAPI.xml says so
         $encodedMessage = null;
-        if ($secConfig->getLogEncodingRequired() ) {
-            try
-            {
+        if ($secConfig->getLogEncodingRequired()) {
+            try {
                 $encodedMessage = $encoder->encodeForHTML($crlfEncoded);
                 if ($encodedMessage !== $crlfEncoded) {
                     $encodedMessage .= ' (This log message was encoded for HTML)';
                 }
-            }
-            catch (Exception $e)
-            {
+            } catch (Exception $e) {
                 $exType = get_type($e);
-                $encodedMessage = "The supplied log message generated an ".
+                $encodedMessage = "The supplied log message generated an " .
                     "Exception of type {$exType} and was not included";
             }
         } else {
@@ -411,19 +406,21 @@ class DefaultAuditor implements Auditor
             } else {
                 $thisChar = $nextChar;
             }
-            if ($i+1 < $len) {
-                $nextChar = mb_substr($message, $i+1, 1, $detectedEncoding);
+            if ($i + 1 < $len) {
+                $nextChar = mb_substr($message, $i + 1, 1, $detectedEncoding);
             } else {
                 $nextChar = null;
             }
             if ($thisChar == "\r" && $nextChar == "\n") {
-                $index = $i+2;
+                $index = $i + 2;
                 $nextChar = null;
                 $crlfEncoded .= $substitute;
-            } else if ($thisChar == "\r" || $thisChar == "\n") {
-                $crlfEncoded .= $substitute;
             } else {
-                $crlfEncoded .= $thisChar;
+                if ($thisChar == "\r" || $thisChar == "\n") {
+                    $crlfEncoded .= $substitute;
+                } else {
+                    $crlfEncoded .= $thisChar;
+                }
             }
         }
         return $crlfEncoded;
@@ -449,49 +446,49 @@ class DefaultAuditor implements Auditor
     {
         if (is_string($level)) {
             switch (strtoupper($level)) {
-                case 'ALL':
-                    /* Same as TRACE */
-                case 'TRACE':
-                    return LoggerLevel::getLevelAll();
-                case 'DEBUG':
-                    return LoggerLevel::getLevelDebug();
-                case 'INFO':
-                    return LoggerLevel::getLevelInfo();
-                case 'WARN':
-                    return LoggerLevel::getLevelWarn();
-                case 'ERROR':
-                    return LoggerLevel::getLevelError();
-                case 'FATAL':
-                    return LoggerLevel::getLevelFatal();
-                case 'OFF':
-                    return LoggerLevel::getLevelOff();
-                default:
-                    throw new Exception(
+            case 'ALL':
+                /* Same as TRACE */
+            case 'TRACE':
+                return LoggerLevel::getLevelAll();
+            case 'DEBUG':
+                return LoggerLevel::getLevelDebug();
+            case 'INFO':
+                return LoggerLevel::getLevelInfo();
+            case 'WARN':
+                return LoggerLevel::getLevelWarn();
+            case 'ERROR':
+                return LoggerLevel::getLevelError();
+            case 'FATAL':
+                return LoggerLevel::getLevelFatal();
+            case 'OFF':
+                return LoggerLevel::getLevelOff();
+            default:
+                throw new Exception(
                     "Invalid logging level Value was: {$level}"
-                    );
+                );
             }
         } else {
             switch ($level) {
-                case Auditor::ALL:
-                    /* Same as TRACE */
-                case Auditor::TRACE:
-                    return LoggerLevel::getLevelAll();
-                case Auditor::DEBUG:
-                    return LoggerLevel::getLevelDebug();
-                case Auditor::INFO:
-                    return LoggerLevel::getLevelInfo();
-                case Auditor::WARNING:
-                    return LoggerLevel::getLevelWarn();
-                case Auditor::ERROR:
-                    return LoggerLevel::getLevelError();
-                case Auditor::FATAL:
-                    return LoggerLevel::getLevelFatal();
-                case Auditor::OFF:
-                    return LoggerLevel::getLevelOff();
-                default:
-                    throw new Exception(
+            case Auditor::ALL:
+                /* Same as TRACE */
+            case Auditor::TRACE:
+                return LoggerLevel::getLevelAll();
+            case Auditor::DEBUG:
+                return LoggerLevel::getLevelDebug();
+            case Auditor::INFO:
+                return LoggerLevel::getLevelInfo();
+            case Auditor::WARNING:
+                return LoggerLevel::getLevelWarn();
+            case Auditor::ERROR:
+                return LoggerLevel::getLevelError();
+            case Auditor::FATAL:
+                return LoggerLevel::getLevelFatal();
+            case Auditor::OFF:
+                return LoggerLevel::getLevelOff();
+            default:
+                throw new Exception(
                     "Invalid logging level Value was: {$level}"
-                    );
+                );
             }
         }
     }
@@ -504,7 +501,7 @@ class DefaultAuditor implements Auditor
      *  ESAPI properties file.  All instances of Log4PHP Logger will inherit the
      *  configuration.
      *
-     *  @return does not return a value.
+     * @return does not return a value.
      */
     private static function _initialise()
     {

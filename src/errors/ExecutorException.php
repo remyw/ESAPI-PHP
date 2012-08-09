@@ -8,7 +8,7 @@
  * LICENSE: This source file is subject to the New BSD license.  You should read
  * and accept the LICENSE before you use, modify, and/or redistribute this
  * software.
- * 
+ *
  * PHP version 5.2
  *
  * @category  OWASP
@@ -21,7 +21,7 @@
  * @link      http://www.owasp.org/index.php/ESAPI
  */
 
-require_once dirname(__FILE__).'/EnterpriseSecurityException.php';
+require_once dirname(__FILE__) . '/EnterpriseSecurityException.php';
 
 /**
  * An ExecutorException should be thrown for any problems that arise during the
@@ -40,10 +40,10 @@ class ExecutorException extends EnterpriseSecurityException
 {
     /**
      * Create a new ExecutorException
-     * 
+     *
      * @param string $userMessage the message displayed to the user
      * @param string $logMessage  the message logged
-     * 
+     *
      * @return does not return a value.
      */
     function __construct($userMessage = '', $logMessage = '')
@@ -51,4 +51,5 @@ class ExecutorException extends EnterpriseSecurityException
         parent::__construct($userMessage, $logMessage);
     }
 }
+
 ?>

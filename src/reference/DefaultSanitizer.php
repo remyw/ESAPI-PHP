@@ -23,16 +23,16 @@
  * DefaultSanitizer requires the Sanitizer Interface and the various
  * ValidationRule implementations.
  */
-require_once dirname ( __FILE__ ) . '/../Sanitizer.php';
-require_once dirname ( __FILE__ ) . '/validation/StringValidationRule.php';
-require_once dirname ( __FILE__ ) . '/validation/CreditCardValidationRule.php';
-require_once dirname ( __FILE__ ) . '/validation/HTMLValidationRule.php';
-require_once dirname ( __FILE__ ) . '/validation/NumberValidationRule.php';
-require_once dirname ( __FILE__ ) . '/validation/IntegerValidationRule.php';
-require_once dirname ( __FILE__ ) . '/validation/DateValidationRule.php';
-require_once dirname ( __FILE__ ) . '/validation/EmailAddressValidationRule.php';
-require_once dirname ( __FILE__ ) . '/validation/URLValidationRule.php';
-require_once dirname ( __FILE__ ) . '/validation/WordValidationRule.php';
+require_once dirname(__FILE__) . '/../Sanitizer.php';
+require_once dirname(__FILE__) . '/validation/StringValidationRule.php';
+require_once dirname(__FILE__) . '/validation/CreditCardValidationRule.php';
+require_once dirname(__FILE__) . '/validation/HTMLValidationRule.php';
+require_once dirname(__FILE__) . '/validation/NumberValidationRule.php';
+require_once dirname(__FILE__) . '/validation/IntegerValidationRule.php';
+require_once dirname(__FILE__) . '/validation/DateValidationRule.php';
+require_once dirname(__FILE__) . '/validation/EmailAddressValidationRule.php';
+require_once dirname(__FILE__) . '/validation/URLValidationRule.php';
+require_once dirname(__FILE__) . '/validation/WordValidationRule.php';
 
 /**
  * Reference Implementation of the Sanitizer Interface.
@@ -65,10 +65,10 @@ class DefaultSanitizer implements Sanitizer
      * This implementation uses HTMLPurifier {@link http://htmlpurifier.org}.
      *
      * @param  $context A descriptive name of the parameter that you are
-     *         validating (e.g. ProfilePage_Sig). This value is used by any
-     *         logging or error handling that is done with respect to the value
-     *         passed in.
-     * @param  $input The actual user input data to validate.
+     *                  validating (e.g. ProfilePage_Sig). This value is used by any
+     *                  logging or error handling that is done with respect to the value
+     *                  passed in.
+     * @param  $input   The actual user input data to validate.
      *
      * @return valid, "safe" HTML.
      */
@@ -85,10 +85,10 @@ class DefaultSanitizer implements Sanitizer
      * This implementation uses a PHP filter {@link http://php.net/manual/en/filter.filters.sanitize.php}.
      *
      * @param  $context A descriptive name of the parameter that you are
-     *         validating (e.g. ProfilePage_Sig). This value is used by any
-     *         logging or error handling that is done with respect to the value
-     *         passed in.
-     * @param  $input The actual user input data to validate.
+     *                  validating (e.g. ProfilePage_Sig). This value is used by any
+     *                  logging or error handling that is done with respect to the value
+     *                  passed in.
+     * @param  $input   The actual user input data to validate.
      *
      * @return valid, "safe" email address.
      */
@@ -105,10 +105,10 @@ class DefaultSanitizer implements Sanitizer
      * This implementation uses a PHP filter {@link http://php.net/manual/en/filter.filters.sanitize.php}.
      *
      * @param  $context A descriptive name of the parameter that you are
-     *         validating (e.g. ProfilePage_Sig). This value is used by any
-     *         logging or error handling that is done with respect to the value
-     *         passed in.
-     * @param  $input The actual user input data to validate.
+     *                  validating (e.g. ProfilePage_Sig). This value is used by any
+     *                  logging or error handling that is done with respect to the value
+     *                  passed in.
+     * @param  $input   The actual user input data to validate.
      *
      * @return valid, "safe" URL.
      */
@@ -118,21 +118,22 @@ class DefaultSanitizer implements Sanitizer
 
         return $uvr->sanitize($context, $input);
     }
+
     /**
      * Returns valid, "safe" English language word based on the provided guess.
-     * 
+     *
      * @param  $context A descriptive name of the parameter that you are
-     *         validating (e.g. ProfilePage_Sig). This value is used by any
-     *         logging or error handling that is done with respect to the value
-     *         passed in.
-     * @param  $input An array with the unsanitized word and a guess.
+     *                  validating (e.g. ProfilePage_Sig). This value is used by any
+     *                  logging or error handling that is done with respect to the value
+     *                  passed in.
+     * @param  $input   An array with the unsanitized word and a guess.
      *
      * @return valid, "safe" word.
      */
     function getSanitizedWord($context, $input)
     {
         $wvr = new WordValidationRule('Word_Validator', $this->encoder);
-        
+
         return $wvr->sanitize($context, $input);
     }
 }

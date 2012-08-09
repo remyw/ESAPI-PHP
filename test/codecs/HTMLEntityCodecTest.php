@@ -20,8 +20,8 @@
 /**
  *
  */
-require_once dirname(__FILE__).'/../../src/ESAPI.php';
-require_once dirname(__FILE__).'/../../src/codecs/HTMLEntityCodec.php';
+require_once dirname(__FILE__) . '/../../src/ESAPI.php';
+require_once dirname(__FILE__) . '/../../src/codecs/HTMLEntityCodec.php';
 
 
 /**
@@ -32,15 +32,14 @@ class HTMLEntityCodecTest extends PHPUnit_Framework_TestCase
     private $htmlEntityCodec = null;
 
     // these immune characters are the ones defined in DefaultEncoder.
-    private $immune_html     = array( ',', '.', '-', '_', ' ' );
-    private $immune_htmlattr = array( ',', '.', '-', '_' );
+    private $immune_html = array(',', '.', '-', '_', ' ');
+    private $immune_htmlattr = array(',', '.', '-', '_');
 
     function setUp()
     {
         global $ESAPI;
 
-        if ( !isset($ESAPI))
-        {
+        if (!isset($ESAPI)) {
             $ESAPI = new ESAPI();
         }
 
@@ -106,7 +105,7 @@ class HTMLEntityCodecTest extends PHPUnit_Framework_TestCase
             $this->htmlEntityCodec->encode(
                 $this->immune_html,
                 'a' . (chr(0)) . 'b' . (chr(4)) . 'c' . (chr(128)) . 'd' .
-                (chr(150)) . 'e' . (chr(159)) . 'f' . (chr(9)) . 'g'
+                    (chr(150)) . 'e' . (chr(159)) . 'f' . (chr(9)) . 'g'
             )
         );
     }
@@ -117,11 +116,11 @@ class HTMLEntityCodecTest extends PHPUnit_Framework_TestCase
             'a b c d e f&#x9;g h i j&nbsp;k&iexcl;l&cent;m',
             $this->htmlEntityCodec->encode(
                 $this->immune_html,
-                'a' . (chr(0))   . 'b' . (chr(4))   . 'c' . (chr(128)) .
-                'd' . (chr(150)) . 'e' . (chr(159)) . 'f' . (chr(9))   .
-                'g' . (chr(127)) . 'h' . (chr(129)) . 'i' . (chr(159)) .
-                'j' . (chr(160)) . 'k' . (chr(161)) . 'l' . (chr(162)) .
-                'm'
+                'a' . (chr(0)) . 'b' . (chr(4)) . 'c' . (chr(128)) .
+                    'd' . (chr(150)) . 'e' . (chr(159)) . 'f' . (chr(9)) .
+                    'g' . (chr(127)) . 'h' . (chr(129)) . 'i' . (chr(159)) .
+                    'j' . (chr(160)) . 'k' . (chr(161)) . 'l' . (chr(162)) .
+                    'm'
             )
         );
     }
@@ -180,11 +179,11 @@ class HTMLEntityCodecTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    function testSomeChars ()
+    function testSomeChars()
     {
         $this->assertEquals(
-            ''.(chr(12345)).(chr(65533)).(chr(1244)),
-            ''.(chr(12345)).(chr(65533)).(chr(1244))
+            '' . (chr(12345)) . (chr(65533)) . (chr(1244)),
+            '' . (chr(12345)) . (chr(65533)) . (chr(1244))
         );
     }
 
@@ -234,10 +233,11 @@ class HTMLEntityCodecTest extends PHPUnit_Framework_TestCase
     function testDecodeFromHTML()
     {
         $this->assertEquals(
-           '"><script>alert(/XSS/)</script><foo attr="',
+            '"><script>alert(/XSS/)</script><foo attr="',
             $this->htmlEntityCodec->decode(
                 '&quot;&gt;&lt;script&gt;alert&#x28;&#x2f;XSS&#x2f;&#x29;&lt;&#x2f;script&gt;&lt;foo attr&#x3d;&quot;'
-            ));
+            )
+        );
     }
 
     function testDecodeNullFromHTML()
@@ -276,13 +276,13 @@ class HTMLEntityCodecTest extends PHPUnit_Framework_TestCase
         $expected = mb_convert_encoding("a b c d e f\x09g h i j\xa0k\xa1l\xa2m", 'UTF-8', 'ISO-8859-1');
         // check that the encoding conversion went well and the expected string is correct
         $expected_unpacked = array(
-            1 => 0x61,  2 => 0x20,  3 => 0x62,  4 => 0x20,
-            5 => 0x63,  6 => 0x20,  7 => 0x64,  8 => 0x20,
+            1 => 0x61, 2 => 0x20, 3 => 0x62, 4 => 0x20,
+            5 => 0x63, 6 => 0x20, 7 => 0x64, 8 => 0x20,
             9 => 0x65, 10 => 0x20, 11 => 0x66, 12 => 0x09,
-           13 => 0x67, 14 => 0x20, 15 => 0x68, 16 => 0x20,
-           17 => 0x69, 18 => 0x20, 19 => 0x6a, 20 => 0xc2,
-           21 => 0xa0, 22 => 0x6b, 23 => 0xc2, 24 => 0xa1,
-           25 => 0x6c, 26 => 0xc2, 27 => 0xa2, 28 => 0x6d,
+            13 => 0x67, 14 => 0x20, 15 => 0x68, 16 => 0x20,
+            17 => 0x69, 18 => 0x20, 19 => 0x6a, 20 => 0xc2,
+            21 => 0xa0, 22 => 0x6b, 23 => 0xc2, 24 => 0xa1,
+            25 => 0x6c, 26 => 0xc2, 27 => 0xa2, 28 => 0x6d,
         );
         $unpacked = unpack('C*', $expected);
         $this->assertSame(
@@ -353,7 +353,7 @@ class HTMLEntityCodecTest extends PHPUnit_Framework_TestCase
 
     function testDecodeCharacter()
     {
-        $this->assertEquals( '<', $this->htmlEntityCodec->decode('&lt;') );
+        $this->assertEquals('<', $this->htmlEntityCodec->decode('&lt;'));
     }
 
 }

@@ -12,9 +12,9 @@
  * The ESAPI is published by OWASP under the BSD license. You should read and accept the
  * LICENSE before you use, modify, and/or redistribute this software.
  *
- * @author Andrew van der Stock
+ * @author  Andrew van der Stock
  * @created 2009
- * @since 1.6
+ * @since   1.6
  * @package ESAPI_Reference
  */
 
@@ -28,6 +28,7 @@ class DefaultRandomizer implements Randomizer
     {
         $this->maxRand = mt_getrandmax();
     }
+
     /**
      * Gets a random string of a desired length and character set.  The use of java.security.SecureRandom
      * is recommended because it provides a cryptographically strong pseudo-random number generator.
@@ -36,25 +37,24 @@ class DefaultRandomizer implements Randomizer
      * FIPS 140-2, Security Requirements for Cryptographic Modules</a>, section 4.9.1.
      *
      * @param length
-     * 		the length of the string
+     *         the length of the string
      * @param characterSet
-     * 		the set of characters to include in the created random string
+     *         the set of characters to include in the created random string
      *
      * @return
-     * 		the random string of the desired length and character set
+     *         the random string of the desired length and character set
      */
     function getRandomString($numChars, $charset)
     {
 
-        if ( $numChars < 1 || strlen($charset) < 2 ) {
+        if ($numChars < 1 || strlen($charset) < 2) {
             throw new InvalidArgumentException();
         }
 
         $l = strlen($charset) - 1;
 
         $rs = '';
-        for ($i = 0; $i < $numChars; $i++)
-        {
+        for ($i = 0; $i < $numChars; $i++) {
             $rs .= $charset[mt_rand(0, $l)];
         }
 
@@ -69,11 +69,11 @@ class DefaultRandomizer implements Randomizer
      * FIPS 140-2, Security Requirements for Cryptographic Modules</a>, section 4.9.1.
      *
      * @return
-     * 		true or false, randomly
+     *         true or false, randomly
      */
     function getRandomBoolean()
     {
-        return (( mt_rand(0, 100) % 2) ? true : false);
+        return ((mt_rand(0, 100) % 2) ? true : false);
     }
 
     /**
@@ -84,12 +84,12 @@ class DefaultRandomizer implements Randomizer
      * FIPS 140-2, Security Requirements for Cryptographic Modules</a>, section 4.9.1.
      *
      * @param min
-     * 		the minimum integer that will be returned
+     *         the minimum integer that will be returned
      * @param max
-     * 		the maximum integer that will be returned
+     *         the maximum integer that will be returned
      *
      * @return
-     * 		the random integer
+     *         the random integer
      */
     function getRandomInteger($min, $max)
     {
@@ -106,7 +106,7 @@ class DefaultRandomizer implements Randomizer
      * mt_rand() without arguments will return between 0 and mt_getrandmax(). That's about as good as PHP gets
      *
      * @return
-     * 		the random long
+     *         the random long
      */
     function getRandomLong()
     {
@@ -119,10 +119,10 @@ class DefaultRandomizer implements Randomizer
      * then merely append "." + extension.
      *
      * @param extension
-     * 		extension to add to the random filename
+     *         extension to add to the random filename
      *
      * @return
-     * 		a random unguessable filename ending with the specified extension
+     *         a random unguessable filename ending with the specified extension
      */
     function getRandomFilename($extension = '')
     {
@@ -130,7 +130,7 @@ class DefaultRandomizer implements Randomizer
 
         $rs = $this->getRandomString(16, 'abcdefghijklmnopqrstuvxyz0123456789');
         $rs .= $extension;
-        return  $rs;
+        return $rs;
     }
 
     /**
@@ -141,19 +141,19 @@ class DefaultRandomizer implements Randomizer
      * FIPS 140-2, Security Requirements for Cryptographic Modules</a>, section 4.9.1.
      *
      * @param min
-     * 		the minimum real number that will be returned
+     *         the minimum real number that will be returned
      * @param max
-     * 		the maximum real number that will be returned
+     *         the maximum real number that will be returned
      *
      * @return
-     * 		the random real
+     *         the random real
      */
     function getRandomReal($min, $max)
     {
-        $rf = (float) (mt_rand() / $this->maxRand);		// Maximizes the random bit counts from the PHP PRNG
+        $rf = (float)(mt_rand() / $this->maxRand); // Maximizes the random bit counts from the PHP PRNG
 
         $factor = $max - $min;
-        return (float) ($rf * $factor + $min);
+        return (float)($rf * $factor + $min);
     }
 
     /**
@@ -164,24 +164,26 @@ class DefaultRandomizer implements Randomizer
      * Function from comments found on http://php.net/uniqid
      *
      * @return
-     * 		the GUID
+     *         the GUID
      *
      * @throws
-     * 		EncryptionException if hashing or encryption fails
+     *         EncryptionException if hashing or encryption fails
      */
     function getRandomGUID()
     {
-        return sprintf('%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
-        mt_rand(0, 65535), mt_rand(0, 65535), // 32 bits for "time_low"
-        mt_rand(0, 65535), // 16 bits for "time_mid"
-        					 mt_rand(0, 4095),  // 12 bits before the 0100 of (version) 4 for "time_hi_and_version"
-        					 bindec(substr_replace(sprintf('%016b', mt_rand(0, 65535)), '01', 6, 2)),
-				            // 8 bits, the last two of which (positions 6 and 7) are 01, for "clk_seq_hi_res"
-				            // (hence, the 2nd hex digit after the 3rd hyphen can only be 1, 5, 9 or d)
-				            // 8 bits for "clk_seq_low"
-					        mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535) // 48 bits for "node"
-					   );  
-	}
+        return sprintf(
+            '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+            mt_rand(0, 65535), mt_rand(0, 65535), // 32 bits for "time_low"
+            mt_rand(0, 65535), // 16 bits for "time_mid"
+            mt_rand(0, 4095), // 12 bits before the 0100 of (version) 4 for "time_hi_and_version"
+            bindec(substr_replace(sprintf('%016b', mt_rand(0, 65535)), '01', 6, 2)),
+            // 8 bits, the last two of which (positions 6 and 7) are 01, for "clk_seq_hi_res"
+            // (hence, the 2nd hex digit after the 3rd hyphen can only be 1, 5, 9 or d)
+            // 8 bits for "clk_seq_low"
+            mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535) // 48 bits for "node"
+        );
+    }
 
 }
+
 ?>

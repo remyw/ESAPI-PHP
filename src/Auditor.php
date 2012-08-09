@@ -4,7 +4,7 @@
  *
  * This file is part of the Open Web Application Security Project (OWASP)
  * Enterprise Security API (ESAPI) project.
- * 
+ *
  * PHP version 5.2
  *
  * LICENSE: This source file is subject to the New BSD license.  You should read
@@ -25,9 +25,9 @@
 
 /**
  * Use this ESAPI security control to wrap your auditing functions.
- * 
- * The idea behind this interface is to define a set of functions that can 
- * be used to log security events. Implementors should use a well 
+ *
+ * The idea behind this interface is to define a set of functions that can
+ * be used to log security events. Implementors should use a well
  * established logging library.
  *
  * @category  OWASP
@@ -90,13 +90,13 @@ interface Auditor
      * FATAL indicates that only FATAL messages should be logged.
      * This level is initialized to 1000.
      */
-    const FATAL   = 1000;
+    const FATAL = 1000;
 
     /**
      * ERROR indicates that ERROR messages and above should be logged.
      * This level is initialized to 800.
      */
-    const ERROR   = 800;
+    const ERROR = 800;
 
     /**
      * WARNING indicates that WARNING messages and above should be logged.
@@ -108,25 +108,25 @@ interface Auditor
      * INFO indicates that INFO messages and above should be logged.
      * This level is initialized to 400.
      */
-    const INFO    = 400;
+    const INFO = 400;
 
     /**
      * DEBUG indicates that DEBUG messages and above should be logged.
      * This level is initialized to 200.
      */
-    const DEBUG   = 200;
+    const DEBUG = 200;
 
     /**
      * TRACE indicates that TRACE messages and above should be logged.
      * This level is initialized to 100.
      */
-    const TRACE   = 100;
+    const TRACE = 100;
 
     /**
      * ALL indicates that all messages should be logged.
      * This level is initialized to 0.
      */
-    const ALL   = 0;
+    const ALL = 0;
 
 
     /**
@@ -135,7 +135,7 @@ interface Auditor
      * below this level will be discarded.
      *
      * @param int $level The level to set the logging level to.
-     * 
+     *
      * @return does not return a value.
      */
     function setLevel($level);
@@ -146,12 +146,12 @@ interface Auditor
      * also record the stack trace associated with the event.
      *
      * @param int    $type      the type of event - an Logger Type constant.
-     * @param bool   $success   boolean true indicates this was a successful event, 
+     * @param bool   $success   boolean true indicates this was a successful event,
      *                          false indicates this was a failed event (the typical
      *                          value).
      * @param string $message   the message to log.
      * @param string $throwable the exception to be logged.
-     * 
+     *
      * @return does not return a value.
      */
     function fatal($type, $success, $message, $throwable = null);
@@ -171,12 +171,12 @@ interface Auditor
      * also record the stack trace associated with the event.
      *
      * @param int    $type      the type of event - an Logger Type constant.
-     * @param bool   $success   boolean true indicates this was a successful event, 
+     * @param bool   $success   boolean true indicates this was a successful event,
      *                          false indicates this was a failed event (the typical
      *                          value).
      * @param string $message   the message to log.
      * @param string $throwable the exception to be logged.
-     * 
+     *
      * @return does not return a value.
      */
     function error($type, $success, $message, $throwable = null);
@@ -201,7 +201,7 @@ interface Auditor
      *                          value).
      * @param string $message   the message to log.
      * @param string $throwable the exception to be logged.
-     * 
+     *
      * @return does not return a value.
      */
     function warning($type, $success, $message, $throwable = null);
@@ -222,11 +222,11 @@ interface Auditor
      *
      * @param int    $type      the type of event - an Logger Type constant.
      * @param bool   $success   boolean true indicates this was a successful event,
-     *                          false indicates this was a failed event (the 
+     *                          false indicates this was a failed event (the
      *                          typical value).
      * @param string $message   the message to log.
      * @param string $throwable the exception to be logged.
-     * 
+     *
      * @return does not return a value
      */
     function info($type, $success, $message, $throwable = null);
@@ -247,11 +247,11 @@ interface Auditor
      *
      * @param int    $type      the type of event - an Logger Type constant.
      * @param bool   $success   boolean true indicates this was a successful event,
-     *                          false indicates this was a failed event (the 
+     *                          false indicates this was a failed event (the
      *                          typical value).
      * @param string $message   the message to log.
      * @param string $throwable the exception to be logged.
-     * 
+     *
      * @return does not return a value
      */
     function debug($type, $success, $message, $throwable = null);
@@ -271,12 +271,12 @@ interface Auditor
      * also record the stack trace associated with the event.
      *
      * @param int    $type      the type of event - an Logger Type constant.
-     * @param bool   $success   boolean true indicates this was a successful event, 
+     * @param bool   $success   boolean true indicates this was a successful event,
      *                          false indicates this was a failed event (the typical
      *                          value).
      * @param string $message   the message to log.
      * @param string $throwable the exception to be logged.
-     * 
+     *
      * @return does not return a value.
      */
     function trace($type, $success, $message, $throwable = null);

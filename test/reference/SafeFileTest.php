@@ -25,8 +25,8 @@
 /**
  * Require ESAPI and SafeFile.
  */
-require_once dirname(__FILE__).'/../../src/ESAPI.php';
-require_once dirname(__FILE__).'/../../src/SafeFile.php';
+require_once dirname(__FILE__) . '/../../src/ESAPI.php';
+require_once dirname(__FILE__) . '/../../src/SafeFile.php';
 
 
 /**
@@ -76,8 +76,8 @@ class SafeFileTest extends PHPUnit_Framework_TestCase
         }
         if ($sf && !$sf->isReadable()) {
             $this->fail("{$file} is not readable");
-        } 
-        
+        }
+
         $this->assertTrue($sf && $sf->isReadable());
     }
 
@@ -112,12 +112,12 @@ class SafeFileTest extends PHPUnit_Framework_TestCase
         }
 
         $sf = new SafeFile($file);
-        
+
         if (!$sf->isReadable()) {
             $this->fail("{$file} is not readable - %s");
-        } 
-        
-		$this->assertTrue($sf->isReadable());
+        }
+
+        $this->assertTrue($sf->isReadable());
     }
 
 
@@ -250,10 +250,10 @@ class SafeFileTest extends PHPUnit_Framework_TestCase
         foreach ($fileIllegals as $char) {
             $file = $config->getResourceDirectory() . "/ESAPI$char.xml";
 
-            try{
+            try {
                 $sf = new SafeFile($file);
                 $this->fail();
-            } catch(Exception $e) {
+            } catch (Exception $e) {
                 //Expected
             }
         }
@@ -261,14 +261,14 @@ class SafeFileTest extends PHPUnit_Framework_TestCase
         foreach ($dirIllegals as $char) {
             $file = $config->getResourceDirectory() . "$char/ESAPI.xml";
 
-            try{
+            try {
                 $sf = new SafeFile($file);
                 $this->fail();
-            } catch(Exception $e) {
+            } catch (Exception $e) {
                 //Expected
             }
         }
-        
+
         $this->assertTrue(true);
     }
 
@@ -333,7 +333,7 @@ class SafeFileTest extends PHPUnit_Framework_TestCase
     }
 
 
-      /**
+    /**
      * Test null byte injection.
      *
      * @return bool True on Pass.
@@ -347,9 +347,9 @@ class SafeFileTest extends PHPUnit_Framework_TestCase
             $file = 'file:///etc/hosts';
         }
 
-        try{
+        try {
             $sf = new SafeFile($file);
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             $this->fail(
                 'This test could not run so did not really fail. Please choose a suitable test input.'
             );
@@ -362,7 +362,7 @@ class SafeFileTest extends PHPUnit_Framework_TestCase
     }
 
 
-      /**
+    /**
      * Test null byte injection.
      *
      * @return bool True on Pass.
@@ -371,9 +371,9 @@ class SafeFileTest extends PHPUnit_Framework_TestCase
     {
         $file = 'http://www.google.com/index.html';
 
-        try{
+        try {
             $sf = new SafeFile($file);
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             $this->fail(
                 'This test could not run so did not really fail. Please choose a suitable test input.'
             );

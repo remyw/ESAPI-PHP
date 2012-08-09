@@ -4,7 +4,7 @@
  *
  * This file is part of the Open Web Application Security Project (OWASP)
  * Enterprise Security API (ESAPI) project.
- * 
+ *
  * PHP version 5.2
  *
  * LICENSE: This source file is subject to the New BSD license.  You should read
@@ -31,9 +31,9 @@ require_once dirname(__FILE__) . '/errors/IntrusionException.php';
 /**
  * Use this ESAPI security control to wrap intrusion detection functions
  * that are internal to your application.
- * 
- * The idea behind this interface is to define a set of functions to track 
- * security relevant events and identify attack behavior. 
+ *
+ * The idea behind this interface is to define a set of functions to track
+ * security relevant events and identify attack behavior.
  *
  * @category  OWASP
  * @package   ESAPI
@@ -50,7 +50,7 @@ interface IntrusionDetector
 
     /**
      * Adds an exception to the IntrusionDetector.
-     * 
+     *
      * This method should immediately log the exception so that developers
      * throwing an IntrusionException do not have to remember to log every
      * error.  The implementation should store the exception somewhere for the
@@ -61,7 +61,7 @@ interface IntrusionDetector
      * be taken and logged.
      *
      * @param string $exception string exception thrown.
-     * 
+     *
      * @return does not return a value
      */
     function addException($exception);
@@ -69,7 +69,7 @@ interface IntrusionDetector
 
     /**
      * Adds an event to the IntrusionDetector.
-     * 
+     *
      * This method should immediately log the event.  The implementation should
      * store the event somewhere for the current user in order to check if the
      * User has reached the threshold for any Enterprise Security Exceptions.
@@ -79,7 +79,7 @@ interface IntrusionDetector
      *
      * @param string $eventName  string event to add.
      * @param string $logMessage string message to log with the event.
-     * 
+     *
      * @return does not return a value.
      */
     function addEvent($eventName, $logMessage);

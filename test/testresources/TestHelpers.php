@@ -43,8 +43,9 @@
  */
 function fileContainsExpected(
     $filename, $expected, $date = null, $period = 0, $format = 'Y-m-d H:i:s P'
-) {
-    if (empty($filename) || ! is_string($filename)) {
+)
+{
+    if (empty($filename) || !is_string($filename)) {
         return null;
     }
     if ($period === null || gettype($period) != 'integer') {
@@ -61,7 +62,7 @@ function fileContainsExpected(
     if ($f === false) {
         return null;
     }
-    while (! feof($f)) {
+    while (!feof($f)) {
         $line = fgets($f, 2048);
         if (preg_match("/{$expected}/", $line)) {
             if ($date !== null) {
