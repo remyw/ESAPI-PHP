@@ -23,13 +23,11 @@
  * @link      http://www.owasp.org/index.php/ESAPI
  */
 
-
 /**
  *
  */
 require_once dirname(__FILE__) . '/../AuditorFactory.php';
 require_once dirname(__FILE__) . '/DefaultAuditor.php';
-
 
 /**
  * Reference Implementation of the DefaultAuditorFactory interface.
@@ -48,35 +46,32 @@ require_once dirname(__FILE__) . '/DefaultAuditor.php';
 class DefaultAuditorFactory implements AuditorFactory
 {
 
-    private $_loggerMap = array();
-
+    private $loggerMap = array();
 
     /**
      * DefaultAuditorFactory constructor.
      *
      * @return does not return a value.
      */
-    function __construct()
+    public function __construct()
     {
         // NoOp
     }
-
 
     /**
      * {@inheritdoc}
      */
     public function getLogger($moduleName)
     {
-
         // If a logger for this module already exists, we return the same one,
         // otherwise we create a new one.
-        if (array_key_exists($moduleName, $this->_loggerMap)
-            && $this->_loggerMap[$moduleName] instanceof DefaultAuditor
+        if (array_key_exists($moduleName, $this->loggerMap)
+            && $this->loggerMap[$moduleName] instanceof DefaultAuditor
         ) {
-            return $this->_loggerMap[$moduleName];
+            return $this->loggerMap[$moduleName];
         } else {
             $moduleLogger = new DefaultAuditor($moduleName);
-            $this->_loggerMap[$moduleName] = $moduleLogger;
+            $this->loggerMap[$moduleName] = $moduleLogger;
             return $moduleLogger;
         }
     }

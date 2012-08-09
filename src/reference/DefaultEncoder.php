@@ -51,32 +51,32 @@ require_once dirname(__FILE__) . '/../codecs/XMLEntityCodec.php';
 class DefaultEncoder implements Encoder
 {
 
-    private $_base64Codec = null;
-    private $_cssCodec = null;
-    private $_htmlCodec = null;
-    private $_javascriptCodec = null;
-    private $_percentCodec = null;
-    private $_vbscriptCodec = null;
-    private $_xmlCodec = null;
+    private $base64Codec = null;
+    private $cssCodec = null;
+    private $htmlCodec = null;
+    private $javascriptCodec = null;
+    private $percentCodec = null;
+    private $vbscriptCodec = null;
+    private $xmlCodec = null;
 
     /*
      * Character sets that define characters (in addition to alphanumerics) that are
      * immune from encoding in various formats
      */
-    private $_immune_css = array(' ');
-    private $_immune_html = array(',', '.', '-', '_', ' ');
-    private $_immune_htmlattr = array(',', '.', '-', '_');
-    private $_immune_javascript = array(',', '.', '_');
-    private $_immune_os = array('-');
-    private $_immune_sql = array(' ');
-    private $_immune_vbscript = array(' ');
-    private $_immune_xml = array(',', '.', '-', '_', ' ');
-    private $_immune_xmlattr = array(',', '.', '-', '_');
-    private $_immune_xpath = array(',', '.', '-', '_', ' ');
-    private $_immune_url = array('.', '-', '*', '_');
+    private $immuneCss = array(' ');
+    private $immuneHtml = array(',', '.', '-', '_', ' ');
+    private $immuneHtmlAttr = array(',', '.', '-', '_');
+    private $immuneJavascript = array(',', '.', '_');
+    private $immuneOs = array('-');
+    private $immuneSql = array(' ');
+    private $immuneVbScript = array(' ');
+    private $immuneXml = array(',', '.', '-', '_', ' ');
+    private $immuneXmlAttr = array(',', '.', '-', '_');
+    private $immuneXpath = array(',', '.', '-', '_', ' ');
+    private $immuneUrl = array('.', '-', '*', '_');
 
-    private $_codecs = array();
-    private $_auditor = null;
+    private $codecs = array();
+    private $auditor = null;
 
     /**
      * Encoder constructor.
@@ -88,27 +88,27 @@ class DefaultEncoder implements Encoder
      *
      * @throws InvalidArgumentException
      */
-    function __construct($codecs = null)
+    public function __construct($codecs = null)
     {
         $this->logger = ESAPI::getAuditor("Encoder");
 
         // initialise codecs
-        $this->_base64Codec = new Base64Codec();
-        $this->_cssCodec = new CSSCodec();
-        $this->_htmlCodec = new HTMLEntityCodec();
-        $this->_javascriptCodec = new JavaScriptCodec();
-        $this->_percentCodec = new PercentCodec();
-        $this->_vbscriptCodec = new VBScriptCodec();
-        $this->_xmlCodec = new XMLEntityCodec();
+        $this->base64Codec = new Base64Codec();
+        $this->cssCodec = new CSSCodec();
+        $this->htmlCodec = new HTMLEntityCodec();
+        $this->javascriptCodec = new JavaScriptCodec();
+        $this->percentCodec = new PercentCodec();
+        $this->vbscriptCodec = new VBScriptCodec();
+        $this->xmlCodec = new XMLEntityCodec();
 
         // initialise array of codecs for use by canonicalize
         if ($codecs === null) {
-            array_push($this->_codecs, $this->_htmlCodec);
-            array_push($this->_codecs, $this->_javascriptCodec);
-            array_push($this->_codecs, $this->_percentCodec);
+            array_push($this->codecs, $this->htmlCodec);
+            array_push($this->codecs, $this->javascriptCodec);
+            array_push($this->codecs, $this->percentCodec);
             // leaving css and vbs codecs out - they eat / and " chars respectively
-            // array_push($this->_codecs,$this->_cssCodec);
-            // array_push($this->_codecs,$this->_vbscriptCodec);
+            // array_push($this->codecs,$this->cssCodec);
+            // array_push($this->codecs,$this->vbscriptCodec);
         } else {
             if (!is_array($codecs)) {
                 throw new InvalidArgumentException(
@@ -123,17 +123,16 @@ class DefaultEncoder implements Encoder
                         );
                     }
                 }
-                $this->_codecs = array_merge($this->_codecs, $codecs);
+                $this->codecs = array_merge($this->codecs, $codecs);
             }
         }
 
     }
 
-
     /**
      * @inheritdoc
      */
-    function canonicalize($input, $strict = true)
+    public function canonicalize($input, $strict = true)
     {
         if ($input === null) {
             return null;
@@ -146,7 +145,7 @@ class DefaultEncoder implements Encoder
         while (!$clean) {
             $clean = true;
 
-            foreach ($this->_codecs as $codec) {
+            foreach ($this->codecs as $codec) {
                 $old = $working;
                 $working = $codec->decode($working);
                 if ($old != $working) {
@@ -163,15 +162,17 @@ class DefaultEncoder implements Encoder
         }
         if ($foundCount >= 2 && $mixedCount > 1) {
             if ($strict == true) {
-                throw new IntrusionException('Input validation failure',
+                throw new IntrusionException(
+                    'Input validation failure',
                     'Multiple (' . $foundCount . 'x) and mixed ('
-                        . $mixedCount . 'x) encoding detected in ' . $input
+                    . $mixedCount . 'x) encoding detected in ' . $input
                 );
             } else {
                 $this->logger->warning(
-                    Auditor::SECURITY, false,
+                    Auditor::SECURITY,
+                    false,
                     'Multiple (' . $foundCount . 'x) and mixed ('
-                        . $mixedCount . 'x) encoding detected in ' . $input
+                    . $mixedCount . 'x) encoding detected in ' . $input
                 );
             }
         } else {
@@ -183,7 +184,8 @@ class DefaultEncoder implements Encoder
                     );
                 } else {
                     $this->logger->warning(
-                        Auditor::SECURITY, false,
+                        Auditor::SECURITY,
+                        false,
                         "Multiple encoding ({$foundCount}x) detected in {$input}"
                     );
                 }
@@ -196,7 +198,8 @@ class DefaultEncoder implements Encoder
                         );
                     } else {
                         $this->logger->warning(
-                            Auditor::SECURITY, false,
+                            Auditor::SECURITY,
+                            false,
                             "Mixed encoding ({$mixedCount}x) detected in {$input}"
                         );
                     }
@@ -206,83 +209,77 @@ class DefaultEncoder implements Encoder
         return $working;
     }
 
-
     /**
      * @inheritdoc
      */
-    function encodeForCSS($input)
+    public function encodeForCSS($input)
     {
         if ($input === null) {
             return null;
         }
-        return $this->_cssCodec->encode($this->_immune_css, $input);
+        return $this->cssCodec->encode($this->immuneCss, $input);
     }
 
 
     /**
      * @inheritdoc
      */
-    function encodeForHTML($input)
+    public function encodeForHTML($input)
     {
         if ($input === null) {
             return null;
         }
-        return $this->_htmlCodec->encode($this->_immune_html, $input);
+        return $this->htmlCodec->encode($this->immuneHtml, $input);
     }
-
 
     /**
      * @inheritdoc
      */
-    function encodeForHTMLAttribute($input)
+    public function encodeForHTMLAttribute($input)
     {
         if ($input === null) {
             return null;
         }
-        return $this->_htmlCodec->encode($this->_immune_htmlattr, $input);
+        return $this->htmlCodec->encode($this->immuneHtmlAttr, $input);
     }
-
 
     /**
      * @inheritdoc
      */
-    function encodeForJavaScript($input)
+    public function encodeForJavaScript($input)
     {
         if ($input === null) {
             return null;
         }
-        return $this->_javascriptCodec->encode($this->_immune_javascript, $input);
+        return $this->javascriptCodec->encode($this->immuneJavascript, $input);
     }
-
 
     /**
      * @inheritdoc
      */
-    function encodeForVBScript($input)
+    public function encodeForVBScript($input)
     {
         if ($input === null) {
             return null;
         }
-        return $this->_vbscriptCodec->encode($this->_immune_vbscript, $input);
+        return $this->vbscriptCodec->encode($this->immuneVbScript, $input);
     }
-
 
     /**
      * @inheritdoc
      */
-    function encodeForSQL($codec, $input)
+    public function encodeForSQL($codec, $input)
     {
         if ($input === null) {
             return null;
         }
-        return $codec->encode($this->_immune_sql, $input);
+        return $codec->encode($this->immuneSql, $input);
     }
-
 
     /**
      * @inheritdoc
      */
-    function encodeForOS($codec, $input)
+    public function encodeForOS($codec, $input)
     {
         if ($input === null) {
             return null;
@@ -290,67 +287,65 @@ class DefaultEncoder implements Encoder
 
         if ($codec instanceof Codec == false) {
             ESAPI::getLogger('Encoder')->error(
-                ESAPILogger::SECURITY, false,
+                ESAPILogger::SECURITY,
+                false,
                 'Invalid Argument, expected an instance of an OS Codec.'
             );
             return null;
         }
 
-        return $codec->encode($this->_immune_os, $input);
+        return $codec->encode($this->immuneOs, $input);
     }
 
     /**
      * @inheritdoc
      */
-    function encodeForXPath($input)
+    public function encodeForXPath($input)
     {
         if ($input === null) {
             return null;
         }
-        return $this->_htmlCodec->encode($this->_immune_xpath, $input);
+        return $this->htmlCodec->encode($this->immuneXpath, $input);
     }
-
 
     /**
      * @inheritdoc
      */
-    function encodeForXML($input)
+    public function encodeForXML($input)
     {
         if ($input === null) {
             return null;
         }
-        return $this->_xmlCodec->encode($this->_immune_xml, $input);
+        return $this->xmlCodec->encode($this->immuneXml, $input);
     }
-
 
     /**
      * @inheritdoc
      */
-    function encodeForXMLAttribute($input)
+    public function encodeForXMLAttribute($input)
     {
         if ($input === null) {
             return null;
         }
-        return $this->_xmlCodec->encode($this->_immune_xmlattr, $input);
+        return $this->xmlCodec->encode($this->immuneXmlAttr, $input);
     }
-
 
     /**
      * @inheritdoc
      */
-    function encodeForURL($input)
+    public function encodeForURL($input)
     {
         if ($input === null) {
             return null;
         }
-        $encoded = $this->_percentCodec->encode($this->_immune_url, $input);
+        $encoded = $this->percentCodec->encode($this->immuneUrl, $input);
 
-        $initialEncoding = $this->_percentCodec->detectEncoding($encoded);
+        $initialEncoding = $this->percentCodec->detectEncoding($encoded);
         $decodedString = mb_convert_encoding('', $initialEncoding);
 
-        $pcnt = $this->_percentCodec->normalizeEncoding('%');
-        $two = $this->_percentCodec->normalizeEncoding('2');
-        $zero = $this->_percentCodec->normalizeEncoding('0');
+        $pcnt = $this->percentCodec->normalizeEncoding('%');
+        $two = $this->percentCodec->normalizeEncoding('2');
+        $zero = $this->percentCodec->normalizeEncoding('0');
         $char_plus = mb_convert_encoding('+', $initialEncoding);
 
         $index = 0;
@@ -362,9 +357,9 @@ class DefaultEncoder implements Encoder
             $c = mb_substr($encoded, $i, 1, $initialEncoding);
             $d = mb_substr($encoded, $i + 1, 1, $initialEncoding);
             $e = mb_substr($encoded, $i + 2, 1, $initialEncoding);
-            if ($this->_percentCodec->normalizeEncoding($c) == $pcnt
-                && $this->_percentCodec->normalizeEncoding($d) == $two
-                && $this->_percentCodec->normalizeEncoding($e) == $zero
+            if ($this->percentCodec->normalizeEncoding($c) == $pcnt
+                && $this->percentCodec->normalizeEncoding($d) == $two
+                && $this->percentCodec->normalizeEncoding($e) == $zero
             ) {
                 $decodedString .= $char_plus;
                 $index += 3;
@@ -377,11 +372,10 @@ class DefaultEncoder implements Encoder
         return $decodedString;
     }
 
-
     /**
      * @inheritdoc
      */
-    function decodeFromURL($input)
+    public function decodeFromURL($input)
     {
         if ($input === null) {
             return null;
@@ -389,46 +383,46 @@ class DefaultEncoder implements Encoder
         $canonical = $this->canonicalize($input, true);
 
         // Replace '+' with ' '
-        $initialEncoding = $this->_percentCodec->detectEncoding($canonical);
+        $initialEncoding = $this->percentCodec->detectEncoding($canonical);
         $decodedString = mb_convert_encoding('', $initialEncoding);
 
-        $find = $this->_percentCodec->normalizeEncoding('+');
+        $find = $this->percentCodec->normalizeEncoding('+');
         $char_space = mb_convert_encoding(' ', $initialEncoding);
 
         $limit = mb_strlen($canonical, $initialEncoding);
         for ($i = 0; $i < $limit; $i++) {
             $c = mb_substr($canonical, $i, 1, $initialEncoding);
-            if ($this->_percentCodec->normalizeEncoding($c) == $find) {
+            if ($this->percentCodec->normalizeEncoding($c) == $find) {
                 $decodedString .= $char_space;
             } else {
                 $decodedString .= $c;
             }
         }
 
-        return $this->_percentCodec->decode($decodedString);
+        return $this->percentCodec->decode($decodedString);
     }
 
 
     /**
      * @inheritdoc
      */
-    function encodeForBase64($input, $wrap = true)
+    public function encodeForBase64($input, $wrap = true)
     {
         if ($input === null) {
             return null;
         }
-        return $this->_base64Codec->encode($input, $wrap);
+        return $this->base64Codec->encode($input, $wrap);
     }
 
 
     /**
      * @inheritdoc
      */
-    function decodeFromBase64($input)
+    public function decodeFromBase64($input)
     {
         if ($input === null) {
             return null;
         }
-        return $this->_base64Codec->decode($input);
+        return $this->base64Codec->decode($input);
     }
 }

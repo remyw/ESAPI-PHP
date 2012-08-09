@@ -24,9 +24,6 @@
  * @link      http://www.owasp.org/index.php/ESAPI
  */
 
-/**
- *
- */
 require_once dirname(__FILE__) .
     '/../../lib/apache-log4php/trunk/src/main/php/Logger.php';
 require_once dirname(__FILE__) . '/../Auditor.php';
@@ -48,16 +45,15 @@ require_once dirname(__FILE__) . '/../Auditor.php';
  */
 class DefaultAuditor implements Auditor
 {
-
     /**
      * An instance of Apache Log4PHP.
      *
      * @var Logger
      */
-    private $_log4php;
-    private $_log4phpName;
-    private $_appName = null;
-    private static $_initialised = false;
+    private $log4php;
+    private $log4phpName;
+    private $appName = null;
+    private static $initialised = false;
 
     /**
      * DefaultAuditor constructor.
@@ -66,18 +62,18 @@ class DefaultAuditor implements Auditor
      *
      * @return does not return a value.
      */
-    function __construct($name)
+    public function __construct($name)
     {
-        if (self::$_initialised == false) {
-            self::_initialise();
+        if (self::$initialised == false) {
+            self::initialise();
         }
-        $this->_log4php = Logger::getLogger($name);
-        $this->_log4phpName = $name;
+        $this->log4php = Logger::getLogger($name);
+        $this->log4phpName = $name;
 
         // set ApplicationName only if it is to be logged.
         $sc = ESAPI::getSecurityConfiguration();
         if ($sc->getLogApplicationName()) {
-            $this->_appName = $sc->getApplicationName();
+            $this->appName = $sc->getApplicationName();
         }
     }
 
@@ -87,8 +83,8 @@ class DefaultAuditor implements Auditor
     public function setLevel($level)
     {
         try {
-            $this->_log4php->setLevel(
-                $this->_convertESAPILeveltoLoggerLevel($level)
+            $this->log4php->setLevel(
+                $this->convertESAPILeveltoLoggerLevel($level)
             );
         } catch (Exception $e) {
             $this->error(
@@ -100,114 +96,101 @@ class DefaultAuditor implements Auditor
         }
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function fatal($type, $success, $message, $throwable = null)
+    {
+        $this->log(Auditor::FATAL, $type, $success, $message, $throwable);
+    }
 
     /**
      * @inheritdoc
      */
-    function fatal($type, $success, $message, $throwable = null)
+    public function isFatalEnabled()
     {
-        $this->_log(Auditor::FATAL, $type, $success, $message, $throwable);
+        return $this->log4php->isEnabledFor(LoggerLevel::getLevelFatal());
     }
-
 
     /**
      * @inheritdoc
      */
-    function isFatalEnabled()
+    public function error($type, $success, $message, $throwable = null)
     {
-        return $this->_log4php->isEnabledFor(LoggerLevel::getLevelFatal());
+        $this->log(Auditor::ERROR, $type, $success, $message, $throwable);
     }
-
 
     /**
      * @inheritdoc
      */
-    function error($type, $success, $message, $throwable = null)
+    public function isErrorEnabled()
     {
-        $this->_log(Auditor::ERROR, $type, $success, $message, $throwable);
+        return $this->log4php->isEnabledFor(LoggerLevel::getLevelError());
     }
-
 
     /**
      * @inheritdoc
      */
-    function isErrorEnabled()
+    public function warning($type, $success, $message, $throwable = null)
     {
-        return $this->_log4php->isEnabledFor(LoggerLevel::getLevelError());
+        $this->log(Auditor::WARNING, $type, $success, $message, $throwable);
     }
-
 
     /**
      * @inheritdoc
      */
-    function warning($type, $success, $message, $throwable = null)
+    public function isWarningEnabled()
     {
-        $this->_log(Auditor::WARNING, $type, $success, $message, $throwable);
+        return $this->log4php->isEnabledFor(LoggerLevel::getLevelWarn());
     }
-
 
     /**
      * @inheritdoc
      */
-    function isWarningEnabled()
+    public function info($type, $success, $message, $throwable = null)
     {
-        return $this->_log4php->isEnabledFor(LoggerLevel::getLevelWarn());
+        $this->log(Auditor::INFO, $type, $success, $message, $throwable);
     }
-
 
     /**
      * @inheritdoc
      */
-    function info($type, $success, $message, $throwable = null)
+    public function isInfoEnabled()
     {
-        $this->_log(Auditor::INFO, $type, $success, $message, $throwable);
+        return $this->log4php->isEnabledFor(LoggerLevel::getLevelInfo());
     }
-
 
     /**
      * @inheritdoc
      */
-    function isInfoEnabled()
+    public function debug($type, $success, $message, $throwable = null)
     {
-        return $this->_log4php->isEnabledFor(LoggerLevel::getLevelInfo());
+        $this->log(Auditor::DEBUG, $type, $success, $message, $throwable);
     }
-
 
     /**
      * @inheritdoc
      */
-    function debug($type, $success, $message, $throwable = null)
+    public function isDebugEnabled()
     {
-        $this->_log(Auditor::DEBUG, $type, $success, $message, $throwable);
+        return $this->log4php->isEnabledFor(LoggerLevel::getLevelDebug());
     }
-
 
     /**
      * @inheritdoc
      */
-    function isDebugEnabled()
+    public function trace($type, $success, $message, $throwable = null)
     {
-        return $this->_log4php->isEnabledFor(LoggerLevel::getLevelDebug());
+        $this->log(Auditor::TRACE, $type, $success, $message, $throwable);
     }
-
 
     /**
      * @inheritdoc
      */
-    function trace($type, $success, $message, $throwable = null)
+    public function isTraceEnabled()
     {
-        $this->_log(Auditor::TRACE, $type, $success, $message, $throwable);
+        return $this->log4php->isEnabledFor(LoggerLevel::getLevelAll());
     }
-
-
-    /**
-     * @inheritdoc
-     */
-    function isTraceEnabled()
-    {
-        return $this->_log4php->isEnabledFor(LoggerLevel::getLevelAll());
-    }
-
 
     /**
      * Helper function.
@@ -236,11 +219,11 @@ class DefaultAuditor implements Auditor
      *
      * @return does not return a value.
      */
-    private function _log($level, $type, $success, $message, $throwable)
+    private function log($level, $type, $success, $message, $throwable)
     {
         // If this log level is below the threshold we can quit now.
-        $logLevel = self::_convertESAPILeveltoLoggerLevel($level);
-        if (!$this->_log4php->isEnabledFor($logLevel)) {
+        $logLevel = self::convertESAPILeveltoLoggerLevel($level);
+        if (!$this->log4php->isEnabledFor($logLevel)) {
             return;
         }
 
@@ -265,12 +248,12 @@ class DefaultAuditor implements Auditor
 
         // Application name.
         // $this->appName is set only if it is to be logged.
-        if ($this->_appName !== null) {
-            $context .= ' ' . $this->_appName;
+        if ($this->appName !== null) {
+            $context .= ' ' . $this->appName;
         }
 
         // Logger name (Category in Log4PHP parlance)
-        $context .= ' ' . $this->_log4phpName;
+        $context .= ' ' . $this->log4phpName;
 
         // Event Type
         if (!is_string($type)) {
@@ -321,8 +304,9 @@ class DefaultAuditor implements Auditor
                 try {
                     $userSessionIDforLogging
                         = (string)ESAPI::getRandomizer()->getRandomInteger(
-                        0, 1000000
-                    );
+                            0,
+                            1000000
+                        );
                     $_SESSION['DefaultAuditor']['SessionIDForLogging']
                         = $userSessionIDforLogging;
                 } catch (Exception $e) {
@@ -332,7 +316,6 @@ class DefaultAuditor implements Auditor
         }
         $context .= "[ID:{$userSessionIDforLogging}]";
 
-
         // Now comes the message.
         if (!is_string($message)) {
             $message = '';
@@ -340,10 +323,10 @@ class DefaultAuditor implements Auditor
 
         // Encode CRLF - this bit might have to go in a try block
         // Codec Debugging entries are not affected.
-        if (defined('CD_LOG') == true && $this->_log4phpName === CD_LOG) {
+        if (defined('CD_LOG') == true && $this->log4phpName === CD_LOG) {
             $crlfEncoded = $message;
         } else {
-            $crlfEncoded = $this->_replaceCRLF($message, '_');
+            $crlfEncoded = $this->replaceCRLF($message, '_');
         }
 
         // Encode for HTML if ESAPI.xml says so
@@ -366,14 +349,13 @@ class DefaultAuditor implements Auditor
         // Now handle the exception
         $dumpedException = '';
         if ($throwable !== null && $throwable instanceof Exception) {
-            $dumpedException = ' ' . $this->_replaceCRLF($throwable, ' | ');
+            $dumpedException = ' ' . $this->replaceCRLF($throwable, ' | ');
         }
 
         $messageForLog = $context . ' ' . $encodedMessage . $dumpedException;
 
-        $this->_log4php->log($logLevel, $messageForLog, $this);
+        $this->log4php->log($logLevel, $messageForLog, $this);
     }
-
 
     /**
      * Helper function.
@@ -387,7 +369,7 @@ class DefaultAuditor implements Auditor
      *
      * @return string message with characters replaced.
      */
-    private function _replaceCRLF($message, $substitute)
+    private function replaceCRLF($message, $substitute)
     {
         if ($message === null || $substitute === null) {
             return $message;
@@ -442,57 +424,56 @@ class DefaultAuditor implements Auditor
      * @throws Exception if the supplied level doesn't match a level currently
      *                   defined.
      */
-    private static function _convertESAPILeveltoLoggerLevel($level)
+    private static function convertESAPILeveltoLoggerLevel($level)
     {
         if (is_string($level)) {
             switch (strtoupper($level)) {
-            case 'ALL':
-                /* Same as TRACE */
-            case 'TRACE':
-                return LoggerLevel::getLevelAll();
-            case 'DEBUG':
-                return LoggerLevel::getLevelDebug();
-            case 'INFO':
-                return LoggerLevel::getLevelInfo();
-            case 'WARN':
-                return LoggerLevel::getLevelWarn();
-            case 'ERROR':
-                return LoggerLevel::getLevelError();
-            case 'FATAL':
-                return LoggerLevel::getLevelFatal();
-            case 'OFF':
-                return LoggerLevel::getLevelOff();
-            default:
-                throw new Exception(
-                    "Invalid logging level Value was: {$level}"
-                );
+                case 'ALL':
+                    /* Same as TRACE */
+                case 'TRACE':
+                    return LoggerLevel::getLevelAll();
+                case 'DEBUG':
+                    return LoggerLevel::getLevelDebug();
+                case 'INFO':
+                    return LoggerLevel::getLevelInfo();
+                case 'WARN':
+                    return LoggerLevel::getLevelWarn();
+                case 'ERROR':
+                    return LoggerLevel::getLevelError();
+                case 'FATAL':
+                    return LoggerLevel::getLevelFatal();
+                case 'OFF':
+                    return LoggerLevel::getLevelOff();
+                default:
+                    throw new Exception(
+                        "Invalid logging level Value was: {$level}"
+                    );
             }
         } else {
             switch ($level) {
-            case Auditor::ALL:
-                /* Same as TRACE */
-            case Auditor::TRACE:
-                return LoggerLevel::getLevelAll();
-            case Auditor::DEBUG:
-                return LoggerLevel::getLevelDebug();
-            case Auditor::INFO:
-                return LoggerLevel::getLevelInfo();
-            case Auditor::WARNING:
-                return LoggerLevel::getLevelWarn();
-            case Auditor::ERROR:
-                return LoggerLevel::getLevelError();
-            case Auditor::FATAL:
-                return LoggerLevel::getLevelFatal();
-            case Auditor::OFF:
-                return LoggerLevel::getLevelOff();
-            default:
-                throw new Exception(
-                    "Invalid logging level Value was: {$level}"
-                );
+                case Auditor::ALL:
+                    /* Same as TRACE */
+                case Auditor::TRACE:
+                    return LoggerLevel::getLevelAll();
+                case Auditor::DEBUG:
+                    return LoggerLevel::getLevelDebug();
+                case Auditor::INFO:
+                    return LoggerLevel::getLevelInfo();
+                case Auditor::WARNING:
+                    return LoggerLevel::getLevelWarn();
+                case Auditor::ERROR:
+                    return LoggerLevel::getLevelError();
+                case Auditor::FATAL:
+                    return LoggerLevel::getLevelFatal();
+                case Auditor::OFF:
+                    return LoggerLevel::getLevelOff();
+                default:
+                    throw new Exception(
+                        "Invalid logging level Value was: {$level}"
+                    );
             }
         }
     }
-
 
     /**
      *  Helper function.
@@ -503,9 +484,9 @@ class DefaultAuditor implements Auditor
      *
      * @return does not return a value.
      */
-    private static function _initialise()
+    private static function initialise()
     {
-        self::$_initialised = true;
+        self::$initialised = true;
 
         $secConfig = ESAPI::getSecurityConfiguration();
         $logLevel = $secConfig->getLogLevel();
@@ -540,7 +521,7 @@ class DefaultAuditor implements Auditor
         $rootLogger->removeAllAppenders();
         $rootLogger->addAppender($appenderLogfile);
         $rootLogger->setLevel(
-            self::_convertESAPILeveltoLoggerLevel($logLevel)
+            self::convertESAPILeveltoLoggerLevel($logLevel)
         );
     }
 }

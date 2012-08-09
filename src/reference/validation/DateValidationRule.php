@@ -46,7 +46,7 @@ require_once dirname(__FILE__) . '/BaseValidationRule.php';
  */
 class DateValidationRule extends BaseValidationRule
 {
-    private $_format;
+    private $format;
 
 
     /**
@@ -71,7 +71,6 @@ class DateValidationRule extends BaseValidationRule
         $this->setDateFormat($newFormat);
     }
 
-
     /**
      * Sets the date format string which valid inputs must adhere to. The format
      * should be of the type accepted by PHP's date() function e.g. 'Y-m-d'.
@@ -85,10 +84,10 @@ class DateValidationRule extends BaseValidationRule
         if (!is_string($newFormat) || $newFormat == '') {
             throw new RuntimeException(
                 'setDateFormat requires a non-empty string DateFormat as ' .
-                    'accepted by date().'
+                'accepted by date().'
             );
         }
-        $this->_format = $newFormat;
+        $this->format = $newFormat;
     }
 
 
@@ -140,7 +139,7 @@ class DateValidationRule extends BaseValidationRule
             throw new ValidationException(
                 "{$context} -  Invalid input. Encoding problem detected.",
                 'An EncodingException was thrown during canonicalization of ' .
-                    'the input.',
+                'the input.',
                 $context
             );
         }
@@ -152,19 +151,19 @@ class DateValidationRule extends BaseValidationRule
         }
         if ($date === false) {
             throw new ValidationException(
-                "{$context} - Invalid date must follow the {$this->_format} format",
-                "Invalid date - format={$this->_format}, input={$input}",
+                "{$context} - Invalid date must follow the {$this->format} format",
+                "Invalid date - format={$this->format}, input={$input}",
                 $context
             );
         }
 
         // the DateTime object, formatted with $format, must equal the canonical
         // input
-        $formatted = $date->format($this->_format);
+        $formatted = $date->format($this->format);
         if ($formatted !== $canonical) {
             throw new ValidationException(
-                "{$context} - Invalid date must follow the {$this->_format} format",
-                "Invalid date - format={$this->_format}, input={$input}",
+                "{$context} - Invalid date must follow the {$this->format} format",
+                "Invalid date - format={$this->format}, input={$input}",
                 $context
             );
         }
@@ -172,7 +171,6 @@ class DateValidationRule extends BaseValidationRule
         // validation passed
         return $date;
     }
-
 
     /**
      * Returns a default DateTime object created by calling date_create without
@@ -191,6 +189,5 @@ class DateValidationRule extends BaseValidationRule
     {
         return date_create();
     }
-
-
 }
+

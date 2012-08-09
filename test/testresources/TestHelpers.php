@@ -42,7 +42,11 @@
  * @return bool|null True if the a line contains the expected parameters.
  */
 function fileContainsExpected(
-    $filename, $expected, $date = null, $period = 0, $format = 'Y-m-d H:i:s P'
+    $filename,
+    $expected,
+    $date = null,
+    $period = 0,
+    $format = 'Y-m-d H:i:s P'
 )
 {
     if (empty($filename) || !is_string($filename)) {

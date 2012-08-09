@@ -44,9 +44,8 @@ require_once dirname(__FILE__) . '/BaseValidationRule.php';
  */
 class NumberValidationRule extends BaseValidationRule
 {
-    private $_minValue;
-    private $_maxValue;
-
+    private $minValue;
+    private $maxValue;
 
     /**
      * Constructor sets-up the validation rule with a descriptive name for this
@@ -61,25 +60,25 @@ class NumberValidationRule extends BaseValidationRule
      * @return does not return a value.
      */
     public function __construct(
-        $typeName, $encoder, $minValue = null,
+        $typeName,
+        $encoder,
+        $minValue = null,
         $maxValue = null
-    )
-    {
+    ) {
         parent::__construct($typeName, $encoder);
 
         if ($minValue === null || !is_numeric($minValue)) {
-            $this->_minValue = null;
+            $this->minValue = null;
         } else {
-            $this->_minValue = (double)$minValue;
+            $this->minValue = (double)$minValue;
         }
 
         if ($maxValue === null || !is_numeric($maxValue)) {
-            $this->_maxValue = null;
+            $this->maxValue = null;
         } else {
-            $this->_maxValue = (double)$maxValue;
+            $this->maxValue = (double)$maxValue;
         }
     }
-
 
     /**
      * Returns the canonicalized, valid input.
@@ -110,13 +109,13 @@ class NumberValidationRule extends BaseValidationRule
             );
         }
 
-        if ($this->_minValue !== null
-            && $this->_maxValue !== null
-            && $this->_minValue > $this->_maxValue
+        if ($this->minValue !== null
+            && $this->maxValue !== null
+            && $this->minValue > $this->maxValue
         ) {
             throw new RuntimeException(
                 'Validation misconfiguration - $minValue should not be greater' .
-                    ' than $maxValue!'
+                ' than $maxValue!'
             );
         }
 
@@ -140,7 +139,7 @@ class NumberValidationRule extends BaseValidationRule
             throw new ValidationException(
                 $context . ': Invalid input. Encoding problem detected.',
                 'An EncodingException was thrown during canonicalization of ' .
-                    'the input.',
+                'the input.',
                 $context
             );
         }
@@ -161,7 +160,7 @@ class NumberValidationRule extends BaseValidationRule
                 throw new ValidationException(
                     'Invalid number input: context=' . $context,
                     'Invalid double input is infinite: context=' . $context .
-                        ', input=' . $input,
+                    ', input=' . $input,
                     $context
                 );
             }
@@ -170,26 +169,26 @@ class NumberValidationRule extends BaseValidationRule
                 throw new ValidationException(
                     'Invalid number input: context=' . $context,
                     'Invalid double input is not a number: context=' . $context .
-                        ', input=' . $input,
+                    ', input=' . $input,
                     $context
                 );
             }
 
-            if ($this->_minValue !== null && $d < $this->_minValue) {
+            if ($this->minValue !== null && $d < $this->minValue) {
                 throw new ValidationException(
-                    'Invalid number input must not be less than ' . $this->_minValue,
+                    'Invalid number input must not be less than ' . $this->minValue,
                     'Invalid number input must not be less than ' .
-                        $this->_minValue . ': context=' . $context . ', input=' . $input,
+                    $this->minValue . ': context=' . $context . ', input=' . $input,
                     $context
                 );
             }
 
-            if ($this->_maxValue !== null && $d > $this->_maxValue) {
+            if ($this->maxValue !== null && $d > $this->maxValue) {
                 throw new ValidationException(
                     'Invalid number input must not be greater than ' .
-                        $this->_maxValue,
+                    $this->maxValue,
                     'Invalid number input must not be greater than ' .
-                        $this->_maxValue . ': context=' . $context . ', input=' . $input,
+                    $this->maxValue . ': context=' . $context . ', input=' . $input,
                     $context
                 );
             }
@@ -200,7 +199,7 @@ class NumberValidationRule extends BaseValidationRule
             throw new ValidationException(
                 $context . ': Invalid number input',
                 'Invalid number input format: Caught NumberFormatException: ' .
-                    $e->getMessage() . 'context=' . $context . ', input=' . $input,
+                $e->getMessage() . 'context=' . $context . ', input=' . $input,
                 $context
             );
         }

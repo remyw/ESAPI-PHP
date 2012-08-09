@@ -53,14 +53,14 @@ class CSSCodec extends Codec
      */
     public function encodeCharacter($immune, $c)
     {
-        //detect encoding, special-handling for chr(172) and chr(128) to chr(159) 
+        //detect encoding, special-handling for chr(172) and chr(128) to chr(159)
         //which fail to be detected by mb_detect_encoding()
         $initialEncoding = $this->detectEncoding($c);
 
         // Normalize encoding to UTF-32
         $_4ByteUnencodedOutput = $this->normalizeEncoding($c);
 
-        // Start with nothing; format it to match the encoding of the string passed 
+        // Start with nothing; format it to match the encoding of the string passed
         //as an argument.
         $encodedOutput = mb_convert_encoding("", $initialEncoding);
 
@@ -140,7 +140,7 @@ class CSSCodec extends Codec
             }
         }
         if ($hexDigitCount) {
-            $candidateChar = $this->_parseHex($potentialHexString);
+            $candidateChar = $this->parseHex($potentialHexString);
             if (is_string($candidateChar) != true) {
                 return array(
                     'decodedCharacter' => null,
@@ -150,13 +150,15 @@ class CSSCodec extends Codec
             if ($hexDigitCount < 6
                 && mb_substr($input, 1 + $hexDigitCount, 1, "UTF-32") != $this->normalizeEncoding(' ')
             ) {
-                // no terminating space, yet less than 6 hex digits in 
+                // no terminating space, yet less than 6 hex digits in
                 //encoding = malformed encoding
                 //TODO: throw an exception for malformed entity?
                 return array(
                     'decodedCharacter' => $this->normalizeEncoding($candidateChar),
                     'encodedString' => mb_substr(
-                        $input, 0, 1 + $hexDigitCount,
+                        $input,
+                        0,
+                        1 + $hexDigitCount,
                         "UTF-32"
                     )
                 );
@@ -164,14 +166,20 @@ class CSSCodec extends Codec
                 return array(
                     'decodedCharacter' => $this->normalizeEncoding($candidateChar),
                     'encodedString' => mb_substr(
-                        $input, 0, 1 + $hexDigitCount + 1, "UTF-32"
+                        $input,
+                        0,
+                        1 + $hexDigitCount + 1,
+                        "UTF-32"
                     )
                 );
             } else {
                 return array(
                     'decodedCharacter' => $this->normalizeEncoding($candidateChar),
                     'encodedString' => mb_substr(
-                        $input, 0, 1 + $hexDigitCount, "UTF-32"
+                        $input,
+                        0,
+                        1 + $hexDigitCount,
+                        "UTF-32"
                     )
                 );
             }
@@ -203,7 +211,7 @@ class CSSCodec extends Codec
      *
      * @return null|string
      */
-    private function _parseHex($input)
+    private function parseHex($input)
     {
         //todo: encoding should be UTF-32, so why detect it?
         $hexString = mb_convert_encoding("", mb_detect_encoding($input));
@@ -216,7 +224,7 @@ class CSSCodec extends Codec
             if ($this->isHexDigit($_4ByteCharacter)) {
                 // hex digit found, add it and continue...
                 $hexString .= $_4ByteCharacter;
-            } else { // otherwise just quit
+            } else {
                 break;
             }
         }
@@ -236,7 +244,9 @@ class CSSCodec extends Codec
                         $parsedCharacter = chr($parsedInteger);
                     } else {
                         $parsedCharacter = mb_convert_encoding(
-                            '&#' . $parsedInteger . ';', 'UTF-8', 'HTML-ENTITIES'
+                            '&#' . $parsedInteger . ';',
+                            'UTF-8',
+                            'HTML-ENTITIES'
                         );
                     }
                 }

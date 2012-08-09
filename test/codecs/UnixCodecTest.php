@@ -22,7 +22,7 @@ class UnixCodecTest extends PHPUnit_Framework_TestCase
 {
     private $unixCodec = null;
 
-    function setUp()
+    public function setUp()
     {
         global $ESAPI;
 
@@ -33,12 +33,12 @@ class UnixCodecTest extends PHPUnit_Framework_TestCase
         $this->unixCodec = new UnixCodec();
     }
 
-    function tearDown()
+    public function tearDown()
     {
 
     }
 
-    function testEncode()
+    public function testEncode()
     {
         $immune = array("");
 
@@ -48,21 +48,22 @@ class UnixCodecTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    function testEncodeCharacter()
+    public function testEncodeCharacter()
     {
         $immune = array("");
 
         $this->assertEquals("\\<", $this->unixCodec->encode($immune, "<"));
     }
 
-    function testDecode()
+    public function testDecode()
     {
         $this->assertEquals(
-            '"; ls / > /tmp/foo; # ', $this->unixCodec->decode('\\"\\;\\ ls\\ \\/\\ \\>\\ \\/tmp\\/foo\\;\\ \\#\\ ')
+            '"; ls / > /tmp/foo; # ',
+            $this->unixCodec->decode('\\"\\;\\ ls\\ \\/\\ \\>\\ \\/tmp\\/foo\\;\\ \\#\\ ')
         );
     }
 
-    function testDecodeCharacter()
+    public function testDecodeCharacter()
     {
         $this->assertEquals("<", $this->unixCodec->decode("\\<"));
     }

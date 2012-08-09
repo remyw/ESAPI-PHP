@@ -52,7 +52,7 @@ require_once dirname(__FILE__) . '/../../src/filters/SafeRequest.php';
  */
 class HttpUtilitiesTest extends PHPUnit_Framework_TestCase
 {
-    private $_httpUtils = null;
+    private $httpUtils = null;
 
     /**
      * Constructor ensures global ESAPI is set and stores an instance of
@@ -62,18 +62,17 @@ class HttpUtilitiesTest extends PHPUnit_Framework_TestCase
      */
     public function __construct()
     {
-        $this->_httpUtils = ESAPI::getHTTPUtilities();
+        $this->httpUtils = ESAPI::getHTTPUtilities();
     }
-
 
     /**
      * Test of addCSRFToken method of class HTTPUtilities.
      *
      * @return bool True on Pass.
      */
-    function testAddCSRFToken()
+    public function testAddCSRFToken()
     {
-        $csrf1 = $this->_httpUtils->addCSRFToken("/test1");
+        $csrf1 = $this->httpUtils->addCSRFToken("/test1");
         $this->assertTrue(
             preg_match(
                 '/^\x2ftest1\?[a-z0-9]{8,8}(?:\-[a-z0-9]{4,4}){3,3}\-[a-z0-9]{12,12}$/',
@@ -81,7 +80,7 @@ class HttpUtilitiesTest extends PHPUnit_Framework_TestCase
             ) === 1
         );
 
-        $csrf2 = $this->_httpUtils->addCSRFToken("/test2?one=two");
+        $csrf2 = $this->httpUtils->addCSRFToken("/test2?one=two");
         $this->assertTrue(
             preg_match(
                 '/^\x2ftest2\?one=two&[a-z0-9]{8,8}(?:\-[a-z0-9]{4,4}){3,3}\-[a-z0-9]{12,12}$/',
@@ -90,13 +89,12 @@ class HttpUtilitiesTest extends PHPUnit_Framework_TestCase
         );
     }
 
-
     /**
      * Test of getCookie method of class HTTPUtilities.
      *
      * @return bool True on Pass.
      */
-    function testGetCookie()
+    public function testGetCookie()
     {
         $req = new SafeRequest(
             array(
@@ -105,9 +103,8 @@ class HttpUtilitiesTest extends PHPUnit_Framework_TestCase
                 )
             )
         );
-        $this->assertEquals('bar', $this->_httpUtils->getCookie($req, 'foo'));
+        $this->assertEquals('bar', $this->httpUtils->getCookie($req, 'foo'));
     }
-
 
     /**
      * Test of assertSecureRequest method of class HTTPUtilities.
@@ -115,7 +112,7 @@ class HttpUtilitiesTest extends PHPUnit_Framework_TestCase
      *
      * @return bool True on Pass.
      */
-    function testAssertSecureRequestInputSecure()
+    public function testAssertSecureRequestInputSecure()
     {
         $req = new SafeRequest(
             array(
@@ -125,9 +122,8 @@ class HttpUtilitiesTest extends PHPUnit_Framework_TestCase
                 )
             )
         );
-        $this->assertNull($this->_httpUtils->assertSecureRequest($req));
+        $this->assertNull($this->httpUtils->assertSecureRequest($req));
     }
-
 
     /**
      * Test of assertSecureRequest method of class HTTPUtilities.
@@ -135,7 +131,7 @@ class HttpUtilitiesTest extends PHPUnit_Framework_TestCase
      *
      * @return bool True on Pass.
      */
-    function testAssertSecureRequestInputInsecureNoTLS()
+    public function testAssertSecureRequestInputInsecureNoTLS()
     {
         $req = new SafeRequest(
             array(
@@ -146,9 +142,8 @@ class HttpUtilitiesTest extends PHPUnit_Framework_TestCase
             )
         );
         $this->setExpectedException('AccessControlException');
-        $this->_httpUtils->assertSecureRequest($req);
+        $this->httpUtils->assertSecureRequest($req);
     }
-
 
     /**
      * Test of assertSecureRequest method of class HTTPUtilities.
@@ -156,7 +151,7 @@ class HttpUtilitiesTest extends PHPUnit_Framework_TestCase
      *
      * @return bool True on Pass.
      */
-    function testAssertSecureRequestInputInsecureNoTLSAlt()
+    public function testAssertSecureRequestInputInsecureNoTLSAlt()
     {
         $req = new SafeRequest(
             array(
@@ -167,9 +162,8 @@ class HttpUtilitiesTest extends PHPUnit_Framework_TestCase
             )
         );
         $this->setExpectedException('AccessControlException');
-        $this->_httpUtils->assertSecureRequest($req);
+        $this->httpUtils->assertSecureRequest($req);
     }
-
 
     /**
      * Test of assertSecureRequest method of class HTTPUtilities.
@@ -177,7 +171,7 @@ class HttpUtilitiesTest extends PHPUnit_Framework_TestCase
      *
      * @return bool True on Pass.
      */
-    function testAssertSecureRequestInputInsecureNotPOST()
+    public function testAssertSecureRequestInputInsecureNotPOST()
     {
         $req = new SafeRequest(
             array(
@@ -188,9 +182,8 @@ class HttpUtilitiesTest extends PHPUnit_Framework_TestCase
             )
         );
         $this->setExpectedException('AccessControlException');
-        $this->_httpUtils->assertSecureRequest($req);
+        $this->httpUtils->assertSecureRequest($req);
     }
-
 
     /**
      * Test of assertSecureRequest method of class HTTPUtilities.
@@ -198,7 +191,7 @@ class HttpUtilitiesTest extends PHPUnit_Framework_TestCase
      *
      * @return bool True on Pass.
      */
-    function testAssertSecureRequestInputCannotCheck()
+    public function testAssertSecureRequestInputCannotCheck()
     {
         $req = new SafeRequest(
             array(
@@ -208,7 +201,7 @@ class HttpUtilitiesTest extends PHPUnit_Framework_TestCase
             )
         );
         $this->setExpectedException('EnterpriseSecurityException');
-        $this->_httpUtils->assertSecureRequest($req);
+        $this->httpUtils->assertSecureRequest($req);
     }
 
 }

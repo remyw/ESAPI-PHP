@@ -50,13 +50,12 @@ define('CD_LOG', 'CodecDebug');
  */
 class CodecDebug
 {
-    private $_verb;
-    private $_buf = null;
-    private $_allowRecurse = true;
-    private $_enabled = false;
+    private $verb;
+    private $buf = null;
+    private $allowRecurse = true;
+    private $enabled = false;
 
-    private static $_instance;
-
+    private static $instance;
 
     /**
      * Prevents public cloning of this singleton class.
@@ -67,20 +66,18 @@ class CodecDebug
     {
     }
 
-
     /**
      * Private constructor ensures CodecDebug can only be instantiated privately.
-     * Stores boolean true in $_enabled if SepcialDebugging is enabled.  This object
-     * will only produce output if $_enabled is true.
+     * Stores boolean true in $enabled if SepcialDebugging is enabled.  This object
+     * will only produce output if $enabled is true.
      *
      * @return null
      */
     private function __construct()
     {
-        $this->_enabled
+        $this->enabled
             = ESAPI::getSecurityConfiguration()->getSpecialDebugging();
     }
-
 
     /**
      * Retrieves the singleton instance of CodecDebug.
@@ -89,12 +86,11 @@ class CodecDebug
      */
     public static function getInstance()
     {
-        if (!self::$_instance) {
-            self::$_instance = new CodecDebug();
+        if (!self::$instance) {
+            self::$instance = new CodecDebug();
         }
-        return self::$_instance;
+        return self::$instance;
     }
-
 
     /**
      * Adds a string of one or more encoded characters to the debug output.
@@ -106,16 +102,15 @@ class CodecDebug
      */
     public function addEncodedString($stringNormalizedEncoding)
     {
-        if ($this->_enabled == false
+        if ($this->enabled == false
             || !ESAPI::getAuditor(CD_LOG)->isDebugEnabled()
-            || !$this->_allowRecurse
+            || !$this->allowRecurse
         ) {
             return;
         }
-        $this->_verb = "Decod";
-        $this->_addString($stringNormalizedEncoding);
+        $this->verb = "Decod";
+        $this->addString($stringNormalizedEncoding);
     }
-
 
     /**
      * Adds a string of one or more unencoded characters to the debug output.
@@ -127,20 +122,19 @@ class CodecDebug
      */
     public function addUnencodedString($stringNormalizedEncoding)
     {
-        if ($this->_enabled == false
+        if ($this->enabled == false
             || !ESAPI::getAuditor(CD_LOG)->isDebugEnabled()
-            || !$this->_allowRecurse
+            || !$this->allowRecurse
         ) {
             return;
         }
-        $this->_verb = "Encod";
-        $this->_addString($stringNormalizedEncoding);
+        $this->verb = "Encod";
+        $this->addString($stringNormalizedEncoding);
     }
-
 
     /**
      * output appends the final output from a codec (either an encoded or
-     * decoded string) to the contents of $this->_buf and then logs this
+     * decoded string) to the contents of $this->buf and then logs this
      * debugging output before resetting the CodecDebug instance ready for
      * reuse.
      *
@@ -150,35 +144,34 @@ class CodecDebug
      */
     public function output($codecOutput)
     {
-        if ($this->_enabled == false
+        if ($this->enabled == false
             || !ESAPI::getAuditor(CD_LOG)->isDebugEnabled()
-            || !$this->_allowRecurse
+            || !$this->allowRecurse
         ) {
             return;
         }
-        if ($this->_buf === null) {
+        if ($this->buf === null) {
             return; // the codec being tested has not added any normalised inputs.
         }
         $output = '';
 
-        $this->_allowRecurse = false;
+        $this->allowRecurse = false;
         $htmlCodecOutput = ESAPI::getEncoder()->encodeForHTML($codecOutput);
         if ($htmlCodecOutput == '') {
-            $output = $this->_buf . $this->_verb . 'ed string was an empty string.';
+            $output = $this->buf . $this->verb . 'ed string was an empty string.';
         } else {
-            $output = $this->_buf . $this->_verb . 'ed: [' . $htmlCodecOutput . ']';
+            $output = $this->buf . $this->verb . 'ed: [' . $htmlCodecOutput . ']';
         }
 
         ESAPI::getAuditor(CD_LOG)->debug(Auditor::SECURITY, true, $output);
-        $this->_allowRecurse = true;
+        $this->allowRecurse = true;
 
-        $this->_buf = null;
-        $this->_verb = null;
+        $this->buf = null;
+        $this->verb = null;
     }
 
-
     /**
-     * _addString is called by addEncodedString or addUnencodedString and adds
+     * addString is called by addEncodedString or addUnencodedString and adds
      * Codec input to the buffer character by character.  It also adds some
      * backtrace information to the buffer before adding any characters.
      *
@@ -186,46 +179,45 @@ class CodecDebug
      *
      * @return null
      */
-    private function _addString($string)
+    private function addString($string)
     {
-        if ($this->_enabled == false
+        if ($this->enabled == false
             || !ESAPI::getAuditor(CD_LOG)->isDebugEnabled()
-            || !$this->_allowRecurse
+            || !$this->allowRecurse
         ) {
             return;
         }
         // start with some details about the caller
-        if ($this->_buf === null) {
+        if ($this->buf === null) {
             $caller = null;
             try {
-                $caller = $this->_shortTrace();
+                $caller = $this->shortTrace();
             } catch (Exception $e) {
-                $caller = $this->_verb . 'ing';
+                $caller = $this->verb . 'ing';
             }
-            $this->_buf = $caller . ":\n";
+            $this->buf = $caller . ":\n";
         }
         // add the string, char by char
         $len = mb_strlen($string, 'UTF-32');
         if ($len == 0) {
-            $this->_addNormalized('');
+            $this->addNormalized('');
             return;
         }
         for ($i = 0; $i < $len; $i++) {
             $char = mb_substr($string, $i, 1, 'UTF-32');
-            $this->_addNormalized($char);
+            $this->addNormalized($char);
         }
     }
 
-
     /**
-     * _addNormalized is called by _addString and adds a character (with
+     * addNormalized is called by addString and adds a character (with
      * accompanying debug info) to the buffer.
      *
      * @param string $charNormalizedEncoding a single character.
      *
      * @return null
      */
-    private function _addNormalized($charNormalizedEncoding)
+    private function addNormalized($charNormalizedEncoding)
     {
         ob_start();
         var_dump($charNormalizedEncoding);
@@ -234,13 +226,12 @@ class CodecDebug
         if (!preg_match('/\(length=([0-9]+)\)/', $dumpedVar, $matches)) {
             $matches[1] = strtok(stristr($dumpedVar, '('), '"');
         }
-        $this->_buf .= 'Normalized codec input: ' .
+        $this->buf .= 'Normalized codec input: ' .
             $matches[1] .
             ' bytes [' .
             substr(var_export($charNormalizedEncoding, true), 0) .
             "]\n";
     }
-
 
     /**
      * Convenience method which returns a shortened backtrace.  it's not very
@@ -249,7 +240,7 @@ class CodecDebug
      *
      * @return string shortened backtrace.
      */
-    private function _shortTrace()
+    private function shortTrace()
     {
         $dt = debug_backtrace();
         $i = 0;
@@ -261,7 +252,7 @@ class CodecDebug
                 && array_key_exists('class', $dt[$i])
                 && $dt[$i]['class'] == 'Codec'
             ) {
-                if ($i == 4) { // this is a bit tenuous, but it should suffice...
+                if ($i == 4) {
                     $pos = 6;
                     $trace .= $dt[$pos]['class'] . '-&gt;' .
                         $dt[$pos--]['function'] . ', ';

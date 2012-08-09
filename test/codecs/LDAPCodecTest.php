@@ -23,7 +23,7 @@ class LDAPCodecTest extends PHPUnit_Framework_TestCase
 {
     private $ldapCodec = null;
 
-    function setUp()
+    public function setUp()
     {
         global $ESAPI;
 
@@ -34,8 +34,9 @@ class LDAPCodecTest extends PHPUnit_Framework_TestCase
         // $this->ldapCodec = new LDAPCodec();
     }
 
-    function testEncode()
+    public function testEncode()
     {
+        $this->markTestIncomplete('This test has not been implemented yet.');
         $immune = array("");
 
         $this->fail();
@@ -43,21 +44,24 @@ class LDAPCodecTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('TODO', $this->ldapCodec->encode($immune, "esapi)(|(password=*)"));
     }
 
-    function testEncodeCharacter()
+    public function testEncodeCharacter()
     {
+        $this->markTestIncomplete('This test has not been implemented yet.');
         $immune = array("");
         $this->fail();
         $this->assertEquals("TODO", $this->ldapCodec->encode($immune, "<"));
     }
 
-    function testDecode()
+    public function testDecode()
     {
+        $this->markTestIncomplete('This test has not been implemented yet.');
         $this->fail();
         $this->assertEquals("esapi)(|(password=*)", $this->ldapCodec->decode('TODO'));
     }
 
-    function testDecodeCharacter()
+    public function testDecodeCharacter()
     {
+        $this->markTestIncomplete('This test has not been implemented yet.');
         $this->fail();
         $this->assertEquals("<", $this->ldapCodec->decode("TODO"));
     }

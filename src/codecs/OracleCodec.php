@@ -40,7 +40,7 @@ class OracleCodec extends Codec
     /**
      * Public Constructor
      */
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
     }
@@ -57,7 +57,7 @@ class OracleCodec extends Codec
         // Normalize encoding to UTF-32
         $_4ByteUnencodedOutput = $this->normalizeEncoding($c);
 
-        // Start with nothing; format it to match the encoding of the string passed 
+        // Start with nothing; format it to match the encoding of the string passed
         //as an argument.
         $encodedOutput = mb_convert_encoding("", $initialEncoding);
 
@@ -117,3 +117,4 @@ class OracleCodec extends Codec
         );
     }
 }
+

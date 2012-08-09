@@ -45,9 +45,8 @@ require_once dirname(__FILE__) . '/StringValidationRule.php';
  */
 class CreditCardValidationRule extends BaseValidationRule
 {
-    private $_ccrule = null;
+    private $ccrule = null;
     const CREDIT_CARD_VALIDATOR_KEY = 'CreditCard';
-
 
     /**
      * Constructor sets-up the validation rule with a descriptive name for this
@@ -70,10 +69,9 @@ class CreditCardValidationRule extends BaseValidationRule
         if ($validationRule instanceof ValidationRule) {
             $this->ccrule = $validationRule;
         } else {
-            $this->ccrule = $this->_getCCRule();
+            $this->ccrule = $this->getCCRule();
         }
     }
-
 
     /**
      * Returns an instance of StringValidationRule constructed with a regex
@@ -82,7 +80,7 @@ class CreditCardValidationRule extends BaseValidationRule
      *
      * @return object object of type StringValidationRule.
      */
-    private function _getCCRule()
+    private function getCCRule()
     {
         global $ESAPI;
         $config = ESAPI::getSecurityConfiguration();
@@ -96,7 +94,6 @@ class CreditCardValidationRule extends BaseValidationRule
         $ccr->setAllowNull(false);
         return $ccr;
     }
-
 
     /**
      * Returns the canonicalized, valid input.
@@ -159,14 +156,13 @@ class CreditCardValidationRule extends BaseValidationRule
             throw new ValidationException(
                 "{$context}: Invalid Credit Card Number",
                 "Input Credit Card Number contains errors - check digit failure:" .
-                    " context={$context}",
+                " context={$context}",
                 $context
             );
         }
 
         return $canonical;
     }
-
 
     /**
      * Returns the supplied input string after removing any non-numeric

@@ -55,10 +55,8 @@ require_once dirname(__FILE__) . '/../IntrusionDetector.php';
  */
 class DefaultIntrusionDetector implements IntrusionDetector
 {
-
-    private $_auditor = null;
-    private $_userEvents = null;
-
+    private $auditor = null;
+    private $userEvents = null;
 
     /**
      * Constructor stores an instance of Auditor for logging and initialises the
@@ -66,12 +64,11 @@ class DefaultIntrusionDetector implements IntrusionDetector
      *
      * @return null
      */
-    function __construct()
+    public function __construct()
     {
-        $this->_auditor = ESAPI::getAuditor('IntrusionDetector');
-        $this->_userEvents = array();
+        $this->auditor = ESAPI::getAuditor('IntrusionDetector');
+        $this->userEvents = array();
     }
-
 
     /**
      * Adds an exception to the IntrusionDetector.
@@ -95,21 +92,25 @@ class DefaultIntrusionDetector implements IntrusionDetector
         }
 
         if ($exception instanceof EnterpriseSecurityException) {
-            $this->_auditor->warning(
-                Auditor::SECURITY, false,
-                $exception->getLogMessage(), $exception
+            $this->auditor->warning(
+                Auditor::SECURITY,
+                false,
+                $exception->getLogMessage(),
+                $exception
             );
         } else {
-            $this->_auditor->warning(
-                Auditor::SECURITY, false,
-                $exception->getMessage(), $exception
+            $this->auditor->warning(
+                Auditor::SECURITY,
+                false,
+                $exception->getMessage(),
+                $exception
             );
         }
 
         // add the exception, which may trigger a detector
         $eventName = get_class($exception);
         try {
-            $this->_addSecurityEvent($eventName);
+            $this->addSecurityEvent($eventName);
         } catch (IntrusionException $intrusionException) {
             $quota = ESAPI::getSecurityConfiguration()->getQuota($eventName);
             $message = 'User exceeded quota of ' . $quota->count . ' per ' .
@@ -122,13 +123,10 @@ class DefaultIntrusionDetector implements IntrusionDetector
                 . implode(', ', $quota->actions) . '.';
 
             foreach ($quota->actions as $action) {
-                $this->_takeSecurityAction($action, $message);
+                $this->takeSecurityAction($action, $message);
             }
         }
-
-
     }
-
 
     /**
      * Adds an event to the IntrusionDetector.
@@ -152,7 +150,7 @@ class DefaultIntrusionDetector implements IntrusionDetector
             return;
         }
 
-        $this->_auditor->warning(
+        $this->auditor->warning(
             Auditor::SECURITY,
             false,
             "Security event {$eventName} received - {$logMessage}"
@@ -160,7 +158,7 @@ class DefaultIntrusionDetector implements IntrusionDetector
 
         // add the event, which may trigger an IntrusionException
         try {
-            $this->_addSecurityEvent($eventName);
+            $this->addSecurityEvent($eventName);
         } catch (IntrusionException $intrusionException) {
             $quota = $secConfig->getQuota($eventName);
             $message = 'User exceeded quota of ' . $quota->count . ' per ' .
@@ -173,11 +171,10 @@ class DefaultIntrusionDetector implements IntrusionDetector
                 . implode(', ', $quota->actions) . '.';
 
             foreach ($quota->actions as $action) {
-                $this->_takeSecurityAction($action, $message);
+                $this->takeSecurityAction($action, $message);
             }
         }
     }
-
 
     /**
      * Take a specified security action.
@@ -190,17 +187,16 @@ class DefaultIntrusionDetector implements IntrusionDetector
      *
      * @return null
      */
-    private function _takeSecurityAction($action, $message)
+    private function takeSecurityAction($action, $message)
     {
         if ($action == 'log') {
-            $this->_auditor->fatal(
+            $this->auditor->fatal(
                 Auditor::SECURITY,
                 false,
                 "INTRUSION - {$message}"
             );
         }
     }
-
 
     /**
      * Adds a security event.  These events are used to check that the user has
@@ -214,7 +210,7 @@ class DefaultIntrusionDetector implements IntrusionDetector
      *
      * @return null
      */
-    private function _addSecurityEvent($eventName)
+    private function addSecurityEvent($eventName)
     {
         // if there is a threshold, then track this event
         $threshold = ESAPI::getSecurityConfiguration()->getQuota($eventName);
@@ -235,35 +231,34 @@ class DefaultIntrusionDetector implements IntrusionDetector
             }
             // If a session was started after events existed then ensure those
             // events are added to the session store
-            if (is_array($this->_userEvents)
-                && $this->_userEvents !== $_SESSION['ESAPI']['IntrusionDetector']['UserEvents']
+            if (is_array($this->userEvents)
+                && $this->userEvents !== $_SESSION['ESAPI']['IntrusionDetector']['UserEvents']
             ) {
                 $_SESSION['ESAPI']['IntrusionDetector']['UserEvents']
-                    = $this->_userEvents;
+                    = $this->userEvents;
             }
             // Assign a reference to the session store
-            $this->_userEvents
+            $this->userEvents
                 =& $_SESSION['ESAPI']['IntrusionDetector']['UserEvents'];
         } else {
-            if (!isset($this->_userEvents)) {
-                $this->_userEvents = array();
+            if (!isset($this->userEvents)) {
+                $this->userEvents = array();
             }
         }
 
         $event = null;
-        if (array_key_exists($eventName, $this->_userEvents)) {
-            $event = $this->_userEvents[$eventName];
+        if (array_key_exists($eventName, $this->userEvents)) {
+            $event = $this->userEvents[$eventName];
         }
         if ($event == null) {
-            $this->_userEvents[$eventName] = new Event($eventName);
-            $event = $this->_userEvents[$eventName];
+            $this->userEvents[$eventName] = new Event($eventName);
+            $event = $this->userEvents[$eventName];
         }
         if ($threshold->count > 0) {
             $event->increment($threshold->count, $threshold->interval);
         }
     }
 }
-
 
 /**
  * Reference implementation of an Intrusion Event.
@@ -284,8 +279,8 @@ class DefaultIntrusionDetector implements IntrusionDetector
  */
 class Event
 {
-    private $_key;
-    private $_times = array();
+    private $key;
+    private $times = array();
 
 
     /**
@@ -304,7 +299,7 @@ class Event
      */
     public function __construct($key)
     {
-        $this->_key = $key;
+        $this->key = $key;
     }
 
 
@@ -336,15 +331,15 @@ class Event
         }
 
         $this->count++;
-        array_push($this->_times, $now);
+        array_push($this->times, $now);
 
         // if the threshold has been exceeded
-        while (sizeof($this->_times) > $count) {
-            array_shift($this->_times);
+        while (sizeof($this->times) > $count) {
+            array_shift($this->times);
         }
 
-        if (sizeof($this->_times) == $count) {
-            $past = reset($this->_times);
+        if (sizeof($this->times) == $count) {
+            $past = reset($this->times);
             if ($past === false) {
                 // this should not happen because events are validated in
                 // SecurityConfiguration...
@@ -354,7 +349,7 @@ class Event
             if ($present - $past < $interval) {
                 throw new IntrusionException(
                     "Threshold exceeded",
-                    "Exceeded threshold for " . $this->_key
+                    "Exceeded threshold for " . $this->key
                 );
             }
         }

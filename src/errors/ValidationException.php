@@ -41,7 +41,7 @@ class ValidationException extends EnterpriseSecurityException
 {
 
     /** The UI reference that caused this ValidationException */
-    private $_context;
+    private $context;
 
     /**
      * Instantiates a new ValidationException.
@@ -53,7 +53,7 @@ class ValidationException extends EnterpriseSecurityException
      *
      * @return does not return a value.
      */
-    function __construct($userMessage = '', $logMessage = '', $context = '')
+    public function __construct($userMessage = '', $logMessage = '', $context = '')
     {
         parent::__construct($userMessage, $logMessage);
         $this->setContext($context);
@@ -67,7 +67,7 @@ class ValidationException extends EnterpriseSecurityException
      */
     public function getContext()
     {
-        return $this->_context;
+        return $this->context;
     }
 
     /**
@@ -79,6 +79,6 @@ class ValidationException extends EnterpriseSecurityException
      */
     public function setContext($context)
     {
-        $this->_context = $context;
+        $this->context = $context;
     }
 }

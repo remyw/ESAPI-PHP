@@ -38,7 +38,7 @@ class PercentCodec extends Codec
     /**
      * Public Constructor
      */
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
     }
@@ -48,14 +48,14 @@ class PercentCodec extends Codec
      */
     public function encodeCharacter($immune, $c)
     {
-        //detect encoding, special-handling for chr(172) and chr(128) to chr(159) 
+        //detect encoding, special-handling for chr(172) and chr(128) to chr(159)
         //which fail to be detected by mb_detect_encoding()
         $initialEncoding = $this->detectEncoding($c);
 
         // Normalize encoding to UTF-32
         $_4ByteUnencodedOutput = $this->normalizeEncoding($c);
 
-        // Start with nothing; format it to match the encoding of the string passed 
+        // Start with nothing; format it to match the encoding of the string passed
         //as an argument.
         $encodedOutput = mb_convert_encoding("", $initialEncoding);
 
@@ -74,7 +74,7 @@ class PercentCodec extends Codec
         // check for alphanumeric characters
         $hex = $this->getHexForNonAlphanumeric($_4ByteCharacter);
         if ($hex === null) {
-            //character is alphanumric, therefore return the character...
+            //character is alphanumeric, therefore return the character...
             return $encodedOutput . chr($ordinalValue);
         }
 
@@ -119,7 +119,7 @@ class PercentCodec extends Codec
         for ($i = 0; $i < $limit; $i++) {
             $c = mb_substr($input, 1 + $i, 1, "UTF-32");
             if ($c != '') {
-                $ph = $this->_parseHex($c);
+                $ph = $this->parseHex($c);
                 if ($ph !== null) {
                     $potentialHexString .= $c;
                 }
@@ -127,7 +127,7 @@ class PercentCodec extends Codec
         }
         if (mb_strlen($potentialHexString, "UTF-32") == 2) {
             $charFromHex = $this->normalizeEncoding(
-                $this->_parseHex($potentialHexString)
+                $this->parseHex($potentialHexString)
             );
             return array(
                 'decodedCharacter' => $charFromHex,
@@ -150,7 +150,7 @@ class PercentCodec extends Codec
      *                of input after decoding 'encodedString' => the string that
      *                was decoded or found to be malformed
      */
-    private function _parseHex($input)
+    private function parseHex($input)
     {
         //todo: encoding should be UTF-32, so why detect it?
         $hexString = mb_convert_encoding("", mb_detect_encoding($input));
@@ -185,7 +185,9 @@ class PercentCodec extends Codec
                 $parsedCharacter = chr($parsedInteger);
             } else {
                 $parsedCharacter = mb_convert_encoding(
-                    '&#' . $parsedInteger . ';', 'UTF-8', 'HTML-ENTITIES'
+                    '&#' . $parsedInteger . ';',
+                    'UTF-8',
+                    'HTML-ENTITIES'
                 );
             }
             return $parsedCharacter;

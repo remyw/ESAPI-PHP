@@ -44,9 +44,9 @@ require_once dirname(__FILE__) . '/../../src/SecurityConfiguration.php';
 class IntrusionDetectorTest extends PHPUnit_Framework_TestCase
 {
 
-    private $_logFileLoc = null;
-    private $_logDateFormat = null;
-    private $_restoreSecCon = null;
+    private $logFileLoc = null;
+    private $logDateFormat = null;
+    private $restoreSecCon = null;
 
 
     /**
@@ -55,7 +55,7 @@ class IntrusionDetectorTest extends PHPUnit_Framework_TestCase
      *
      * @return null
      */
-    function __construct()
+    public function __construct()
     {
         global $ESAPI;
         if (!isset($ESAPI)) {
@@ -63,28 +63,26 @@ class IntrusionDetectorTest extends PHPUnit_Framework_TestCase
                 dirname(__FILE__) . '/../testresources/ESAPI.xml'
             );
         }
-        $this->_restoreSecCon = ESAPI::getSecurityConfiguration();
+        $this->restoreSecCon = ESAPI::getSecurityConfiguration();
         ESAPI::setSecurityConfiguration(null);
         // Use a custom properties file.
         $sc = ESAPI::getSecurityConfiguration(
             dirname(__FILE__) . '/../testresources/ESAPI_IDS_Tests.xml'
         );
 
-        $this->_logFileLoc = getLogFileLoc();
-        $this->_logDateFormat = $sc->getLogFileDateFormat();
+        $this->logFileLoc = getLogFileLoc();
+        $this->logDateFormat = $sc->getLogFileDateFormat();
     }
-
 
     /**
      * Destructor restores the original SecurityConfiguration.
      *
      * @return null
      */
-    function __destruct()
+    public function __destruct()
     {
-        ESAPI::setSecurityConfiguration($this->_restoreSecCon);
+        ESAPI::setSecurityConfiguration($this->restoreSecCon);
     }
-
 
     /**
      * Test to ensure that EnterpriseSecurityExceptions are automatically added
@@ -93,9 +91,9 @@ class IntrusionDetectorTest extends PHPUnit_Framework_TestCase
      *
      * @return bool True on Pass.
      */
-    function testExceptionAutoAdd()
+    public function testExceptionAutoAdd()
     {
-        if ($this->_logFileLoc === false) {
+        if ($this->logFileLoc === false) {
             $this->fail(
                 'Cannot perform this test because the log file cannot be found.'
             );
@@ -104,25 +102,25 @@ class IntrusionDetectorTest extends PHPUnit_Framework_TestCase
         $logMsg = 'testExceptionAutoAdd_';
         $logMsg .= getRandomAlphaNumString(32);
         new EnterpriseSecurityException(
-            'user message - testExceptionAutoAdd', $logMsg
+            'user message - testExceptionAutoAdd',
+            $logMsg
         );
 
         $m = 'Test attempts to detect exception log message in logfile - %s';
         $this->assertTrue(
-            fileContainsExpected($this->_logFileLoc, $logMsg),
+            fileContainsExpected($this->logFileLoc, $logMsg),
             $m
         );
     }
-
 
     /**
      * Test of addException method of class DefaultIntrusionDetector.
      *
      * @return bool True on Pass.
      */
-    function testAddException()
+    public function testAddException()
     {
-        if ($this->_logFileLoc === false) {
+        if ($this->logFileLoc === false) {
             $this->fail(
                 'Cannot perform this test because the log file cannot be found.'
             );
@@ -134,11 +132,10 @@ class IntrusionDetectorTest extends PHPUnit_Framework_TestCase
 
         $m = 'Test attempts to detect exception log message in logfile - %s';
         $this->assertTrue(
-            fileContainsExpected($this->_logFileLoc, $logMsg),
+            fileContainsExpected($this->logFileLoc, $logMsg),
             $m
         );
     }
-
 
     /**
      * Test of addEvent method of DefaultIntrusionDetector.  This test checks
@@ -148,9 +145,9 @@ class IntrusionDetectorTest extends PHPUnit_Framework_TestCase
      *
      * @return bool True on Pass.
      */
-    function testAddEvent()
+    public function testAddEvent()
     {
-        if ($this->_logFileLoc === false) {
+        if ($this->logFileLoc === false) {
             $this->fail(
                 'Cannot perform this test because the log file cannot be found.'
             );
@@ -178,12 +175,15 @@ class IntrusionDetectorTest extends PHPUnit_Framework_TestCase
             ' action log message in logfile - %s';
         $this->assertTrue(
             fileContainsExpected(
-                $this->_logFileLoc, $find, $date, 5, $this->_logDateFormat
+                $this->logFileLoc,
+                $find,
+                $date,
+                5,
+                $this->logDateFormat
             ),
             $m
         );
     }
-
 
     /**
      * This test shows that IntrusionExceptions can be tracked by
@@ -191,9 +191,9 @@ class IntrusionDetectorTest extends PHPUnit_Framework_TestCase
      *
      * @return bool True on Pass.
      */
-    function testAddIntrusionExceptionIsTracked()
+    public function testAddIntrusionExceptionIsTracked()
     {
-        if ($this->_logFileLoc === false) {
+        if ($this->logFileLoc === false) {
             $this->fail(
                 'Cannot perform this test because the log file cannot be found.'
             );
@@ -222,7 +222,11 @@ class IntrusionDetectorTest extends PHPUnit_Framework_TestCase
             ' action log message in logfile - %s';
         $this->assertTrue(
             fileContainsExpected(
-                $this->_logFileLoc, $find, $date, 5, $this->_logDateFormat
+                $this->logFileLoc,
+                $find,
+                $date,
+                5,
+                $this->logDateFormat
             ),
             $m
         );
@@ -234,9 +238,9 @@ class IntrusionDetectorTest extends PHPUnit_Framework_TestCase
      *
      * @return bool True on Pass.
      */
-    function testRapidIDSEvents()
+    public function testRapidIDSEvents()
     {
-        if ($this->_logFileLoc === false) {
+        if ($this->logFileLoc === false) {
             $this->fail(
                 'Cannot perform this test because the log file cannot be found.'
             );
@@ -267,7 +271,11 @@ class IntrusionDetectorTest extends PHPUnit_Framework_TestCase
             ' action log message in logfile - %s';
         $this->assertTrue(
             fileContainsExpected(
-                $this->_logFileLoc, $find, $date, 5, $this->_logDateFormat
+                $this->logFileLoc,
+                $find,
+                $date,
+                5,
+                $this->logDateFormat
             ),
             $m
         );
@@ -280,9 +288,9 @@ class IntrusionDetectorTest extends PHPUnit_Framework_TestCase
      *
      * @return bool True on Pass.
      */
-    function testTripTwice()
+    public function testTripTwice()
     {
-        if ($this->_logFileLoc === false) {
+        if ($this->logFileLoc === false) {
             $this->fail(
                 'Cannot perform this test because the log file cannot be found.'
             );
@@ -311,7 +319,11 @@ class IntrusionDetectorTest extends PHPUnit_Framework_TestCase
             ' action log message in logfile - %s';
         $this->assertTrue(
             fileContainsExpected(
-                $this->_logFileLoc, $find, $date, 5, $this->_logDateFormat
+                $this->logFileLoc,
+                $find,
+                $date,
+                5,
+                $this->logDateFormat
             ),
             $m
         );
@@ -334,9 +346,9 @@ class IntrusionDetectorTest extends PHPUnit_Framework_TestCase
      *
      * @return bool True on Pass.
      */
-    function testSlidingInterval()
+    public function testSlidingInterval()
     {
-        if ($this->_logFileLoc === false) {
+        if ($this->logFileLoc === false) {
             $this->fail(
                 'Cannot perform this test because the log file cannot be found.'
             );
@@ -376,7 +388,11 @@ class IntrusionDetectorTest extends PHPUnit_Framework_TestCase
         );
         $this->assertFalse(
             fileContainsExpected(
-                $this->_logFileLoc, $find, $date, 10, $this->_logDateFormat
+                $this->logFileLoc,
+                $find,
+                $date,
+                10,
+                $this->logDateFormat
             ),
             $m
         );
@@ -386,7 +402,11 @@ class IntrusionDetectorTest extends PHPUnit_Framework_TestCase
         );
         $this->assertFalse(
             fileContainsExpected(
-                $this->_logFileLoc, $find, $date, 10, $this->_logDateFormat
+                $this->logFileLoc,
+                $find,
+                $date,
+                10,
+                $this->logDateFormat
             ),
             $m
         );
@@ -398,7 +418,11 @@ class IntrusionDetectorTest extends PHPUnit_Framework_TestCase
         );
         $this->assertTrue(
             fileContainsExpected(
-                $this->_logFileLoc, $find, $date, 10, $this->_logDateFormat
+                $this->logFileLoc,
+                $find,
+                $date,
+                10,
+                $this->logDateFormat
             ),
             $m
         );

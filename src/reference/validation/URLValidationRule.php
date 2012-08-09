@@ -39,7 +39,7 @@ require_once dirname(__FILE__) . '/StringValidationRule.php';
  */
 class URLValidationRule extends StringValidationRule
 {
-    private $_auditor = null;
+    private $auditor = null;
 
     /**
      * Constructor sets-up the validation rule with a descriptive name for this
@@ -55,15 +55,15 @@ class URLValidationRule extends StringValidationRule
      * @return does not return a value.
      */
     public function __construct(
-        $typeName, $encoder = null,
+        $typeName,
+        $encoder = null,
         $whitelistPattern = null
-    )
-    {
+    ) {
         global $ESAPI;
 
         parent::__construct($typeName, $encoder);
 
-        $this->_auditor = $ESAPI->getAuditor("URLValidationRule");
+        $this->auditor = $ESAPI->getAuditor("URLValidationRule");
     }
 
     /**
@@ -99,7 +99,7 @@ class URLValidationRule extends StringValidationRule
             throw new ValidationException(
                 'URL Input may not be valid.',
                 'Resorted to string comparsion of canonicalized and purified' .
-                    ' URL input - result was Not Equal',
+                ' URL input - result was Not Equal',
                 $context
             );
         }

@@ -22,7 +22,7 @@ class Base64CodecTest extends PHPUnit_Framework_TestCase
 {
     private $base64Codec = null;
 
-    function setUp()
+    public function setUp()
     {
         global $ESAPI;
 
@@ -33,7 +33,7 @@ class Base64CodecTest extends PHPUnit_Framework_TestCase
         $this->base64Codec = new Base64Codec();
     }
 
-    function testEncode()
+    public function testEncode()
     {
         $this->assertEquals(
             'Ij48c2NyaXB0PmFsZXJ0KC9YU1MvKTwvc2NyaXB0Pjxmb28gYXR0cj0i',
@@ -41,12 +41,12 @@ class Base64CodecTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    function testEncodeCharacter()
+    public function testEncodeCharacter()
     {
         $this->assertEquals("PA==", $this->base64Codec->encode("<"));
     }
 
-    function testDecode()
+    public function testDecode()
     {
         $this->assertEquals(
             '"><script>alert(/XSS/)</script><foo attr="',
@@ -54,7 +54,7 @@ class Base64CodecTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    function testDecodeCharacter()
+    public function testDecodeCharacter()
     {
         $this->assertEquals("<", $this->base64Codec->decode("PA=="));
     }

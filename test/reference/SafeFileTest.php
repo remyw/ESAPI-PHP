@@ -57,13 +57,12 @@ class SafeFileTest extends PHPUnit_Framework_TestCase
         }
     }
 
-
     /**
      * Test constructor of class SafeFile.
      *
      * @return bool True on Pass.
      */
-    function testSafeFile()
+    public function testSafeFile()
     {
         $config = ESAPI::getSecurityConfiguration();
         $file = $config->getResourceDirectory() . '/ESAPI.xml';
@@ -81,13 +80,12 @@ class SafeFileTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($sf && $sf->isReadable());
     }
 
-
     /**
      * Test constructor of class SafeFile with Invalid path.
      *
      * @return bool True on Pass.
      */
-    function testSafeFileWithNullByteInFileName()
+    public function testSafeFileWithNullByteInFileName()
     {
         $config = ESAPI::getSecurityConfiguration();
         $file = $config->getResourceDirectory() . '/ESAPI.xml' . chr(0);
@@ -96,13 +94,12 @@ class SafeFileTest extends PHPUnit_Framework_TestCase
         $sf = new SafeFile($file);
     }
 
-
     /**
      * Test constructor of class SafeFile with Valid path.
      *
      * @return bool True on Pass.
      */
-    function testSafeFileWithDevNull()
+    public function testSafeFileWithDevNull()
     {
         $file = null;
         if (substr(PHP_OS, 0, 3) == 'WIN') {
@@ -120,7 +117,6 @@ class SafeFileTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($sf->isReadable());
     }
 
-
     /**
      * Test class SafeFile with Invalid path.
      * On windows, this test will bypass the protection provided by SplFileObject
@@ -130,7 +126,7 @@ class SafeFileTest extends PHPUnit_Framework_TestCase
      *
      * @return bool True on Pass.
      */
-    function testSafeFileWithDevNullAndPercentEncoding()
+    public function testSafeFileWithDevNullAndPercentEncoding()
     {
         $file = null;
         if (substr(PHP_OS, 0, 3) == 'WIN') {
@@ -144,13 +140,12 @@ class SafeFileTest extends PHPUnit_Framework_TestCase
         $sf = new SafeFile($file);
     }
 
-
     /**
      * Test constructor of class SafeFile with Invalid path.
      *
      * @return bool True on Pass.
      */
-    function testSafeFileWithNullByteInDirName()
+    public function testSafeFileWithNullByteInDirName()
     {
         $config = ESAPI::getSecurityConfiguration();
         $file = $config->getResourceDirectory() . chr(0) . '/ESAPI.xml';
@@ -159,13 +154,12 @@ class SafeFileTest extends PHPUnit_Framework_TestCase
         $sf = new SafeFile($file);
     }
 
-
     /**
      * Test constructor of class SafeFile with Invalid path.
      *
      * @return bool True on Pass.
      */
-    function testSafeFileWithPercentEncodingInFileName01()
+    public function testSafeFileWithPercentEncodingInFileName01()
     {
         $config = ESAPI::getSecurityConfiguration();
         $file = $config->getResourceDirectory() . '/ESAPI.xml%00';
@@ -174,13 +168,12 @@ class SafeFileTest extends PHPUnit_Framework_TestCase
         $sf = new SafeFile($file);
     }
 
-
     /**
      * Test constructor of class SafeFile with Invalid path.
      *
      * @return bool True on Pass.
      */
-    function testSafeFileWithPercentEncodingInFileName02()
+    public function testSafeFileWithPercentEncodingInFileName02()
     {
         $config = ESAPI::getSecurityConfiguration();
         $file = $config->getResourceDirectory() . '/ESAPI.xml%3C';
@@ -189,13 +182,12 @@ class SafeFileTest extends PHPUnit_Framework_TestCase
         $sf = new SafeFile($file);
     }
 
-
     /**
      * Test constructor of class SafeFile with Invalid path.
      *
      * @return bool True on Pass.
      */
-    function testSafeFileWithPercentEncodingInFileName03()
+    public function testSafeFileWithPercentEncodingInFileName03()
     {
         $config = ESAPI::getSecurityConfiguration();
         $file = $config->getResourceDirectory() . '/ESAPI.xml%3c';
@@ -204,13 +196,12 @@ class SafeFileTest extends PHPUnit_Framework_TestCase
         $sf = new SafeFile($file);
     }
 
-
     /**
      * Test constructor of class SafeFile with Invalid path.
      *
      * @return bool True on Pass.
      */
-    function testSafeFileWithPercentEncodingInFileName04()
+    public function testSafeFileWithPercentEncodingInFileName04()
     {
         $config = ESAPI::getSecurityConfiguration();
         $file = $config->getResourceDirectory() . '/ESAPI.xml%Ac';
@@ -219,13 +210,12 @@ class SafeFileTest extends PHPUnit_Framework_TestCase
         $sf = new SafeFile($file);
     }
 
-
     /**
      * Test constructor of class SafeFile with Invalid path.
      *
      * @return bool True on Pass.
      */
-    function testSafeFileWithPercentEncodingInFile()
+    public function testSafeFileWithPercentEncodingInFile()
     {
         $config = ESAPI::getSecurityConfiguration();
         $file = $config->getResourceDirectory() . "%00/ESAPI.xml";
@@ -234,13 +224,12 @@ class SafeFileTest extends PHPUnit_Framework_TestCase
         $sf = new SafeFile($file);
     }
 
-
     /**
      * Test constructor of class SafeFile with Invalid path.
      *
      * @return bool True on Pass.
      */
-    function testSafeFileIllegalCharacter()
+    public function testSafeFileIllegalCharacter()
     {
         $fileIllegals = array('/', ':', '*', '?', '<', '>', '|', '\\');
         $dirIllegals = array('*', '?', '<', '>', '|');
@@ -272,13 +261,12 @@ class SafeFileTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(true);
     }
 
-
     /**
      * Test constructor of class SafeFile with Invalid path.
      *
      * @return bool True on Pass.
      */
-    function testSafeFileHighByteInFileName()
+    public function testSafeFileHighByteInFileName()
     {
         $config = ESAPI::getSecurityConfiguration();
         $file = $config->getResourceDirectory() . "/ESAPI" . chr(200) . ".xml";
@@ -287,13 +275,12 @@ class SafeFileTest extends PHPUnit_Framework_TestCase
         $sf = new SafeFile($file);
     }
 
-
     /**
      * Test constructor of class SafeFile with Invalid path.
      *
      * @return bool True on Pass.
      */
-    function testSafeFileHighByteInDirName()
+    public function testSafeFileHighByteInDirName()
     {
         $config = ESAPI::getSecurityConfiguration();
         $file = $config->getResourceDirectory() . chr(200) . "/ESAPI.xml";
@@ -302,13 +289,12 @@ class SafeFileTest extends PHPUnit_Framework_TestCase
         $sf = new SafeFile($file);
     }
 
-
     /**
      * Test constructor of class SafeFile with Invalid path.
      *
      * @return bool True on Pass.
      */
-    function testSafeFileLowByteInDirName()
+    public function testSafeFileLowByteInDirName()
     {
         $config = ESAPI::getSecurityConfiguration();
         $file = $config->getResourceDirectory() . chr(8) . "/ESAPI.xml";
@@ -317,13 +303,12 @@ class SafeFileTest extends PHPUnit_Framework_TestCase
         $sf = new SafeFile($file);
     }
 
-
     /**
      * Test constructor of class SafeFile with Invalid path.
      *
      * @return bool True on Pass.
      */
-    function testSafeFileLowByteInFileName()
+    public function testSafeFileLowByteInFileName()
     {
         $config = ESAPI::getSecurityConfiguration();
         $file = $config->getResourceDirectory() . "/ESAPI" . chr(8) . ".xml";
@@ -332,13 +317,12 @@ class SafeFileTest extends PHPUnit_Framework_TestCase
         $sf = new SafeFile($file);
     }
 
-
     /**
      * Test null byte injection.
      *
      * @return bool True on Pass.
      */
-    function testURILocal()
+    public function testURILocal()
     {
         $file = null;
         if (substr(PHP_OS, 0, 3) == 'WIN') {
@@ -361,13 +345,12 @@ class SafeFileTest extends PHPUnit_Framework_TestCase
         $sf = new SafeFile($file);
     }
 
-
     /**
      * Test null byte injection.
      *
      * @return bool True on Pass.
      */
-    function testURIRemote()
+    public function testURIRemote()
     {
         $file = 'http://www.google.com/index.html';
 
@@ -384,32 +367,4 @@ class SafeFileTest extends PHPUnit_Framework_TestCase
         $this->setExpectedException('ValidationException');
         $sf = new SafeFile($file);
     }
-
-    /*
-    function testDetectForbiddenCharacter()
-    {
-        $config = ESAPI::getSecurityConfiguration();
-
-        for ($i = 0 ; $i < 256 ; $i++) {
-            $file = $config->getResourceDirectory() . "/ESAPI.xml" . chr($i);
-
-            try {
-                @$f = new SplFileObject($file);
-                if ($f->isReadable()) {
-
-                    try {
-                        $sf = new SafeFile($file);
-                        $this->fail();
-
-                    } catch (Exception $e) {
-                        //Expected
-                    }
-
-                }
-            } catch (Exception $e) {
-                //Expected
-            }
-        }
-    }
-    */
 }

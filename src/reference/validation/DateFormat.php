@@ -37,7 +37,7 @@
  */
 class DateFormat
 {
-    private $_format = array();
+    private $format = array();
 
     const DATE_SMALL = 'SMALL';
     const DATE_MEDIUM = 'MEDIUM';
@@ -52,7 +52,7 @@ class DateFormat
      *
      * @return does not return a value.
      */
-    function __construct($format = null, $type = 'MEDIUM')
+    public function __construct($format = null, $type = 'MEDIUM')
     {
         $this->setformat($format, $type);
     }
@@ -65,41 +65,38 @@ class DateFormat
      *
      * @return does not return a value.
      */
-    function setformat($format, $type = 'MEDIUM')
+    public function setformat($format, $type = 'MEDIUM')
     {
         switch ($type) {
-        case 'SMALL':
-            if (is_array($format) && array_key_exists(self::DATE_SMALL, $format)) {
-                $this->_format[self::DATE_SMALL] = $format[self::DATE_SMALL];
-            } else {
-                $this->_format[self::DATE_SMALL] = $format;
-            }
-            break;
-
-        case 'LONG':
-            if (is_array($format) && array_key_exists(self::DATE_LONG, $format)) {
-                $this->_format[self::DATE_LONG] = $format[self::DATE_LONG];
-            } else {
-                $this->_format[self::DATE_LONG] = $format;
-            }
-            break;
-
-        case 'FULL':
-            if (is_array($format) && array_key_exists(self::DATE_FULL, $format)) {
-                $this->_format[self::DATE_FULL] = $format[self::DATE_FULL];
-            } else {
-                $this->_format[self::DATE_FULL] = $format;
-            }
-            break;
-
-        case 'MEDIUM':
-        default:
-            if (is_array($format) && array_key_exists(self::DATE_MEDIUM, $format)) {
-                $this->_format[self::DATE_MEDIUM] = $format[self::DATE_MEDIUM];
-            } else {
-                $this->_format[self::DATE_MEDIUM] = $format;
-            }
-            break;
+            case 'SMALL':
+                if (is_array($format) && array_key_exists(self::DATE_SMALL, $format)) {
+                    $this->format[self::DATE_SMALL] = $format[self::DATE_SMALL];
+                } else {
+                    $this->format[self::DATE_SMALL] = $format;
+                }
+                break;
+            case 'LONG':
+                if (is_array($format) && array_key_exists(self::DATE_LONG, $format)) {
+                    $this->format[self::DATE_LONG] = $format[self::DATE_LONG];
+                } else {
+                    $this->format[self::DATE_LONG] = $format;
+                }
+                break;
+            case 'FULL':
+                if (is_array($format) && array_key_exists(self::DATE_FULL, $format)) {
+                    $this->format[self::DATE_FULL] = $format[self::DATE_FULL];
+                } else {
+                    $this->format[self::DATE_FULL] = $format;
+                }
+                break;
+            case 'MEDIUM':
+            default:
+                if (is_array($format) && array_key_exists(self::DATE_MEDIUM, $format)) {
+                    $this->format[self::DATE_MEDIUM] = $format[self::DATE_MEDIUM];
+                } else {
+                    $this->format[self::DATE_MEDIUM] = $format;
+                }
+                break;
         }
     }
 }

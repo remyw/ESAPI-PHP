@@ -40,7 +40,7 @@ class VBScriptCodec extends Codec
     /**
      * Public Constructor
      */
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
     }
@@ -50,14 +50,14 @@ class VBScriptCodec extends Codec
      */
     public function encodeCharacter($immune, $c)
     {
-        //detect encoding, special-handling for chr(172) and chr(128) to chr(159) 
+        //detect encoding, special-handling for chr(172) and chr(128) to chr(159)
         //which fail to be detected by mb_detect_encoding()
         $initialEncoding = $this->detectEncoding($c);
 
         // Normalize encoding to UTF-32
         $_4ByteUnencodedOutput = $this->normalizeEncoding($c);
 
-        // Start with nothing; format it to match the encoding of the string passed 
+        // Start with nothing; format it to match the encoding of the string passed
         //as an argument.
         $encodedOutput = mb_convert_encoding("", $initialEncoding);
 
@@ -69,11 +69,11 @@ class VBScriptCodec extends Codec
 
         // check for immune characters
         foreach ($immune as $immuneCharacter) {
-            // Convert to UTF-32 (4 byte characters, regardless of actual number of 
+            // Convert to UTF-32 (4 byte characters, regardless of actual number of
             //bytes in the character).
             $_4ByteImmuneCharacter = $this->normalizeEncoding($immuneCharacter);
 
-            // Ensure it's a single 4 byte character (since $immune is an array of 
+            // Ensure it's a single 4 byte character (since $immune is an array of
             //strings) by grabbing only the 1st multi-byte character.
             $_4ByteImmuneCharacter = $this->forceToSingleCharacter(
                 $_4ByteImmuneCharacter
@@ -88,7 +88,7 @@ class VBScriptCodec extends Codec
         // Check for alphanumeric characters
         $hex = $this->getHexForNonAlphanumeric($_4ByteCharacter);
         if ($hex === null) {
-            //character is alphanumric, therefore return the character...
+            //character is alphanumeric, therefore return the character...
             return $encodedOutput . chr($ordinalValue);
         }
 
@@ -111,8 +111,10 @@ class VBScriptCodec extends Codec
             // 1st character is null, so return null
             // eat the 1st character off the string and return null
             $_4ByteEncodedInput = mb_substr(
-                $input, 1, mb_strlen($_4ByteEncodedInput, "UTF-32"), "UTF-32"
-            ); //no point in doing this
+                $input, 1,
+                mb_strlen($_4ByteEncodedInput, "UTF-32"),
+                "UTF-32"
+            ); //TODO: no point in doing this
             return array(
                 'decodedCharacter' => null,
                 'encodedString' => null

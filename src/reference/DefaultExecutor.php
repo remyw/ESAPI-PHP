@@ -37,38 +37,40 @@ require_once  dirname(__FILE__) . '/../Executor.php';
  */
 class DefaultExecutor implements Executor
 {
-
     // Logger
-    private $_auditor = null;
-    private $_ApplicationName = null;
-    private $_LogEncodingRequired = null;
-    private $_LogLevel = null;
-    private $_LogFileName = null;
-    private $_MaxLogFileSize = null;
+    private $auditor = null;
+    private $applicationName = null;
+    private $logEncodingRequired = null;
+    private $logLevel = null;
+    private $logFileName = null;
+    private $maxLogFileSize = null;
 
     //SecurityConfiguration
-    private $_config = null;
+    private $config = null;
 
     /**
      * Executor constructor.
      *
      * @return does not return a value.
      */
-    function __construct()
+    public function __construct()
     {
-        $this->_auditor = ESAPI::getAuditor('Executor');
-        $this->_config = ESAPI::getSecurityConfiguration();
+        $this->auditor = ESAPI::getAuditor('Executor');
+        $this->config = ESAPI::getSecurityConfiguration();
     }
 
     /**
      * @inheritdoc
      */
-    function executeSystemCommand($executable, $params)
+    public function executeSystemCommand($executable, $params)
     {
-        $workdir = $this->_config->getWorkingDirectory();
+        $workdir = $this->config->getWorkingDirectory();
         $logParams = false;
         return $this->executeSystemCommandLonghand(
-            $executable, $params, $workdir, $logParams
+            $executable,
+            $params,
+            $workdir,
+            $logParams
         );
     }
 
@@ -76,12 +78,12 @@ class DefaultExecutor implements Executor
      * @inheritdoc
      */
     function executeSystemCommandLonghand(
-        $executable, $params, $workdir,
+        $executable,
+        $params,
+        $workdir,
         $logParams
-    )
-    {
+    ) {
         try {
-
             // executable must exist
             $resolved = $executable;
 
@@ -94,7 +96,7 @@ class DefaultExecutor implements Executor
             if (!file_exists($resolved)) {
                 throw new ExecutorException(
                     "Execution failure, No such " .
-                        "executable: $executable"
+                    "executable: $executable"
                 );
             }
 
@@ -102,19 +104,19 @@ class DefaultExecutor implements Executor
             if (strcmp($resolved, realpath($resolved)) != 0) {
                 throw new ExecutorException(
                     "Execution failure, Attempt " .
-                        "to invoke an executable using a non-absolute path: [" . realpath($resolved)
-                        . "] != [$executable]"
+                    "to invoke an executable using a non-absolute path: [" . realpath($resolved)
+                    . "] != [$executable]"
                 );
             }
 
-            // exact, absolute, canonical path to executable must be listed 
-            //in ESAPI configuration 
-            $approved = $this->_config->getAllowedExecutables();
+            // exact, absolute, canonical path to executable must be listed
+            //in ESAPI configuration
+            $approved = $this->config->getAllowedExecutables();
             if (!in_array($executable, $approved)) {
                 throw new ExecutorException(
                     "Execution failure, Attempt to invoke executable that " .
-                        "is not listed as an approved executable in ESAPI " .
-                        "configuration: " . $executable . " not listed in " . $approved
+                    "is not listed as an approved executable in ESAPI " .
+                    "configuration: " . $executable . " not listed in " . $approved
                 );
             }
 
@@ -136,7 +138,7 @@ class DefaultExecutor implements Executor
             if (!file_exists($resolved_workdir)) {
                 throw new ExecutorException(
                     "Execution failure, No such" .
-                        " working directory for running executable: $workdir"
+                    " working directory for running executable: $workdir"
                 );
             }
 
@@ -146,12 +148,12 @@ class DefaultExecutor implements Executor
                 //note: will yield a paramstr with a leading whitespace
                 $paramstr .= " " . $param;
             }
-            //note: no whitespace between $executable and $paramstr since 
+            //note: no whitespace between $executable and $paramstr since
             //$paramstr already has a leading whitespace
             $output = shell_exec($executable . $paramstr);
             return $output;
         } catch (ExecutorException $e) {
-            $this->_auditor->warning(Auditor::SECURITY, true, $e->getMessage());
+            $this->auditor->warning(Auditor::SECURITY, true, $e->getMessage());
             throw new ExecutorException($e->getMessage());
         }
 

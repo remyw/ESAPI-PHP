@@ -44,8 +44,8 @@ require_once dirname(__FILE__) . '/BaseValidationRule.php';
  */
 class IntegerValidationRule extends BaseValidationRule
 {
-    private $_minValue;
-    private $_maxValue;
+    private $minValue;
+    private $maxValue;
 
     /**
      * Constructor sets-up the validation rule with a descriptive name for this
@@ -60,23 +60,24 @@ class IntegerValidationRule extends BaseValidationRule
      * @return does not return a value.
      */
     public function __construct(
-        $typeName, $encoder, $minValue = null,
+        $typeName,
+        $encoder,
+        $minValue = null,
         $maxValue = null
-    )
-    {
+    ) {
 
         parent::__construct($typeName, $encoder);
 
         if ($minValue === null || !is_numeric($minValue)) {
-            $this->_minValue = 1 - PHP_INT_MAX;
+            $this->minValue = 1 - PHP_INT_MAX;
         } else {
-            $this->_minValue = (int)$minValue;
+            $this->minValue = (int)$minValue;
         }
 
         if ($maxValue === null || !is_numeric($maxValue)) {
-            $this->_maxValue = PHP_INT_MAX;
+            $this->maxValue = PHP_INT_MAX;
         } else {
-            $this->_maxValue = (int)$maxValue;
+            $this->maxValue = (int)$maxValue;
         }
     }
 
@@ -108,10 +109,10 @@ class IntegerValidationRule extends BaseValidationRule
                 $context
             );
         }
-        if ($this->_minValue > $this->_maxValue) {
+        if ($this->minValue > $this->maxValue) {
             throw new RuntimeException(
-                'Validation misconfiguration - $_minValue should not be ' .
-                    'greater than $_maxValue!'
+                'Validation misconfiguration - $minValue should not be ' .
+                'greater than $maxValue!'
             );
         }
         if ($input === null || $input == '') {
@@ -133,7 +134,7 @@ class IntegerValidationRule extends BaseValidationRule
             throw new ValidationException(
                 $context . ': Invalid input. Encoding problem detected.',
                 'An EncodingException was thrown during canonicalization of' .
-                    ' the input.',
+                ' the input.',
                 $context
             );
         }
@@ -156,20 +157,20 @@ class IntegerValidationRule extends BaseValidationRule
                 );
             }
             $i = (int)$i;
-            if ($i < $this->_minValue) {
+            if ($i < $this->minValue) {
                 throw new ValidationException(
-                    'Invalid integer input must not be less than ' . $this->_minValue,
-                    'Invalid integer input must not be less than ' . $this->_minValue .
-                        ': context=' . $context . ', input=' . $input,
+                    'Invalid integer input must not be less than ' . $this->minValue,
+                    'Invalid integer input must not be less than ' . $this->minValue .
+                    ': context=' . $context . ', input=' . $input,
                     $context
                 );
             }
-            if ($i > $this->_maxValue) {
+            if ($i > $this->maxValue) {
                 throw new ValidationException(
                     'Invalid integer input must not be greater than ' .
-                        $this->_maxValue,
+                    $this->maxValue,
                     'Invalid integer input must not be greater than ' .
-                        $this->_maxValue . ': context=' . $context . ', input=' . $input,
+                    $this->maxValue . ': context=' . $context . ', input=' . $input,
                     $context
                 );
             }
@@ -178,7 +179,7 @@ class IntegerValidationRule extends BaseValidationRule
             throw new ValidationException(
                 $context . ': Invalid integer input',
                 'Invalid integer input format: Caught NumberFormatException: ' .
-                    $e->getMessage() . 'context=' . $context . ', input=' . $input,
+                $e->getMessage() . 'context=' . $context . ', input=' . $input,
                 $context
             );
         }

@@ -24,7 +24,7 @@ require_once dirname(__FILE__) . '/../../src/reference/DefaultSanitizer.php';
 
 class SanitizerTest extends PHPUnit_Framework_TestCase
 {
-    function setUp()
+    public function setUp()
     {
         global $ESAPI;
         if (!isset($ESAPI)) {
@@ -32,14 +32,14 @@ class SanitizerTest extends PHPUnit_Framework_TestCase
         }
     }
 
-    function tearDown()
+    public function tearDown()
     {
     }
 
     /**
      * Test of getSanitizedHTML method of class Sanitizer.
      */
-    function testGetSanitizedHTML_01()
+    public function testGetSanitizedHTML_01()
     {
         $san = ESAPI::getSanitizer();
 
@@ -51,7 +51,7 @@ class SanitizerTest extends PHPUnit_Framework_TestCase
     /**
      * Test of getSanitizedHTML method of class Sanitizer.
      */
-    function testGetSanitizedHTML_02()
+    public function testGetSanitizedHTML_02()
     {
         $san = ESAPI::getSanitizer();
 
@@ -63,7 +63,7 @@ class SanitizerTest extends PHPUnit_Framework_TestCase
     /**
      * Test of getSanitizedHTML method of class Sanitizer.
      */
-    function testGetSanitizedHTML_03()
+    public function testGetSanitizedHTML_03()
     {
         $san = ESAPI::getSanitizer();
 
@@ -71,5 +71,4 @@ class SanitizerTest extends PHPUnit_Framework_TestCase
         $result3 = $san->getSanitizedHTML('test', $test3, 100, false);
         $this->assertEquals('Test.', $result3);
     }
-
 }

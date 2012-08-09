@@ -53,13 +53,13 @@ class AuditorTest extends PHPUnit_Framework_TestCase
      */
     private $logfileIsReadable = false;
 
-    function __construct()
+    public function __construct()
     {
         ESAPI::getEncoder();
         $this->logFileLoc = getLogFileLoc();
     }
 
-    protected function setUp()
+    public function setUp()
     {
         global $ESAPI;
 
@@ -72,272 +72,266 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->testLogger->setLevel(Auditor::ALL);
     }
 
-    function tearDown()
+    public function tearDown()
     {
         $this->testLogger = null; // TODO - working?
     }
 
-
-    function testSetLevelOffCheckTrace()
+    public function testSetLevelOffCheckTrace()
     {
         $this->testLogger->setLevel(Auditor::OFF);
         $this->assertFalse($this->testLogger->isTraceEnabled());
     }
 
-    function testSetLevelOffCheckDebug()
+    public function testSetLevelOffCheckDebug()
     {
         $this->testLogger->setLevel(Auditor::OFF);
         $this->assertFalse($this->testLogger->isDebugEnabled());
     }
 
-    function testSetLevelOffCheckInfo()
+    public function testSetLevelOffCheckInfo()
     {
         $this->testLogger->setLevel(Auditor::OFF);
         $this->assertFalse($this->testLogger->isInfoEnabled());
     }
 
-    function testSetLevelOffCheckWarning()
+    public function testSetLevelOffCheckWarning()
     {
         $this->testLogger->setLevel(Auditor::OFF);
         $this->assertFalse($this->testLogger->isWarningEnabled());
     }
 
-    function testSetLevelOffCheckError()
+    public function testSetLevelOffCheckError()
     {
         $this->testLogger->setLevel(Auditor::OFF);
         $this->assertFalse($this->testLogger->isErrorEnabled());
     }
 
-    function testSetLevelOffCheckFatal()
+    public function testSetLevelOffCheckFatal()
     {
         $this->testLogger->setLevel(Auditor::OFF);
         $this->assertFalse($this->testLogger->isFatalEnabled());
     }
 
 
-    function testSetLevelTraceCheckTrace()
+    public function testSetLevelTraceCheckTrace()
     {
         $this->testLogger->setLevel(Auditor::TRACE);
         $this->assertTrue($this->testLogger->isTraceEnabled());
     }
 
-    function testSetLevelTraceCheckDebug()
+    public function testSetLevelTraceCheckDebug()
     {
         $this->testLogger->setLevel(Auditor::TRACE);
         $this->assertTrue($this->testLogger->isTraceEnabled());
     }
 
-    function testSetLevelTraceCheckInfo()
+    public function testSetLevelTraceCheckInfo()
     {
         $this->testLogger->setLevel(Auditor::TRACE);
         $this->assertTrue($this->testLogger->isInfoEnabled());
     }
 
-    function testSetLevelTraceCheckWarning()
+    public function testSetLevelTraceCheckWarning()
     {
         $this->testLogger->setLevel(Auditor::TRACE);
         $this->assertTrue($this->testLogger->isWarningEnabled());
     }
 
-    function testSetLevelTraceCheckError()
+    public function testSetLevelTraceCheckError()
     {
         $this->testLogger->setLevel(Auditor::TRACE);
         $this->assertTrue($this->testLogger->isErrorEnabled());
     }
 
-    function testSetLevelTraceCheckFatal()
+    public function testSetLevelTraceCheckFatal()
     {
         $this->testLogger->setLevel(Auditor::TRACE);
         $this->assertTrue($this->testLogger->isFatalEnabled());
     }
 
-
-    function testSetLevelDebugCheckTrace()
+    public function testSetLevelDebugCheckTrace()
     {
         $this->testLogger->setLevel(Auditor::DEBUG);
         $this->assertFalse($this->testLogger->isTraceEnabled());
     }
 
-    function testSetLevelDebugCheckDebug()
+    public function testSetLevelDebugCheckDebug()
     {
         $this->testLogger->setLevel(Auditor::DEBUG);
         $this->assertTrue($this->testLogger->isDebugEnabled());
     }
 
-    function testSetLevelDebugCheckInfo()
+    public function testSetLevelDebugCheckInfo()
     {
         $this->testLogger->setLevel(Auditor::DEBUG);
         $this->assertTrue($this->testLogger->isInfoEnabled());
     }
 
-    function testSetLevelDebugCheckWarning()
+    public function testSetLevelDebugCheckWarning()
     {
         $this->testLogger->setLevel(Auditor::DEBUG);
         $this->assertTrue($this->testLogger->isWarningEnabled());
     }
 
-    function testSetLevelDebugCheckError()
+    public function testSetLevelDebugCheckError()
     {
         $this->testLogger->setLevel(Auditor::DEBUG);
         $this->assertTrue($this->testLogger->isErrorEnabled());
     }
 
-    function testSetLevelDebugCheckFatal()
+    public function testSetLevelDebugCheckFatal()
     {
         $this->testLogger->setLevel(Auditor::DEBUG);
         $this->assertTrue($this->testLogger->isFatalEnabled());
     }
 
-
-    function testSetLevelInfoCheckTrace()
+    public function testSetLevelInfoCheckTrace()
     {
         $this->testLogger->setLevel(Auditor::INFO);
         $this->assertFalse($this->testLogger->isTraceEnabled());
     }
 
-    function testSetLevelInfoCheckDebug()
+    public function testSetLevelInfoCheckDebug()
     {
         $this->testLogger->setLevel(Auditor::INFO);
         $this->assertFalse($this->testLogger->isDebugEnabled());
     }
 
-    function testSetLevelInfoCheckInfo()
+    public function testSetLevelInfoCheckInfo()
     {
         $this->testLogger->setLevel(Auditor::INFO);
         $this->assertTrue($this->testLogger->isInfoEnabled());
     }
 
-    function testSetLevelInfoCheckWarning()
+    public function testSetLevelInfoCheckWarning()
     {
         $this->testLogger->setLevel(Auditor::INFO);
         $this->assertTrue($this->testLogger->isWarningEnabled());
     }
 
-    function testSetLevelInfoCheckError()
+    public function testSetLevelInfoCheckError()
     {
         $this->testLogger->setLevel(Auditor::INFO);
         $this->assertTrue($this->testLogger->isErrorEnabled());
     }
 
-    function testSetLevelInfoCheckFatal()
+    public function testSetLevelInfoCheckFatal()
     {
         $this->testLogger->setLevel(Auditor::INFO);
         $this->assertTrue($this->testLogger->isFatalEnabled());
     }
 
 
-    function testSetLevelWarningCheckTrace()
+    public function testSetLevelWarningCheckTrace()
     {
         $this->testLogger->setLevel(Auditor::WARNING);
         $this->assertFalse($this->testLogger->isTraceEnabled());
     }
 
-    function testSetLevelWarningCheckDebug()
+    public function testSetLevelWarningCheckDebug()
     {
         $this->testLogger->setLevel(Auditor::WARNING);
         $this->assertFalse($this->testLogger->isDebugEnabled());
     }
 
-    function testSetLevelWarningCheckInfo()
+    public function testSetLevelWarningCheckInfo()
     {
         $this->testLogger->setLevel(Auditor::WARNING);
         $this->assertFalse($this->testLogger->isInfoEnabled());
     }
 
-    function testSetLevelWarningCheckWarning()
+    public function testSetLevelWarningCheckWarning()
     {
         $this->testLogger->setLevel(Auditor::WARNING);
         $this->assertTrue($this->testLogger->isWarningEnabled());
     }
 
-    function testSetLevelWarningCheckError()
+    public function testSetLevelWarningCheckError()
     {
         $this->testLogger->setLevel(Auditor::WARNING);
         $this->assertTrue($this->testLogger->isErrorEnabled());
     }
 
-    function testSetLevelWarningCheckFatal()
+    public function testSetLevelWarningCheckFatal()
     {
         $this->testLogger->setLevel(Auditor::WARNING);
         $this->assertTrue($this->testLogger->isFatalEnabled());
     }
 
-
-    function testSetLevelErrorCheckTrace()
+    public function testSetLevelErrorCheckTrace()
     {
         $this->testLogger->setLevel(Auditor::ERROR);
         $this->assertFalse($this->testLogger->isTraceEnabled());
     }
 
-    function testSetLevelErrorCheckDebug()
+    public function testSetLevelErrorCheckDebug()
     {
         $this->testLogger->setLevel(Auditor::ERROR);
         $this->assertFalse($this->testLogger->isDebugEnabled());
     }
 
-    function testSetLevelErrorCheckInfo()
+    public function testSetLevelErrorCheckInfo()
     {
         $this->testLogger->setLevel(Auditor::ERROR);
         $this->assertFalse($this->testLogger->isInfoEnabled());
     }
 
-    function testSetLevelErrorCheckWarning()
+    public function testSetLevelErrorCheckWarning()
     {
         $this->testLogger->setLevel(Auditor::ERROR);
         $this->assertFalse($this->testLogger->isWarningEnabled());
     }
 
-    function testSetLevelErrorCheckError()
+    public function testSetLevelErrorCheckError()
     {
         $this->testLogger->setLevel(Auditor::ERROR);
         $this->assertTrue($this->testLogger->isErrorEnabled());
     }
 
-    function testSetLevelErrorCheckFatal()
+    public function testSetLevelErrorCheckFatal()
     {
         $this->testLogger->setLevel(Auditor::ERROR);
         $this->assertTrue($this->testLogger->isFatalEnabled());
     }
 
-
-    function testSetLevelFatalCheckTrace()
+    public function testSetLevelFatalCheckTrace()
     {
         $this->testLogger->setLevel(Auditor::FATAL);
         $this->assertFalse($this->testLogger->isTraceEnabled());
     }
 
-    function testSetLevelFatalCheckDebug()
+    public function testSetLevelFatalCheckDebug()
     {
         $this->testLogger->setLevel(Auditor::FATAL);
         $this->assertFalse($this->testLogger->isDebugEnabled());
     }
 
-    function testSetLevelFatalCheckInfo()
+    public function testSetLevelFatalCheckInfo()
     {
         $this->testLogger->setLevel(Auditor::FATAL);
         $this->assertFalse($this->testLogger->isInfoEnabled());
     }
 
-    function testSetLevelFatalCheckWarning()
+    public function testSetLevelFatalCheckWarning()
     {
         $this->testLogger->setLevel(Auditor::FATAL);
         $this->assertFalse($this->testLogger->isWarningEnabled());
     }
 
-    function testSetLevelFatalCheckError()
+    public function testSetLevelFatalCheckError()
     {
         $this->testLogger->setLevel(Auditor::FATAL);
         $this->assertFalse($this->testLogger->isErrorEnabled());
     }
 
-    function testSetLevelFatalCheckFatal()
+    public function testSetLevelFatalCheckFatal()
     {
         $this->testLogger->setLevel(Auditor::FATAL);
         $this->assertTrue($this->testLogger->isFatalEnabled());
     }
 
-
-    function testSetLevelMultipleLogsExpectedTrue()
+    public function testSetLevelMultipleLogsExpectedTrue()
     {
         //Now test to see if a change to the logging level in one log affects other logs
         $newLogger = ESAPI::getAuditor('test_num2');
@@ -349,23 +343,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(!$log_1_result && $log_2_result);
     }
 
-    /*
-     * This test is bogus.  It is the same as testSetLevelMultipleLogsExpectedTrue
-     * but with the opposite expectation.
-     */
-#    function testSetLevelMultipleLogsExpectedFalse() {
-#        //Now test to see if a change to the logging level in one log affects other logs
-#        $newLogger = ESAPI::getAuditor( 'test_num2' );
-#        $this->testLogger->setLevel( Auditor::OFF );
-#        $newLogger->setLevel( Auditor::INFO );
-#        $log_1_result = $this->testLogger->isInfoEnabled();
-#        $log_2_result = $newLogger->isInfoEnabled();
-
-#        $this->assertTrue($log_1_result &&!$log_2_result);        
-#    }
-
-
-    function testLoggingToFile()
+    public function testLoggingToFile()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -376,8 +354,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         return $logFileIsReadable;
     }
 
-
-    function testFatalSecuritySuccess()
+    public function testFatalSecuritySuccess()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -387,7 +364,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testFatalSecurityFailure()
+    public function testFatalSecurityFailure()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -397,7 +374,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testFatalNullException()
+    public function testFatalNullException()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -407,7 +384,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testFatalWithException()
+    public function testFatalWithException()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -421,7 +398,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testWarningSecuritySuccess()
+    public function testWarningSecuritySuccess()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -431,7 +408,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testWarningSecurityFailure()
+    public function testWarningSecurityFailure()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -441,7 +418,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testWarningNullException()
+    public function testWarningNullException()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -451,7 +428,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testWarningWithException()
+    public function testWarningWithException()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -468,7 +445,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testErrorSecuritySuccess()
+    public function testErrorSecuritySuccess()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -478,7 +455,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testErrorSecurityFailure()
+    public function testErrorSecurityFailure()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -488,7 +465,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testErrorNullException()
+    public function testErrorNullException()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -498,7 +475,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testErrorWithException()
+    public function testErrorWithException()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -512,7 +489,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testInfoSecuritySuccess()
+    public function testInfoSecuritySuccess()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -522,7 +499,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testInfoSecurityFailure()
+    public function testInfoSecurityFailure()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -532,7 +509,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testInfoNullException()
+    public function testInfoNullException()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -542,7 +519,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testInfoWithException()
+    public function testInfoWithException()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -556,7 +533,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testDebugSecuritySuccess()
+    public function testDebugSecuritySuccess()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -566,7 +543,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testDebugSecurityFailure()
+    public function testDebugSecurityFailure()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -576,7 +553,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testDebugNullException()
+    public function testDebugNullException()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -586,7 +563,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testDebugWithException()
+    public function testDebugWithException()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -600,7 +577,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testTraceSecuritySuccess()
+    public function testTraceSecuritySuccess()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -610,7 +587,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testTraceSecurityFailure()
+    public function testTraceSecurityFailure()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -620,7 +597,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testTraceNullException()
+    public function testTraceNullException()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -630,21 +607,24 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testTraceWithException()
+    public function testTraceWithException()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
         $logMsg = "Trace level test message. {$r}";
         $throwable = new Exception('This is a message from a generic exception.');
         $expected = $this->getExpected(
-            'TRACE', 'SECURITY', false, $logMsg,
+            'TRACE',
+            'SECURITY',
+            false,
+            $logMsg,
             get_class($throwable)
         );
         $this->testLogger->trace(Auditor::SECURITY, false, $logMsg, $throwable);
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testFatalUsabilitySuccess()
+    public function testFatalUsabilitySuccess()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -654,7 +634,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testFatalUsabilityFailure()
+    public function testFatalUsabilityFailure()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -664,7 +644,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testWarningUsabilitySuccess()
+    public function testWarningUsabilitySuccess()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -674,7 +654,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testWarningUsabilityFailure()
+    public function testWarningUsabilityFailure()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -684,7 +664,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testErrorUsabilitySuccess()
+    public function testErrorUsabilitySuccess()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -694,7 +674,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testErrorUsabilityFailure()
+    public function testErrorUsabilityFailure()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -704,7 +684,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testInfoUsabilitySuccess()
+    public function testInfoUsabilitySuccess()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -714,7 +694,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testInfoUsabilityFailure()
+    public function testInfoUsabilityFailure()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -724,7 +704,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testDebugUsabilitySuccess()
+    public function testDebugUsabilitySuccess()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -734,7 +714,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testDebugUsabilityFailure()
+    public function testDebugUsabilityFailure()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -744,7 +724,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testTraceUsabilitySuccess()
+    public function testTraceUsabilitySuccess()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -754,7 +734,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testTraceUsabilityFailure()
+    public function testTraceUsabilityFailure()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -764,7 +744,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testFatalPerformanceSuccess()
+    public function testFatalPerformanceSuccess()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -774,7 +754,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testFatalPerformanceFailure()
+    public function testFatalPerformanceFailure()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -784,7 +764,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testWarningPerformanceSuccess()
+    public function testWarningPerformanceSuccess()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -794,7 +774,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testWarningPerformanceFailure()
+    public function testWarningPerformanceFailure()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -804,7 +784,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testErrorPerformanceSuccess()
+    public function testErrorPerformanceSuccess()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -814,7 +794,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testErrorPerformanceFailure()
+    public function testErrorPerformanceFailure()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -824,7 +804,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testInfoPerformanceSuccess()
+    public function testInfoPerformanceSuccess()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -834,7 +814,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testInfoPerformanceFailure()
+    public function testInfoPerformanceFailure()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -844,7 +824,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testDebugPerformanceSuccess()
+    public function testDebugPerformanceSuccess()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -854,7 +834,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testDebugPerformanceFailure()
+    public function testDebugPerformanceFailure()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -864,7 +844,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testTracePerformanceSuccess()
+    public function testTracePerformanceSuccess()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -874,7 +854,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testTracePerformanceFailure()
+    public function testTracePerformanceFailure()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -884,7 +864,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testFatalFunctionalitySuccess()
+    public function testFatalFunctionalitySuccess()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -894,7 +874,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testFatalFunctionalityFailure()
+    public function testFatalFunctionalityFailure()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -904,7 +884,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testWarningFunctionalitySuccess()
+    public function testWarningFunctionalitySuccess()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -914,7 +894,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testWarningFunctionalityFailure()
+    public function testWarningFunctionalityFailure()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -924,7 +904,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testErrorFunctionalitySuccess()
+    public function testErrorFunctionalitySuccess()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -934,7 +914,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testErrorFunctionalityFailure()
+    public function testErrorFunctionalityFailure()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -944,7 +924,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testInfoFunctionalitySuccess()
+    public function testInfoFunctionalitySuccess()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -954,7 +934,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testInfoFunctionalityFailure()
+    public function testInfoFunctionalityFailure()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -964,7 +944,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testDebugFunctionalitySuccess()
+    public function testDebugFunctionalitySuccess()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -974,7 +954,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testDebugFunctionalityFailure()
+    public function testDebugFunctionalityFailure()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -984,7 +964,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testTraceFunctionalitySuccess()
+    public function testTraceFunctionalitySuccess()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -994,7 +974,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->verifyLogEntry($expected, $testMsg), $testMsg);
     }
 
-    function testTraceFunctionalityFailure()
+    public function testTraceFunctionalityFailure()
     {
         $testMsg = null;
         $r = getRandomAlphaNumString(32);
@@ -1008,7 +988,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testLoggingToFile
      */
-    function testCRLFRemoval($logFileIsReadable)
+    public function testCRLFRemoval($logFileIsReadable)
     {
         $failMessage = null;
         if ($logFileIsReadable === false) {
@@ -1028,12 +1008,10 @@ class AuditorTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testLoggingToFile
      */
-    function testHTMLEncoding($logFileIsReadable)
+    public function testHTMLEncoding($logFileIsReadable)
     {
         $failMessage = null;
-        if (ESAPI::getSecurityConfiguration()->getLogEncodingRequired() ===
-            false
-        ) {
+        if (ESAPI::getSecurityConfiguration()->getLogEncodingRequired() === false) {
             $failMessage
                 = 'HTML encoding cannot be tested until the LogEncodingRequired' .
                 ' property is set to true. This test has not actually failed.';
@@ -1054,7 +1032,7 @@ class AuditorTest extends PHPUnit_Framework_TestCase
 
 
     /**
-     * Helper function to read the logfile and match the supplied pattern.
+     * Helper public function to read the logfile and match the supplied pattern.
      * It is expected that the supplied pattern contains a unique string to
      * avoid false positives.
      * Sets $msg with a descriptive message.

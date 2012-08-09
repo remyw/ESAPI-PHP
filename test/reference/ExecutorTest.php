@@ -21,17 +21,17 @@ require_once dirname(__FILE__) . '/../../src/reference/DefaultExecutor.php';
 
 class ExecutorTest extends PHPUnit_Framework_TestCase
 {
-    private $_os;
-    private $_instance;
+    private $os;
+    private $instance;
 
-    private $_executable;
-    private $_params;
-    private $_workdir;
+    private $executable;
+    private $params;
+    private $workdir;
 
     const PLATFORM_WINDOWS = 1;
     const PLATFORM_UNIX = 2;
 
-    function setUp()
+    public function setUp()
     {
         global $ESAPI;
 
@@ -40,21 +40,21 @@ class ExecutorTest extends PHPUnit_Framework_TestCase
         }
 
         if (substr(PHP_OS, 0, 3) == 'WIN') {
-            $this->_os = self::PLATFORM_WINDOWS;
-            $this->_executable = '%SYSTEMROOT%\\system32\\cmd.exe';
-            $this->_params = array("/C", "dir");
-            $this->_workdir = '%SYSTEMROOT%\\Temp';
+            $this->os = self::PLATFORM_WINDOWS;
+            $this->executable = '%SYSTEMROOT%\\system32\\cmd.exe';
+            $this->params = array("/C", "dir");
+            $this->workdir = '%SYSTEMROOT%\\Temp';
         } else {
-            $this->_os = self::PLATFORM_UNIX;
-            $this->_executable = '/bin/sh';
-            $this->_params = array("-c", "'ls /'");
-            $this->_workdir = '/tmp';
+            $this->os = self::PLATFORM_UNIX;
+            $this->executable = '/bin/sh';
+            $this->params = array("-c", "'ls /'");
+            $this->workdir = '/tmp';
         }
 
-        $this->_instance = new DefaultExecutor();
+        $this->instance = new DefaultExecutor();
     }
 
-    function tearDown()
+    public function tearDown()
     {
 
     }
@@ -62,14 +62,14 @@ class ExecutorTest extends PHPUnit_Framework_TestCase
     /**
      * Test of executeSystemCommand method, of Executor
      */
-    function testExecuteWindowsLegalSystemCommand()
+    public function testExecuteWindowsLegalSystemCommand()
     {
-        if ($this->_os != self::PLATFORM_WINDOWS) {
+        if ($this->os != self::PLATFORM_WINDOWS) {
             $this->markTestSkipped('Not Windows.');
         }
 
         try {
-            $result = $this->_instance->executeSystemCommand($this->_executable, $this->_params);
+            $result = $this->instance->executeSystemCommand($this->executable, $this->params);
             $this->assertNotNull($result);
         } catch (ExecutorException $e) {
             $this->fail($e->getMessage());
@@ -79,47 +79,50 @@ class ExecutorTest extends PHPUnit_Framework_TestCase
     /**
      * Test to ensure that bad commands fail
      */
-    function testExecuteWindowsInjectIllegalSystemCommand()
+    public function testExecuteWindowsInjectIllegalSystemCommand()
     {
-        if ($this->_os != self::PLATFORM_WINDOWS) {
+        if ($this->os != self::PLATFORM_WINDOWS) {
             $this->markTestSkipped('Not Windows.');
         }
 
         $this->setExpectedException('ExecutorException');
 
-        $this->_executable = '%SYSTEMROOT%\\System32\\;notepad.exe';
-        $result = $this->_instance->executeSystemCommand($this->_executable, $this->_params);
+        $this->executable = '%SYSTEMROOT%\\System32\\;notepad.exe';
+        $result = $this->instance->executeSystemCommand($this->executable, $this->params);
         $this->fail('Should not execute non-canonicalized path');
     }
 
     /**
      * Test of file system canonicalization
      */
-    function testExecuteWindowsCanonicalization()
+    public function testExecuteWindowsCanonicalization()
     {
-        if ($this->_os != self::PLATFORM_WINDOWS) {
+        if ($this->os != self::PLATFORM_WINDOWS) {
             $this->markTestSkipped('Not Windows.');
         }
 
         $this->setExpectedException('ExecutorException');
 
-        $this->_executable = '%SYSTEMROOT%\\System32\\..\\cmd.exe';
-        $result = $this->_instance->executeSystemCommand($this->_executable, $this->_params);
+        $this->executable = '%SYSTEMROOT%\\System32\\..\\cmd.exe';
+        $result = $this->instance->executeSystemCommand($this->executable, $this->params);
         $this->fail('Should not execute non-canonicalized path');
     }
 
     /**
      *    Test to see if a good work directory is properly handled.
      */
-    function testExecuteWindowsGoodWorkDirectory()
+    public function testExecuteWindowsGoodWorkDirectory()
     {
-        if ($this->_os != self::PLATFORM_WINDOWS) {
+        if ($this->os != self::PLATFORM_WINDOWS) {
             $this->markTestSkipped('Not Windows.');
         }
 
         try {
-            $result = $this->_instance->executeSystemCommandLonghand(
-                $this->_executable, $this->_params, $this->_workdir, false
+            $result = $this->instance->executeSystemCommandLonghand(
+                $this->executable,
+                $this->params,
+                $this->workdir,
+                false
             );
             $this->assertNotNull($result);
         } catch (ExecutorException $e) {
@@ -131,17 +134,20 @@ class ExecutorTest extends PHPUnit_Framework_TestCase
     /**
      *    Test to see if a non-existent work directory is properly handled.
      */
-    function testExecuteWindowsBadWorkDirectory()
+    public function testExecuteWindowsBadWorkDirectory()
     {
-        if ($this->_os != self::PLATFORM_WINDOWS) {
+        if ($this->os != self::PLATFORM_WINDOWS) {
             $this->markTestSkipped('Not Windows.');
         }
 
         $this->setExpectedException('ExecutorException');
 
-        $this->_workdir = 'C:\\ridiculous';
-        $result = $this->_instance->executeSystemCommandLonghand(
-            $this->_executable, $this->_params, $this->_workdir, false
+        $this->workdir = 'C:\\ridiculous';
+        $result = $this->instance->executeSystemCommandLonghand(
+            $this->executable,
+            $this->params,
+            $this->workdir,
+            false
         );
         $this->fail('Should not execute with a bad working directory');
     }
@@ -149,31 +155,31 @@ class ExecutorTest extends PHPUnit_Framework_TestCase
     /**
      * Test to prevent chained command execution
      */
-    function testExecuteWindowsChainedCommand()
+    public function testExecuteWindowsChainedCommand()
     {
-        if ($this->_os != self::PLATFORM_WINDOWS) {
+        if ($this->os != self::PLATFORM_WINDOWS) {
             $this->markTestSkipped('Not Windows.');
         }
 
         $this->setExpectedException('ExecutorException');
 
-        $this->_executable .= " & dir & rem ";
-        $result = $this->_instance->executeSystemCommand($this->_executable, $this->_params);
+        $this->executable .= " & dir & rem ";
+        $result = $this->instance->executeSystemCommand($this->executable, $this->params);
         $this->fail("Executed chained command, output: " . $result);
     }
 
     /**
      * Test to prevent chained command execution
      */
-    function testExecuteWindowsChainedParameter()
+    public function testExecuteWindowsChainedParameter()
     {
-        if ($this->_os != self::PLATFORM_WINDOWS) {
+        if ($this->os != self::PLATFORM_WINDOWS) {
             $this->markTestSkipped('Not Windows.');
         }
 
         try {
-            $this->_params[] = "&dir";
-            $result = $this->_instance->executeSystemCommand($this->_executable, $this->_params);
+            $this->params[] = "&dir";
+            $result = $this->instance->executeSystemCommand($this->executable, $this->params);
             $this->assertNotNull($result);
         } catch (ExecutorException $e) {
             $this->fail($e->getMessage());
@@ -183,15 +189,15 @@ class ExecutorTest extends PHPUnit_Framework_TestCase
     /*
     *	Test to see if the escaping mechanism renders supplemental results safely
     */
-    function testExecuteWindowsDoubleArgs()
+    public function testExecuteWindowsDoubleArgs()
     {
-        if ($this->_os != self::PLATFORM_WINDOWS) {
+        if ($this->os != self::PLATFORM_WINDOWS) {
             $this->markTestSkipped('Not Windows.');
         }
 
         try {
-            $this->_params[] = "c:\\autoexec.bat c:\\config.sys";
-            $result = $this->_instance->executeSystemCommand($this->_executable, $this->_params);
+            $this->params[] = "c:\\autoexec.bat c:\\config.sys";
+            $result = $this->instance->executeSystemCommand($this->executable, $this->params);
             $this->assertNotNull($result);
         } catch (ExecutorException $e) {
             $this->fail($e->getMessage());
@@ -202,14 +208,14 @@ class ExecutorTest extends PHPUnit_Framework_TestCase
     /**
      * Test of executeSystemCommand method, of Executor
      */
-    function testExecuteUnixLegalSystemCommand()
+    public function testExecuteUnixLegalSystemCommand()
     {
-        if ($this->_os != self::PLATFORM_UNIX) {
+        if ($this->os != self::PLATFORM_UNIX) {
             $this->markTestSkipped('Not Unix.');
         }
 
         try {
-            $result = $this->_instance->executeSystemCommand($this->_executable, $this->_params);
+            $result = $this->instance->executeSystemCommand($this->executable, $this->params);
             $this->assertNotNull($result);
         } catch (ExecutorException $e) {
             $this->fail($e->getMessage());
@@ -219,47 +225,50 @@ class ExecutorTest extends PHPUnit_Framework_TestCase
     /**
      * Test to ensure that bad commands fail
      */
-    function testExecuteUnixInjectIllegalSystemCommand()
+    public function testExecuteUnixInjectIllegalSystemCommand()
     {
-        if ($this->_os != self::PLATFORM_UNIX) {
+        if ($this->os != self::PLATFORM_UNIX) {
             $this->markTestSkipped('Not Unix.');
         }
 
         $this->setExpectedException('ExecutorException');
 
-        $this->_executable .= ';./inject';
-        $result = $this->_instance->executeSystemCommand($this->_executable, $this->_params);
+        $this->executable .= ';./inject';
+        $result = $this->instance->executeSystemCommand($this->executable, $this->params);
         $this->fail('Should not have executed injected command');
     }
 
     /**
      * Test of file system canonicalization
      */
-    function testExecuteUnixCanonicalization()
+    public function testExecuteUnixCanonicalization()
     {
-        if ($this->_os != self::PLATFORM_UNIX) {
+        if ($this->os != self::PLATFORM_UNIX) {
             $this->markTestSkipped('Not Unix.');
         }
 
         $this->setExpectedException('ExecutorException');
 
-        $this->_executable = '/bin/sh/../bin/sh';
-        $result = $this->_instance->executeSystemCommand($this->_executable, $this->_params);
+        $this->executable = '/bin/sh/../bin/sh';
+        $result = $this->instance->executeSystemCommand($this->executable, $this->params);
         $this->fail('Should not have executed uncanonicalized command');
     }
 
     /**
      *    Test to see if a good work directory is properly handled.
      */
-    function testExecuteUnixGoodWorkDirectory()
+    public function testExecuteUnixGoodWorkDirectory()
     {
-        if ($this->_os != self::PLATFORM_UNIX) {
+        if ($this->os != self::PLATFORM_UNIX) {
             $this->markTestSkipped('Not Unix.');
         }
 
         try {
-            $result = $this->_instance->executeSystemCommandLonghand(
-                $this->_executable, $this->_params, $this->_workdir, false
+            $result = $this->instance->executeSystemCommandLonghand(
+                $this->executable,
+                $this->params,
+                $this->workdir,
+                false
             );
             $this->assertNotNull($result);
         } catch (ExecutorException $e) {
@@ -267,21 +276,23 @@ class ExecutorTest extends PHPUnit_Framework_TestCase
         }
     }
 
-
     /**
      *    Test to see if a non-existent work directory is properly handled.
      */
-    function testExecuteUnixBadWorkDirectory()
+    public function testExecuteUnixBadWorkDirectory()
     {
-        if ($this->_os != self::PLATFORM_UNIX) {
+        if ($this->os != self::PLATFORM_UNIX) {
             $this->markTestSkipped('Not Unix.');
         }
 
         $this->setExpectedException('ExecutorException');
 
-        $this->_workdir = '/ridiculous/';
-        $result = $this->_instance->executeSystemCommandLonghand(
-            $this->_executable, $this->_params, $this->_workdir, false
+        $this->workdir = '/ridiculous/';
+        $result = $this->instance->executeSystemCommandLonghand(
+            $this->executable,
+            $this->params,
+            $this->workdir,
+            false
         );
         $this->fail('Bad working directory should not work.');
     }
@@ -289,31 +300,31 @@ class ExecutorTest extends PHPUnit_Framework_TestCase
     /**
      * Test to prevent chained command execution
      */
-    function testExecuteUnixChainedCommand()
+    public function testExecuteUnixChainedCommand()
     {
-        if ($this->_os != self::PLATFORM_UNIX) {
+        if ($this->os != self::PLATFORM_UNIX) {
             $this->markTestSkipped('Not Unix.');
         }
 
         $this->setExpectedException('ExecutorException');
 
-        $this->_executable .= " ; ls / ; # ";
-        $result = $this->_instance->executeSystemCommand($this->_executable, $this->_params);
+        $this->executable .= " ; ls / ; # ";
+        $result = $this->instance->executeSystemCommand($this->executable, $this->params);
         $this->fail("Executed chained command, output: " . $result);
     }
 
     /**
      * Test to prevent chained command execution by adding a new command to end of the parameters
      */
-    function testExecuteUnixChainedParameter()
+    public function testExecuteUnixChainedParameter()
     {
-        if ($this->_os != self::PLATFORM_UNIX) {
+        if ($this->os != self::PLATFORM_UNIX) {
             $this->markTestSkipped('Not Unix.');
         }
 
         try {
-            $this->_params[] = ";ls";
-            $result = $this->_instance->executeSystemCommand($this->_executable, $this->_params);
+            $this->params[] = ";ls";
+            $result = $this->instance->executeSystemCommand($this->executable, $this->params);
             $this->assertNotNull($result);
         } catch (ExecutorException $e) {
             $this->fail($e->getMessage());

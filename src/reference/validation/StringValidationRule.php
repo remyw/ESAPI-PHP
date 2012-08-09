@@ -49,7 +49,6 @@ class StringValidationRule extends BaseValidationRule
     protected $minLength = 0;
     protected $maxLength = PHP_INT_MAX;
 
-
     /**
      * Constructor sets-up the validation rule with a descriptive name for this
      * validator, an optional Encoder instance (for canonicalization) and an
@@ -62,10 +61,10 @@ class StringValidationRule extends BaseValidationRule
      * @return does not return a value
      */
     public function __construct(
-        $typeName, $encoder = null,
+        $typeName,
+        $encoder = null,
         $whiteListPattern = null
-    )
-    {
+    ) {
         parent::__construct($typeName, $encoder);
 
         $this->whitelistPatterns = array();
@@ -77,7 +76,7 @@ class StringValidationRule extends BaseValidationRule
             if ($whiteListPattern !== null) {
                 throw new InvalidArgumentException(
                     'Validation misconfiguration - constructor expected a string' .
-                        ' $whiteListPattern'
+                    ' $whiteListPattern'
                 );
             }
         }
@@ -97,12 +96,13 @@ class StringValidationRule extends BaseValidationRule
         if (!is_string($pattern)) {
             throw new InvalidArgumentException(
                 'Validation misconfiguration - addWhitelistPattern expected a ' .
-                    'string $pattern'
+                'string $pattern'
             );
         }
         if ($pattern == '') {
             ESAPI::getLogger()->warning(
-                ESAPILogger::SECURITY, false,
+                ESAPILogger::SECURITY,
+                false,
                 'addWhitelistPattern received $pattern as an empty string.'
             );
         }
@@ -123,19 +123,19 @@ class StringValidationRule extends BaseValidationRule
         if (!is_string($pattern)) {
             throw new InvalidArgumentException(
                 'Validation misconfiguration - addBlacklistPattern expected ' .
-                    'string $pattern'
+                'string $pattern'
             );
         }
 
         if ($pattern == '') {
             ESAPI::getLogger()->warning(
-                ESAPILogger::SECURITY, false,
+                ESAPILogger::SECURITY,
+                false,
                 'addBlacklistPattern received $pattern as an empty string.'
             );
         }
 
         array_push($this->blacklistPatterns, $pattern);
-
     }
 
 
@@ -153,7 +153,7 @@ class StringValidationRule extends BaseValidationRule
         if (!is_numeric($length)) {
             throw new InvalidArgumentException(
                 'Validation misconfiguration - setMinimumLength expected ' .
-                    'numeric $length'
+                'numeric $length'
             );
         }
         $this->minLength = (int)$length;
@@ -174,7 +174,7 @@ class StringValidationRule extends BaseValidationRule
         if (!is_numeric($length)) {
             throw new InvalidArgumentException(
                 'Validation misconfiguration - setMaximumLength expected ' .
-                    'numeric $length'
+                'numeric $length'
             );
         }
         $this->maxLength = (int)$length;
@@ -211,7 +211,7 @@ class StringValidationRule extends BaseValidationRule
         if ($this->minLength > $this->maxLength) {
             throw new RuntimeException(
                 'Validation misconfiguration - $minLength should not be greater ' .
-                    'than $maxLength!'
+                'than $maxLength!'
             );
         }
 
@@ -234,7 +234,7 @@ class StringValidationRule extends BaseValidationRule
             throw new ValidationException(
                 $context . ': Invalid input. Encoding problem detected.',
                 'An EncodingException was thrown during canonicalization ' .
-                    'of the input.',
+                'of the input.',
                 $context
             );
         }
@@ -245,18 +245,18 @@ class StringValidationRule extends BaseValidationRule
         if ($length < $this->minLength) {
             throw new ValidationException(
                 $context . ': Invalid input. Input was shorter than the ' .
-                    'Minimum length of ' . $this->minLength . ' characters.',
+                'Minimum length of ' . $this->minLength . ' characters.',
                 'Length of Input was less than the minimum length of ' .
-                    $this->minLength,
+                $this->minLength,
                 $context
             );
         }
         if ($length > $this->maxLength) {
             throw new ValidationException(
                 $context . ': Invalid input. Input was longer than the ' .
-                    'Maximum length of ' . $this->maxLength . ' characters.',
+                'Maximum length of ' . $this->maxLength . ' characters.',
                 'Length of Input was more than the maximum length of ' .
-                    $this->maxLength,
+                $this->maxLength,
                 $context
             );
         }
@@ -266,9 +266,9 @@ class StringValidationRule extends BaseValidationRule
             if (!preg_match("/{$pattern}/", $canonical)) {
                 throw new ValidationException(
                     $context . ': Invalid input. Please conform to the regex ' .
-                        $pattern,
+                    $pattern,
                     $context . ': Invalid input. Input does not conform to the' .
-                        ' whitelist regex ' . $pattern,
+                    ' whitelist regex ' . $pattern,
                     $context
                 );
             }
@@ -279,9 +279,9 @@ class StringValidationRule extends BaseValidationRule
             if (preg_match("/{$pattern}/", $canonical)) {
                 throw new ValidationException(
                     $context . ': Invalid input. Dangerous input matching ' .
-                        $pattern,
+                    $pattern,
                     $context . ': Invalid input. Input matches the blacklist ' .
-                        'regex ' . $pattern,
+                    'regex ' . $pattern,
                     $context
                 );
             }

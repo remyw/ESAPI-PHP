@@ -55,7 +55,7 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
      *
      * @return null
      */
-    function setUp()
+    public function setUp()
     {
         global $ESAPI;
 
@@ -76,7 +76,7 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
      *
      * @return null
      */
-    function testEncodeForXML()
+    public function testEncodeForXML()
     {
         $this->assertEquals(
             '&quot;&gt;&lt;script&gt;alert&#x28;&apos;XSS&apos;&#x29;&lt;&#x2f;script&gt;&lt;foo attr&#x3d;&quot;',
@@ -93,7 +93,7 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
      *
      * @return null
      */
-    function testEncodeImmuneCharsForXML()
+    public function testEncodeImmuneCharsForXML()
     {
         $immune = array('');
         $this->assertEquals(
@@ -111,7 +111,7 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
      *
      * @return null
      */
-    function testNoEncodeImmuneCharsForXML()
+    public function testNoEncodeImmuneCharsForXML()
     {
         $this->assertEquals(
             'testTEST0123,.-_ ',
@@ -127,7 +127,7 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
      *
      * @return null
      */
-    function testEncodeNullForXML()
+    public function testEncodeNullForXML()
     {
         $this->assertEquals(
             null,
@@ -141,14 +141,14 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
      *
      * @return null
      */
-    function testEncodeInvalidCharsReplacedBySpace()
+    public function testEncodeInvalidCharsReplacedBySpace()
     {
         $this->assertEquals(
             'a b c d e f&#x9;g',
             $this->_xmlEntityCodec->encode(
                 $this->_immune_xml,
                 'a' . (chr(0)) . 'b' . (chr(4)) . 'c' . (chr(128)) . 'd' .
-                    (chr(150)) . 'e' . (chr(159)) . 'f' . (chr(9)) . 'g'
+                (chr(150)) . 'e' . (chr(159)) . 'f' . (chr(9)) . 'g'
             )
         );
     }
@@ -158,17 +158,17 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
      *
      * @return null
      */
-    function testEncodeInvalidCharsReplacedBySpacePlusISO()
+    public function testEncodeInvalidCharsReplacedBySpacePlusISO()
     {
         $this->assertEquals(
             'a b c d e f&#x9;g h i j&#xa0;k&#xa1;l&#xa2;m',
             $this->_xmlEntityCodec->encode(
                 $this->_immune_xml,
                 'a' . (chr(0)) . 'b' . (chr(4)) . 'c' . (chr(128)) .
-                    'd' . (chr(150)) . 'e' . (chr(159)) . 'f' . (chr(9)) .
-                    'g' . (chr(127)) . 'h' . (chr(129)) . 'i' . (chr(159)) .
-                    'j' . (chr(160)) . 'k' . (chr(161)) . 'l' . (chr(162)) .
-                    'm'
+                'd' . (chr(150)) . 'e' . (chr(159)) . 'f' . (chr(9)) .
+                'g' . (chr(127)) . 'h' . (chr(129)) . 'i' . (chr(159)) .
+                'j' . (chr(160)) . 'k' . (chr(161)) . 'l' . (chr(162)) .
+                'm'
             )
         );
     }
@@ -178,7 +178,7 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
      *
      * @return null
      */
-    function testEncodeScriptTag()
+    public function testEncodeScriptTag()
     {
         $this->assertEquals(
             '&lt;script&gt;',
@@ -191,7 +191,7 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
      *
      * @return null
      */
-    function testEncodeEncodedScriptTag()
+    public function testEncodeEncodedScriptTag()
     {
         $this->assertEquals(
             '&amp;lt&#x3b;script&amp;gt&#x3b;',
@@ -204,7 +204,7 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
      *
      * @return null
      */
-    function testEncodeSpecialsForXML()
+    public function testEncodeSpecialsForXML()
     {
         $this->assertEquals(
             '&#x21;&#x40;&#x24;&#x25;&#x28;&#x29;&#x3d;&#x2b;&#x7b;&#x7d;&#x5b;&#x5d;',
@@ -217,7 +217,7 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
      *
      * @return null
      */
-    function testEncodeCanonicalisedEncodedSpecials()
+    public function testEncodeCanonicalisedEncodedSpecials()
     {
         $instance = ESAPI::getEncoder();
         $this->assertEquals(
@@ -236,7 +236,7 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
      *
      * @return null
      */
-    function testEncodeAmpForXMLEoS()
+    public function testEncodeAmpForXMLEoS()
     {
         $this->assertEquals(
             'dir&amp;',
@@ -249,7 +249,7 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
      *
      * @return null
      */
-    function testEncodeAmpForXMLMidS()
+    public function testEncodeAmpForXMLMidS()
     {
         $this->assertEquals(
             'one&amp;two',
@@ -262,7 +262,7 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
      *
      * @return null
      */
-    function testEncodeNullForXMLAttribute()
+    public function testEncodeNullForXMLAttribute()
     {
         $this->assertEquals(
             null,
@@ -275,7 +275,7 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
      *
      * @return null
      */
-    function testEncodeImmuneCharsForXMLAttribute()
+    public function testEncodeImmuneCharsForXMLAttribute()
     {
         $immune = array('');
         $this->assertEquals(
@@ -292,7 +292,7 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
      *
      * @return null
      */
-    function testNoEncodeImmuneCharsForXMLAttribute()
+    public function testNoEncodeImmuneCharsForXMLAttribute()
     {
         $this->assertEquals(
             'testTEST0123,.-_',
@@ -308,7 +308,7 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
      *
      * @return null
      */
-    function testEncodeSpecialsForXMLAttribute()
+    public function testEncodeSpecialsForXMLAttribute()
     {
         $this->assertEquals(
             '&#x20;&#x21;&#x40;&#x24;&#x25;&#x28;&#x29;&#x3d;&#x2b;&#x7b;&#x7d;&#x5b;&#x5d;',
@@ -316,16 +316,14 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
         );
     }
 
-
     /* DECODE METHODS */
-
 
     /**
      * testDecodeFromXML
      *
      * @return null
      */
-    function testDecodeFromXML()
+    public function testDecodeFromXML()
     {
         $this->assertEquals(
             '"><script>alert(/XSS/)</script><foo attr="',
@@ -340,7 +338,7 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
      *
      * @return null
      */
-    function testDecodeNullFromXML()
+    public function testDecodeNullFromXML()
     {
         $this->assertEquals(null, $this->_xmlEntityCodec->decode(null));
     }
@@ -350,7 +348,7 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
      *
      * @return null
      */
-    function testDecodeDecimalNumericEntitiesFromXML()
+    public function testDecodeDecimalNumericEntitiesFromXML()
     {
         $this->assertEquals(
             'test!',
@@ -363,7 +361,7 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
      *
      * @return null
      */
-    function testDecodeHexNumericEntitiesFromXML()
+    public function testDecodeHexNumericEntitiesFromXML()
     {
         $this->assertEquals(
             'test!',
@@ -376,7 +374,7 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
      *
      * @return null
      */
-    function testDecodeInvalidNamedEntityFromXML()
+    public function testDecodeInvalidNamedEntityFromXML()
     {
         $this->assertEquals('&jeff;', $this->_xmlEntityCodec->decode('&jeff;'));
     }
@@ -389,7 +387,7 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
      *
      * @return null
      */
-    function testDecodeDoesNotProduceMixedCharacterEncoding()
+    public function testDecodeDoesNotProduceMixedCharacterEncoding()
     {
         $codec = new XMLEntityCodec();
         // expecting a UTF-8 encoded string
@@ -424,7 +422,7 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
      *
      * @return null
      */
-    function testDecodeScriptTag()
+    public function testDecodeScriptTag()
     {
         $this->assertEquals(
             '<script>',
@@ -437,7 +435,7 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
      *
      * @return null
      */
-    function testDecodeOnceDoubleEncodedScriptTag()
+    public function testDecodeOnceDoubleEncodedScriptTag()
     {
         $this->assertEquals(
             '&lt;script&gt;',
@@ -450,7 +448,7 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
      *
      * @return null
      */
-    function testDecodeSpecials()
+    public function testDecodeSpecials()
     {
         $this->assertEquals(
             '!@$%()=+{}[]',
@@ -465,7 +463,7 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
      *
      * @return null
      */
-    function testDecodeSpecialsEqualsCanonicalisedEncodedSpecials()
+    public function testDecodeSpecialsEqualsCanonicalisedEncodedSpecials()
     {
         $instance = ESAPI::getEncoder();
         $this->assertEquals(
@@ -483,7 +481,7 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
      *
      * @return null
      */
-    function testDecodeAmpFromXMLEoS()
+    public function testDecodeAmpFromXMLEoS()
     {
         $this->assertEquals('dir&', $this->_xmlEntityCodec->decode('dir&amp;'));
     }
@@ -493,7 +491,7 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
      *
      * @return null
      */
-    function testDecodeAmpFromXMLMidS()
+    public function testDecodeAmpFromXMLMidS()
     {
         $this->assertEquals(
             'one&two',
@@ -506,7 +504,7 @@ class XMLEntityCodecTest extends PHPUnit_Framework_TestCase
      *
      * @return null
      */
-    function testDecodeCharacter()
+    public function testDecodeCharacter()
     {
         $this->assertEquals('<', $this->_xmlEntityCodec->decode('&lt;'));
     }

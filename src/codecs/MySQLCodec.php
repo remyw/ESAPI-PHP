@@ -53,7 +53,7 @@ class MySQLCodec extends Codec
     const ORD_VALUE_BSLASH = 92;
     const ORD_VALUE_UNDERSCORE = 95;
 
-    private $_mode;
+    private $mode;
 
     /**
      * Public Constructor
@@ -63,10 +63,10 @@ class MySQLCodec extends Codec
      *
      * @return does not return a value.
      */
-    function __construct($mode = self::MYSQL_STD)
+    public function __construct($mode = self::MYSQL_STD)
     {
         parent::__construct();
-        $this->_mode = $mode;
+        $this->mode = $mode;
     }
 
     /**
@@ -74,14 +74,14 @@ class MySQLCodec extends Codec
      */
     public function encodeCharacter($immune, $c)
     {
-        //detect encoding, special-handling for chr(172) and chr(128) to chr(159) 
+        //detect encoding, special-handling for chr(172) and chr(128) to chr(159)
         //which fail to be detected by mb_detect_encoding()
         $initialEncoding = $this->detectEncoding($c);
 
         // Normalize encoding to UTF-32
         $_4ByteUnencodedOutput = $this->normalizeEncoding($c);
 
-        // Start with nothing; format it to match the encoding of the string passed 
+        // Start with nothing; format it to match the encoding of the string passed
         //as an argument.
         $encodedOutput = mb_convert_encoding("", $initialEncoding);
 
@@ -93,11 +93,11 @@ class MySQLCodec extends Codec
 
         // check for immune characters
         foreach ($immune as $immuneCharacter) {
-            // Convert to UTF-32 (4 byte characters, regardless of actual number of 
+            // Convert to UTF-32 (4 byte characters, regardless of actual number of
             //bytes in the character).
             $_4ByteImmuneCharacter = $this->normalizeEncoding($immuneCharacter);
 
-            // Ensure it's a single 4 byte character (since $immune is an array of 
+            // Ensure it's a single 4 byte character (since $immune is an array of
             //strings) by grabbing only the 1st multi-byte character.
             $_4ByteImmuneCharacter = $this->forceToSingleCharacter(
                 $_4ByteImmuneCharacter
@@ -115,11 +115,11 @@ class MySQLCodec extends Codec
             return $encodedOutput . chr($ordinalValue);
         }
 
-        switch ($this->_mode) {
-        case self::MYSQL_ANSI:
-            return $encodedOutput . $this->_encodeCharacterANSI($c);
-        case self::MYSQL_STD:
-            return $encodedOutput . $this->_encodeCharacterMySQL($c);
+        switch ($this->mode) {
+            case self::MYSQL_ANSI:
+                return $encodedOutput . $this->encodeCharacterANSI($c);
+            case self::MYSQL_STD:
+                return $encodedOutput . $this->encodeCharacterMySQL($c);
         }
 
         //Mode has an incorrect value
@@ -135,7 +135,7 @@ class MySQLCodec extends Codec
      *
      * @return string '' if ', otherwise return c directly
      */
-    private function _encodeCharacterANSI($c)
+    private function encodeCharacterANSI($c)
     {
         // Normalize encoding to UTF-32
         $_4ByteUnencodedOutput = $this->normalizeEncoding($c);
@@ -161,7 +161,7 @@ class MySQLCodec extends Codec
      *
      * @return string Encoded Character
      */
-    private function _encodeCharacterMySQL($c)
+    private function encodeCharacterMySQL($c)
     {
         // Normalize encoding to UTF-32
         $_4ByteUnencodedOutput = $this->normalizeEncoding($c);
@@ -173,28 +173,28 @@ class MySQLCodec extends Codec
         list(, $ordinalValue) = unpack("N", $_4ByteCharacter);
 
         switch ($ordinalValue) {
-        case 0x00:
-            return "\\0";
-        case 0x08:
-            return "\\b";
-        case 0x09:
-            return "\\t";
-        case 0x0a:
-            return "\\n";
-        case 0x0d:
-            return "\\r";
-        case 0x1a:
-            return "\\Z";
-        case 0x22:
-            return "\\\"";
-        case 0x25:
-            return "\\%";
-        case 0x27:
-            return "\\'";
-        case 0x5c:
-            return "\\\\";
-        case 0x5f:
-            return "\\_";
+            case 0x00:
+                return "\\0";
+            case 0x08:
+                return "\\b";
+            case 0x09:
+                return "\\t";
+            case 0x0a:
+                return "\\n";
+            case 0x0d:
+                return "\\r";
+            case 0x1a:
+                return "\\Z";
+            case 0x22:
+                return "\\\"";
+            case 0x25:
+                return "\\%";
+            case 0x27:
+                return "\\'";
+            case 0x5c:
+                return "\\\\";
+            case 0x5f:
+                return "\\_";
         }
 
         return '\\' . $c;
@@ -218,7 +218,10 @@ class MySQLCodec extends Codec
             // 1st character is null, so return null
             // eat the 1st character off the string and return null
             $_4ByteEncodedInput = mb_substr(
-                $input, 1, mb_strlen($_4ByteEncodedInput, "UTF-32"), "UTF-32"
+                $input,
+                1,
+                mb_strlen($_4ByteEncodedInput, "UTF-32"),
+                "UTF-32"
             ); //todo: no point in doing this
             return array(
                 'decodedCharacter' => null,
@@ -226,14 +229,14 @@ class MySQLCodec extends Codec
             );
         }
 
-        switch ($this->_mode) {
-        case self::MYSQL_ANSI:
-            return $this->_decodeCharacterANSI($_4ByteEncodedInput);
-        case self::MYSQL_STD:
-            return $this->_decodeCharacterMySQL($_4ByteEncodedInput);
+        switch ($this->mode) {
+            case self::MYSQL_ANSI:
+                return $this->decodeCharacterANSI($_4ByteEncodedInput);
+            case self::MYSQL_STD:
+                return $this->decodeCharacterMySQL($_4ByteEncodedInput);
         }
 
-        //Mode has an incorrect value 
+        //Mode has an incorrect value
         return array(
             'decodedCharacter' => null,
             'encodedString' => null
@@ -247,7 +250,7 @@ class MySQLCodec extends Codec
      *
      * @return string A single character, decoded
      */
-    private function _decodeCharacterANSI($input)
+    private function decodeCharacterANSI($input)
     {
         $_4ByteEncodedInput = $input;
 
@@ -277,7 +280,7 @@ class MySQLCodec extends Codec
      *
      * @return string A single character from that string, decoded.
      */
-    private function _decodeCharacterMySQL($input)
+    private function decodeCharacterMySQL($input)
     {
         $_4ByteEncodedInput = $input;
 
@@ -296,39 +299,39 @@ class MySQLCodec extends Codec
 
         //if second character is special, so return the original value
         switch ($ordinalValue) {
-        case self::ORD_VALUE_0:
-            $second = $this->normalizeEncoding(chr(0x00));
-            break;
-        case self::ORD_VALUE_B:
-            $second = $this->normalizeEncoding(chr(0x08));
-            break;
-        case self::ORD_VALUE_T:
-            $second = $this->normalizeEncoding(chr(0x09));
-            break;
-        case self::ORD_VALUE_N:
-            $second = $this->normalizeEncoding(chr(0x0a));
-            break;
-        case self::ORD_VALUE_R:
-            $second = $this->normalizeEncoding(chr(0x0d));
-            break;
-        case self::ORD_VALUE_Z:
-            $second = $this->normalizeEncoding(chr(0x1a));
-            break;
-        case self::ORD_VALUE_DQUOTE:
-            $second = $this->normalizeEncoding(chr(0x22));
-            break;
-        case self::ORD_VALUE_PERCENT:
-            $second = $this->normalizeEncoding(chr(0x25));
-            break;
-        case self::ORD_VALUE_QUOTE:
-            $second = $this->normalizeEncoding(chr(0x27));
-            break;
-        case self::ORD_VALUE_BSLASH:
-            $second = $this->normalizeEncoding(chr(0x5c));
-            break;
-        case self::ORD_VALUE_UNDERSCORE:
-            $second = $this->normalizeEncoding(chr(0x5f));
-            break;
+            case self::ORD_VALUE_0:
+                $second = $this->normalizeEncoding(chr(0x00));
+                break;
+            case self::ORD_VALUE_B:
+                $second = $this->normalizeEncoding(chr(0x08));
+                break;
+            case self::ORD_VALUE_T:
+                $second = $this->normalizeEncoding(chr(0x09));
+                break;
+            case self::ORD_VALUE_N:
+                $second = $this->normalizeEncoding(chr(0x0a));
+                break;
+            case self::ORD_VALUE_R:
+                $second = $this->normalizeEncoding(chr(0x0d));
+                break;
+            case self::ORD_VALUE_Z:
+                $second = $this->normalizeEncoding(chr(0x1a));
+                break;
+            case self::ORD_VALUE_DQUOTE:
+                $second = $this->normalizeEncoding(chr(0x22));
+                break;
+            case self::ORD_VALUE_PERCENT:
+                $second = $this->normalizeEncoding(chr(0x25));
+                break;
+            case self::ORD_VALUE_QUOTE:
+                $second = $this->normalizeEncoding(chr(0x27));
+                break;
+            case self::ORD_VALUE_BSLASH:
+                $second = $this->normalizeEncoding(chr(0x5c));
+                break;
+            case self::ORD_VALUE_UNDERSCORE:
+                $second = $this->normalizeEncoding(chr(0x5f));
+                break;
         }
 
         return array(
@@ -337,3 +340,4 @@ class MySQLCodec extends Codec
         );
     }
 }
+

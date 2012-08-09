@@ -54,8 +54,8 @@ class HTMLValidationRule extends StringValidationRule
     // $config->set('Core.CollectErrors' , true);
     //
     //
-    private $_auditor = null;
-    private $_purifier = null;
+    private $auditor = null;
+    private $purifier = null;
 
     /**
      * Constructor sets-up the validation rule with a descriptive name for this
@@ -71,23 +71,23 @@ class HTMLValidationRule extends StringValidationRule
      * @return does not return a value.
      */
     public function __construct(
-        $typeName, $encoder = null,
+        $typeName,
+        $encoder = null,
         $whitelistPattern = null
-    )
-    {
+    ) {
         global $ESAPI;
 
         parent::__construct($typeName, $encoder);
 
-        $this->_auditor = ESAPI::getAuditor('HTMLValidationRule');
+        $this->auditor = ESAPI::getAuditor('HTMLValidationRule');
         try {
-            $this->_purifier = new HTMLPurifier($this->_basicConfig());
+            $this->purifier = new HTMLPurifier($this->basicConfig());
         } catch (Exception $e) {
             throw new ValidationException(
                 'Could not initialize HTMLPurifier.',
                 'Caught ' . gettype($e) .
-                    ' attempting to instantiate HTMLPurifier: ' .
-                    $e->getMessage,
+                ' attempting to instantiate HTMLPurifier: ' .
+                $e->getMessage,
                 'HTMLValidationRule->construct'
             );
         }
@@ -101,7 +101,7 @@ class HTMLValidationRule extends StringValidationRule
      *
      * @return string returns some HTMLPurifier config directives
      */
-    private function _basicConfig()
+    private function basicConfig()
     {
         $a = array();
         $a['Core.Encoding'] = 'UTF-8';
@@ -110,7 +110,6 @@ class HTMLValidationRule extends StringValidationRule
         $a['Core.CollectErrors'] = true;
         return $a;
     }
-
 
     /**
      * Returns the canonicalized, valid input.
@@ -133,12 +132,12 @@ class HTMLValidationRule extends StringValidationRule
 
         $clean_html = null;
         try {
-            $clean_html = $this->_purifier->purify($canonical);
+            $clean_html = $this->purifier->purify($canonical);
         } catch (Exception $e) {
             throw new ValidationException(
                 'HTML Input is not valid.',
                 'Caught ' . gettype($e) . ' attempting to purify HTML: ' .
-                    $e->getMessage,
+                $e->getMessage,
                 $context
             );
         }
@@ -147,7 +146,7 @@ class HTMLValidationRule extends StringValidationRule
         // the html.  If not, (poor quality) assumption is that if canonicalized
         // input and the output don't match then the input wasn't valid.
         $numErrors = 0;
-        $errors = $this->_purifier->context->get('ErrorCollector');
+        $errors = $this->purifier->context->get('ErrorCollector');
         if ($errors instanceof HTMLPurifier_ErrorCollector) {
             $numErrors = sizeof($errors->getRaw(), false);
             if ($numErrors > 0) {
@@ -162,7 +161,7 @@ class HTMLValidationRule extends StringValidationRule
                 throw new ValidationException(
                     'HTML Input may not be valid.',
                     'Resorted to string comparsion of canonicalized and purified ' .
-                        'HTML input - result was Not Equal',
+                    'HTML input - result was Not Equal',
                     $context
                 );
             }
@@ -170,7 +169,6 @@ class HTMLValidationRule extends StringValidationRule
 
         return $clean_html;
     }
-
 
     /**
      * Simply attempt to purify the HTML and return an empty string if that
@@ -189,11 +187,11 @@ class HTMLValidationRule extends StringValidationRule
     {
         $clean_html = null;
         try {
-            $clean_html = $this->_purifier->purify($input);
+            $clean_html = $this->purifier->purify($input);
         } catch (Exception $e) {
             // NoOp - return clean_html
         }
         return $clean_html;
     }
-
 }
+

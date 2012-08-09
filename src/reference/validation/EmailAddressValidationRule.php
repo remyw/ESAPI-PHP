@@ -39,7 +39,7 @@ require_once dirname(__FILE__) . '/StringValidationRule.php';
  */
 class EmailAddressValidationRule extends StringValidationRule
 {
-    private $_auditor = null;
+    private $auditor = null;
 
     /**
      * Constructor sets-up the validation rule with a descriptive name for this
@@ -60,7 +60,7 @@ class EmailAddressValidationRule extends StringValidationRule
 
         parent::__construct($typeName, $encoder);
 
-        $this->_auditor = $ESAPI->getAuditor("EmailAddressValidationRule");
+        $this->auditor = $ESAPI->getAuditor("EmailAddressValidationRule");
     }
 
     /**
@@ -95,7 +95,7 @@ class EmailAddressValidationRule extends StringValidationRule
             throw new ValidationException(
                 'Email Address Input may not be valid.',
                 'Resorted to string comparsion of canonicalized and purified ' .
-                    'Email Address input - result was Not Equal',
+                'Email Address input - result was Not Equal',
                 $context
             );
         }
