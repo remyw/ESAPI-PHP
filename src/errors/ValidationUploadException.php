@@ -51,5 +51,3 @@ class ValidationUploadException extends ValidationException
         parent::__construct($userMessage, $logMessage);
     }
 }
-
-?>

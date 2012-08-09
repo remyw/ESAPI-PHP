@@ -158,5 +158,3 @@ class DefaultExecutor implements Executor
     }
 
 }
-
-?>

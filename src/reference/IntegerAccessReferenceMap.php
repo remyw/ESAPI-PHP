@@ -236,5 +236,3 @@ class IntegerAccessReferenceMap implements AccessReferenceMap
         }
     }
 }
-
-?>

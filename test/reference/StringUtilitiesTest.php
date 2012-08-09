@@ -123,5 +123,3 @@ class StringUtilitiesTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(null, StringUtilities::union($arr1, $arr2));
     }
 }
-
-?>

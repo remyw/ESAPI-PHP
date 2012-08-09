@@ -672,5 +672,3 @@ class FileBasedAuthenticator implements Authenticator
         return (isset($param) && $param != '');
     }
 }
-
-?>

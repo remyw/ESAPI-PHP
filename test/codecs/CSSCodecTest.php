@@ -133,5 +133,3 @@ class CSSCodecTest extends PHPUnit_Framework_TestCase
     }
 
 }
-
-?>

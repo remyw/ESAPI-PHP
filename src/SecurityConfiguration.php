@@ -368,5 +368,3 @@ class Threshold
         $this->actions = $actions;
     }
 }
-
-?>

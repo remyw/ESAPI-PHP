@@ -59,5 +59,3 @@ class Base64CodecTest extends PHPUnit_Framework_TestCase
         $this->assertEquals("<", $this->base64Codec->decode("PA=="));
     }
 }
-
-?>

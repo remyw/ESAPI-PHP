@@ -52,5 +52,3 @@ class AuthenticationException extends EnterpriseSecurityException
         parent::__construct($userMessage, $logMessage);
     }
 }
-
-?>

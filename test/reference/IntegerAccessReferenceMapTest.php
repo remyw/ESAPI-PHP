@@ -208,5 +208,3 @@ class IntegerReferenceMapTest extends PHPUnit_Framework_TestCase
     }
 
 }
-
-?>

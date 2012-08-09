@@ -185,5 +185,3 @@ class DefaultRandomizer implements Randomizer
     }
 
 }
-
-?>

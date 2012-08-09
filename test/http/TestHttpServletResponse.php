@@ -14,4 +14,3 @@
  * @author  Andrew van der Stock (vanderaj @ owasp.org)
  * @created 2009
  */
-?>

@@ -51,5 +51,3 @@ class CertificateException extends EnterpriseSecurityException
         parent::__construct($userMessage, $logMessage);
     }
 }
-
-?>

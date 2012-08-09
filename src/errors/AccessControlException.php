@@ -51,5 +51,3 @@ class AccessControlException extends EnterpriseSecurityException
         parent::__construct($userMessage, $logMessage);
     }
 }
-
-?>

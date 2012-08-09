@@ -890,5 +890,3 @@ class DefaultUser implements User
     //FIXME:
     public $ANONYMOUS = null;
 }
-
-?>

@@ -322,5 +322,3 @@ class FileBasedAccessController implements AccessController
     }
 
 }
-
-?>

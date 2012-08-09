@@ -52,5 +52,3 @@ class AuthenticationAccountsException extends AuthenticationException
         parent::__construct($userMessage, $logMessage);
     }
 }
-
-?>

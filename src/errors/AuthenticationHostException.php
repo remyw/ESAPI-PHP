@@ -53,5 +53,3 @@ class AuthenticationHostException extends AuthenticationException
     }
 
 }
-
-?>

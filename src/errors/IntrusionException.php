@@ -90,5 +90,3 @@ class IntrusionException extends Exception
     }
 
 }
-
-?>

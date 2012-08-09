@@ -63,5 +63,3 @@ class VBScriptCodecTest extends PHPUnit_Framework_TestCase
         $this->assertEquals("<", $this->vbScriptCodec->decode("\"<"));
     }
 }
-
-?>

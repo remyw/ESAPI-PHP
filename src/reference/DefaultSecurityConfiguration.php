@@ -876,5 +876,3 @@ class DefaultSecurityConfiguration implements SecurityConfiguration
         return $this->_SpecialDebugging;
     }
 }
-
-?>

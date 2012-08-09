@@ -293,5 +293,3 @@ class EnterpriseSecurityExceptionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($e->getLogMessage(), "This is a message for the log.");
     }
 }
-
-?>

@@ -51,5 +51,3 @@ class ValidationAvailabilityException extends ValidationException
         parent::__construct($userMessage, $logMessage);
     }
 }
-
-?>

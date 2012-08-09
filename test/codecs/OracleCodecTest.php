@@ -63,5 +63,3 @@ class OracleCodecTest extends PHPUnit_Framework_TestCase
     }
 
 }
-
-?>
