@@ -82,8 +82,10 @@ class StringUtilities
         if (empty($c1) && empty($c2)) {
             return null;
         }
+        $array = array_unique(array_merge($c1, $c2));
+        sort($array);
 
-        return sort(array_unique(array_merge($c1, $c2)));
+        return $array;
     }
 
 
