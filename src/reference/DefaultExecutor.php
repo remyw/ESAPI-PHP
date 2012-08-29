@@ -101,7 +101,7 @@ class DefaultExecutor implements Executor
             }
 
             // executable must use canonical path
-            if (strcmp($resolved, realpath($resolved)) != 0) {
+            if (strcmp(strtolower($resolved), strtolower(realpath($resolved))) != 0) {
                 throw new ExecutorException(
                     "Execution failure, Attempt " .
                     "to invoke an executable using a non-absolute path: [" . realpath($resolved)
